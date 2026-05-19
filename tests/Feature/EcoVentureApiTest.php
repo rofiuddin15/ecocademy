@@ -198,20 +198,32 @@ class EcoVentureApiTest extends TestCase
         $this->assertNotEmpty($modules[0]['materials']);
         $this->assertNotEmpty($modules[0]['quiz']);
         
-        // Check hiding of correct_answer in quiz questions JSON output
+        // Check hiding of correct_answer or is_correct in quiz questions JSON output
         $questions = $modules[0]['quiz']['questions'];
         $this->assertNotEmpty($questions);
         $this->assertArrayNotHasKey('correct_answer', $questions[0]); // Hidden security
+        $this->assertNotEmpty($questions[0]['options']);
+        $this->assertArrayNotHasKey('is_correct', $questions[0]['options'][0]); // Hidden security
 
         $quizId = $modules[0]['quiz']['id'];
         $q1 = $questions[0]['id'];
         $q2 = $questions[1]['id'];
 
+        $options1 = $questions[0]['options'];
+        $options2 = $questions[1]['options'];
+
+        // Get option IDs by matching option text
+        $opt1Id = collect($options1)->firstWhere('option_text', 'Meminimalkan limbah dan memaksimalkan penggunaan sumber daya')['id'];
+        $opt1WrongId = collect($options1)->firstWhere('option_text', 'Meningkatkan volume produksi barang plastik sekali pakai')['id'];
+
+        $opt2Id = collect($options2)->firstWhere('option_text', 'Plastik singkong (Cassava Bag)')['id'];
+        $opt2WrongId = collect($options2)->firstWhere('option_text', 'Styrofoam tebal')['id'];
+
         // 2. Submit correct answers to Quiz
         $submitResponse = $this->postJson("/api/v1/quizzes/{$quizId}/submit", [
             'answers' => [
-                $q1 => 'Meminimalkan limbah dan memaksimalkan penggunaan sumber daya',
-                $q2 => 'Plastik singkong (Cassava Bag)',
+                $q1 => $opt1Id,
+                $q2 => $opt2Id,
             ]
         ], [
             'Authorization' => 'Bearer ' . $studentToken
@@ -225,8 +237,8 @@ class EcoVentureApiTest extends TestCase
         // 3. Submit incorrect answers to Quiz
         $failResponse = $this->postJson("/api/v1/quizzes/{$quizId}/submit", [
             'answers' => [
-                $q1 => 'Salah satu jawaban salah',
-                $q2 => 'Kemasan styrofoam tebal',
+                $q1 => $opt1WrongId,
+                $q2 => $opt2WrongId,
             ]
         ], [
             'Authorization' => 'Bearer ' . $studentToken

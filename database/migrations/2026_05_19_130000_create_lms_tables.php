@@ -77,15 +77,24 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('quiz_id');
             $table->text('question_text');
-            $table->json('options'); // Menyimpan pilihan jawaban array (JSON)
-            $table->string('correct_answer');
             $table->integer('sequence');
             $table->timestamps();
 
             $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
         });
 
-        // 7. Quiz Attempts Table (Hasil Pengerjaan Kuis)
+        // 7. Quiz Options Table (Pilihan Jawaban Pertanyaan)
+        Schema::create('quiz_options', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('question_id');
+            $table->text('option_text');
+            $table->boolean('is_correct')->default(false);
+            $table->timestamps();
+
+            $table->foreign('question_id')->references('id')->on('quiz_questions')->onDelete('cascade');
+        });
+
+        // 8. Quiz Attempts Table (Hasil Pengerjaan Kuis)
         Schema::create('quiz_attempts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('quiz_id');
@@ -98,7 +107,21 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        // 8. Milestones Table (Tahapan Proyek PjBL)
+        // 9. Quiz Attempt Answers Table (Detail Jawaban Mahasiswa)
+        Schema::create('quiz_attempt_answers', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->uuid('attempt_id');
+            $table->uuid('question_id');
+            $table->uuid('selected_option_id');
+            $table->boolean('is_correct')->default(false);
+            $table->timestamps();
+
+            $table->foreign('attempt_id')->references('id')->on('quiz_attempts')->onDelete('cascade');
+            $table->foreign('question_id')->references('id')->on('quiz_questions')->onDelete('cascade');
+            $table->foreign('selected_option_id')->references('id')->on('quiz_options')->onDelete('cascade');
+        });
+
+        // 10. Milestones Table (Tahapan Proyek PjBL)
         Schema::create('milestones', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('course_id');
@@ -111,7 +134,7 @@ return new class extends Migration
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
         });
 
-        // 9. Projects Table (Tim Proyek Mahasiswa)
+        // 11. Projects Table (Tim Proyek Mahasiswa)
         Schema::create('projects', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('course_id');
@@ -126,7 +149,7 @@ return new class extends Migration
             $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        // 10. Submissions Table (Unggah Tugas Proyek)
+        // 12. Submissions Table (Unggah Tugas Proyek)
         Schema::create('submissions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('project_id');
@@ -142,7 +165,7 @@ return new class extends Migration
             $table->foreign('submitted_by')->references('id')->on('users')->onDelete('cascade');
         });
 
-        // 11. Feedbacks Table (Evaluasi Instruktur)
+        // 13. Feedbacks Table (Evaluasi Instruktur)
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('submission_id');
@@ -156,7 +179,7 @@ return new class extends Migration
             $table->foreign('evaluator_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        // 12. Forum Threads Table
+        // 14. Forum Threads Table
         Schema::create('forum_threads', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id');
@@ -167,7 +190,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        // 13. Forum Comments Table
+        // 15. Forum Comments Table
         Schema::create('forum_comments', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('thread_id');
@@ -191,7 +214,9 @@ return new class extends Migration
         Schema::dropIfExists('submissions');
         Schema::dropIfExists('projects');
         Schema::dropIfExists('milestones');
+        Schema::dropIfExists('quiz_attempt_answers');
         Schema::dropIfExists('quiz_attempts');
+        Schema::dropIfExists('quiz_options');
         Schema::dropIfExists('quiz_questions');
         Schema::dropIfExists('quizzes');
         Schema::dropIfExists('materials');

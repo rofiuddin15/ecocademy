@@ -11,6 +11,8 @@ use App\Models\Milestone;
 use App\Models\Quiz;
 use App\Models\QuizQuestion;
 use App\Models\QuizAttempt;
+use App\Models\QuizOption;
+use App\Models\QuizAttemptAnswer;
 use App\Models\Project;
 use App\Models\Submission;
 use App\Models\Feedback;
@@ -131,33 +133,68 @@ class DatabaseSeeder extends Seeder
         $q1_1 = QuizQuestion::create([
             'quiz_id' => $quiz1->id,
             'question_text' => 'Apa tujuan utama dari ekonomi sirkular?',
-            'options' => [
-                'Meminimalkan limbah dan memaksimalkan penggunaan sumber daya',
-                'Meningkatkan volume produksi barang plastik sekali pakai',
-                'Membuang sampah sebanyak mungkin ke tempat pembuangan akhir'
-            ],
-            'correct_answer' => 'Meminimalkan limbah dan memaksimalkan penggunaan sumber daya',
             'sequence' => 1,
+        ]);
+
+        $opt1_1_a = QuizOption::create([
+            'question_id' => $q1_1->id,
+            'option_text' => 'Meminimalkan limbah dan memaksimalkan penggunaan sumber daya',
+            'is_correct' => true,
+        ]);
+        $opt1_1_b = QuizOption::create([
+            'question_id' => $q1_1->id,
+            'option_text' => 'Meningkatkan volume produksi barang plastik sekali pakai',
+            'is_correct' => false,
+        ]);
+        $opt1_1_c = QuizOption::create([
+            'question_id' => $q1_1->id,
+            'option_text' => 'Membuang sampah sebanyak mungkin ke tempat pembuangan akhir',
+            'is_correct' => false,
         ]);
 
         $q1_2 = QuizQuestion::create([
             'quiz_id' => $quiz1->id,
             'question_text' => 'Manakah bahan kemasan berikut yang paling ramah lingkungan?',
-            'options' => [
-                'Styrofoam tebal',
-                'Plastik singkong (Cassava Bag)',
-                'Kantong plastik hitam biasa'
-            ],
-            'correct_answer' => 'Plastik singkong (Cassava Bag)',
             'sequence' => 2,
         ]);
 
+        $opt1_2_a = QuizOption::create([
+            'question_id' => $q1_2->id,
+            'option_text' => 'Styrofoam tebal',
+            'is_correct' => false,
+        ]);
+        $opt1_2_b = QuizOption::create([
+            'question_id' => $q1_2->id,
+            'option_text' => 'Plastik singkong (Cassava Bag)',
+            'is_correct' => true,
+        ]);
+        $opt1_2_c = QuizOption::create([
+            'question_id' => $q1_2->id,
+            'option_text' => 'Kantong plastik hitam biasa',
+            'is_correct' => false,
+        ]);
+
         // Seed a passed attempt for Student 1 on Quiz 1
-        QuizAttempt::create([
+        $attempt1 = QuizAttempt::create([
             'quiz_id' => $quiz1->id,
             'user_id' => $student->id,
             'score' => 100.00,
             'is_passed' => true,
+        ]);
+
+        // Seed attempt details/answers for Student 1
+        QuizAttemptAnswer::create([
+            'attempt_id' => $attempt1->id,
+            'question_id' => $q1_1->id,
+            'selected_option_id' => $opt1_1_a->id,
+            'is_correct' => true,
+        ]);
+
+        QuizAttemptAnswer::create([
+            'attempt_id' => $attempt1->id,
+            'question_id' => $q1_2->id,
+            'selected_option_id' => $opt1_2_b->id,
+            'is_correct' => true,
         ]);
 
         // 6. Seed Module 2: Audit dan Manajemen Limbah
@@ -189,13 +226,23 @@ class DatabaseSeeder extends Seeder
         $q2_1 = QuizQuestion::create([
             'quiz_id' => $quiz2->id,
             'question_text' => 'Langkah pertama yang paling tepat sebelum merancang sistem komposter untuk UMKM kuliner adalah...',
-            'options' => [
-                'Membeli mesin komposter industri yang mahal',
-                'Mengukur berat dan mengelompokkan jenis sampah harian',
-                'Langsung membuang semua sampah ke pekarangan belakang'
-            ],
-            'correct_answer' => 'Mengukur berat dan mengelompokkan jenis sampah harian',
             'sequence' => 1,
+        ]);
+
+        QuizOption::create([
+            'question_id' => $q2_1->id,
+            'option_text' => 'Membeli mesin komposter industri yang mahal',
+            'is_correct' => false,
+        ]);
+        QuizOption::create([
+            'question_id' => $q2_1->id,
+            'option_text' => 'Mengukur berat dan mengelompokkan jenis sampah harian',
+            'is_correct' => true,
+        ]);
+        QuizOption::create([
+            'question_id' => $q2_1->id,
+            'option_text' => 'Langsung membuang semua sampah ke pekarangan belakang',
+            'is_correct' => false,
         ]);
 
         // 7. Seed Module 3: Project-Based Learning Module (Final Module)

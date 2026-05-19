@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
-use App\Models\QuizQuestion;
+use App\Models\QuizAttemptAnswer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,7 +17,7 @@ class QuizController extends Controller
     public function submit(Request $request, Quiz $quiz)
     {
         $validator = Validator::make($request->all(), [
-            'answers' => 'required|array',
+            'answers' => 'required|array', // Format: {"question_id_1": "option_id_a", "question_id_2": "option_id_c"}
         ]);
 
         if ($validator->fails()) {
@@ -25,7 +25,7 @@ class QuizController extends Controller
         }
 
         $user = auth('api')->user();
-        $questions = $quiz->questions;
+        $questions = $quiz->questions()->with('options')->get();
 
         if ($questions->isEmpty()) {
             return response()->json(['error' => 'This quiz has no questions.'], 400);
@@ -34,35 +34,50 @@ class QuizController extends Controller
         $totalQuestions = $questions->count();
         $correctCount = 0;
         $studentAnswers = $request->answers;
-        $detailedResults = [];
+        $answersToSave = [];
 
         foreach ($questions as $question) {
-            // Note: correct_answer is retrievable on the Model instance even if hidden in JSON
-            $correctAnswer = $question->correct_answer;
-            $submittedAnswer = $studentAnswers[$question->id] ?? null;
-
-            $isCorrect = (trim(strtolower($submittedAnswer)) === trim(strtolower($correctAnswer)));
-            if ($isCorrect) {
+            $selectedOptionId = $studentAnswers[$question->id] ?? null;
+            
+            // Find option in question options list
+            $selectedOption = $question->options->firstWhere('id', $selectedOptionId);
+            
+            $isCorrect = false;
+            if ($selectedOption && $selectedOption->is_correct) {
+                $isCorrect = true;
                 $correctCount++;
             }
 
-            $detailedResults[] = [
+            $answersToSave[] = [
                 'question_id' => $question->id,
-                'question_text' => $question->question_text,
-                'submitted_answer' => $submittedAnswer,
+                'selected_option_id' => $selectedOptionId,
                 'is_correct' => $isCorrect,
+                'option_text' => $selectedOption ? $selectedOption->option_text : null,
             ];
         }
 
         $score = ($correctCount / $totalQuestions) * 100;
         $isPassed = ($score >= 70.00);
 
+        // Create Attempt
         $attempt = QuizAttempt::create([
             'quiz_id' => $quiz->id,
             'user_id' => $user->id,
             'score' => $score,
             'is_passed' => $isPassed,
         ]);
+
+        // Save Attempt Answers
+        foreach ($answersToSave as $ans) {
+            if ($ans['selected_option_id']) {
+                QuizAttemptAnswer::create([
+                    'attempt_id' => $attempt->id,
+                    'question_id' => $ans['question_id'],
+                    'selected_option_id' => $ans['selected_option_id'],
+                    'is_correct' => $ans['is_correct'],
+                ]);
+            }
+        }
 
         return response()->json([
             'message' => 'Quiz attempt submitted successfully.',
@@ -71,7 +86,13 @@ class QuizController extends Controller
             'is_passed' => $isPassed,
             'correct_count' => $correctCount,
             'total_questions' => $totalQuestions,
-            'results' => $detailedResults,
+            'results' => array_map(function($a) {
+                return [
+                    'question_id' => $a['question_id'],
+                    'selected_option_id' => $a['selected_option_id'],
+                    'is_correct' => $a['is_correct'],
+                ];
+            }, $answersToSave),
         ]);
     }
 
@@ -84,6 +105,7 @@ class QuizController extends Controller
         
         $attempts = QuizAttempt::where('quiz_id', $quiz->id)
             ->where('user_id', $user->id)
+            ->with('answers')
             ->orderBy('created_at', 'desc')
             ->get();
 

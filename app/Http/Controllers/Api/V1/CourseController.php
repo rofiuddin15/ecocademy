@@ -84,7 +84,7 @@ class CourseController extends Controller
         }
 
         // Load modules (with materials & quiz), and milestones
-        return response()->json($course->load(['category', 'instructor', 'modules.materials', 'modules.quiz.questions', 'milestones']));
+        return response()->json($course->load(['category', 'instructor', 'modules.materials', 'modules.quiz.questions.options', 'milestones']));
     }
 
     /**
