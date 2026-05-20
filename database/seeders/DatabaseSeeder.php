@@ -18,6 +18,8 @@ use App\Models\Submission;
 use App\Models\Feedback;
 use App\Models\ForumThread;
 use App\Models\ForumComment;
+use App\Models\Partner;
+use App\Models\CourseSkill;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -72,28 +74,166 @@ class DatabaseSeeder extends Seeder
         $student2->assignRole('student');
 
         // 3. Seed Categories
-        $catWaste = Category::create([
-            'name' => 'Waste Management',
-            'description' => 'Pembelajaran seputar pengolahan limbah padat, limbah cair, pemilahan sampah organik, serta pemanfaatan limbah menjadi produk bernilai ekonomi.',
+        $catBusiness = Category::create([
+            'name' => 'Bisnis',
+            'description' => 'Pembelajaran seputar strategi model bisnis sirkular, closed-loop supply chain, logistik hijau, dan manajemen rantai nilai berkelanjutan.',
         ]);
 
         $catDesign = Category::create([
-            'name' => 'Eco-Design & Circular Product',
-            'description' => 'Konsep perancangan produk yang ramah lingkungan sejak awal siklus hidup produk, bahan baku ramah lingkungan, dan kemasan bebas plastik.',
+            'name' => 'Desain',
+            'description' => 'Konsep perancangan produk ramah lingkungan sejak awal siklus hidup produk, bahan baku ramah lingkungan, dan kemasan bebas plastik.',
         ]);
 
-        $catEnergy = Category::create([
-            'name' => 'Renewable Energy & Energy Audit',
-            'description' => 'Langkah-langkah efisiensi energi pada tempat usaha, audit energi sederhana, serta pemanfaatan teknologi energi baru terbarukan.',
+        $catMarketing = Category::create([
+            'name' => 'Pemasaran',
+            'description' => 'Taktik branding etis, strategi penolakan greenwashing, kampanye digital eco-friendly, dan edukasi konsumen sadar lingkungan.',
         ]);
 
-        // 4. Seed Course
-        $course = Course::create([
-            'title' => 'Greenpreneurship: Sirkular Ekonomi untuk UMKM Kuliner Lokal',
-            'description' => 'Kursus praktis ini membimbing mahasiswa secara kolaboratif untuk membantu UMKM kuliner sekitar merancang rantai pasokan ramah lingkungan, melakukan efisiensi limbah dapur (food waste), dan membuat model bisnis sirkular.',
-            'category_id' => $catWaste->id,
+        // 4. Seed Partners (Mitra UMKM)
+        $p1 = Partner::create([
+            'name' => 'Local Craft Co.',
+            'description' => 'Mitra kriya lokal yang berfokus pada anyaman bambu dan produk rotan tradisional.',
+        ]);
+        $p2 = Partner::create([
+            'name' => 'Riau Eco-Bamboo',
+            'description' => 'Penyedia bambu lestari bersertifikasi lokal untuk kerajinan tangan dan struktur ramah lingkungan.',
+        ]);
+        $p3 = Partner::create([
+            'name' => 'EcoPack Solutions',
+            'description' => 'Produsen kemasan nabati biodegradable dari pati singkong dan limbah jagung.',
+        ]);
+        $p4 = Partner::create([
+            'name' => 'Green Logistics',
+            'description' => 'Jasa pengiriman lokal menggunakan armada motor listrik rendah karbon.',
+        ]);
+        $p5 = Partner::create([
+            'name' => 'Sustainable Craft Co.',
+            'description' => 'Komunitas pengrajin daur ulang kain perca dan limbah plastik kemasan.',
+        ]);
+        $p6 = Partner::create([
+            'name' => 'EarthCare Agency',
+            'description' => 'Konsultan audit hijau yang membantu standarisasi produk UMKM ramah lingkungan.',
+        ]);
+
+        // 5. Seed Course 1: Desain Produk Berkelanjutan
+        $course1 = Course::create([
+            'title' => 'Desain Produk Berkelanjutan',
+            'description' => 'Pelajari analisis siklus hidup dan ilmu material yang dibutuhkan untuk membangun produk bebas limbah.',
+            'category_id' => $catDesign->id,
             'instructor_id' => $instructor->id,
             'is_published' => true,
+            'duration' => '8 Minggu',
+            'score' => 98,
+            'rating' => 4.90,
+            'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuCAz7ZDR4JpkNHb99yiH6SKi5RP5cq5oNUoGyZylnI-0Rl-E1El3Jzx0r6hLwVRbckAxi1wJBWwCT_KVBpchn-LkVIGpBg2X6erZGNt-6qwoYP7JF6scVoIMcXmSqxaqrN2kKtDK0lts2nVx0JvdFmm-VJ_iabODw5xRsL-c_ySRAwDpUYQyrpenDFrmPOUnCvnDb6fHhap9XqY2ynhLXnZUrAUrYlD6K5rqsACx1NrcNszfJj5_H_KzYCvjrQDPOqHhes8yL5SyAeV',
+            'level' => 'Kemitraan UMKM',
+            'full_description' => 'Pelajari metode merancang produk dengan jejak karbon minimal. Kursus ini membimbing Anda dari pemahaman teori siklus hidup bahan hingga penciptaan prototipe produk nyata siap pasar bersama UMKM kriya lokal.',
+        ]);
+        $course1->partners()->attach([$p1->id, $p2->id]);
+
+        CourseSkill::create(['course_id' => $course1->id, 'name' => 'Analisis Siklus Hidup (LCA)']);
+        CourseSkill::create(['course_id' => $course1->id, 'name' => 'Ilmu Material']);
+        CourseSkill::create(['course_id' => $course1->id, 'name' => 'Desain Sirkular']);
+        CourseSkill::create(['course_id' => $course1->id, 'name' => 'Eco-modeling 3D']);
+
+        Module::create([
+            'course_id' => $course1->id,
+            'title' => 'Pengantar Desain Hijau & Kerangka Kerja Eco-Design',
+            'description' => 'Prinsip dasar eco-design dan siklus hidup produk berkelanjutan.',
+            'sequence' => 1,
+            'is_project_based' => false,
+        ]);
+        Module::create([
+            'course_id' => $course1->id,
+            'title' => 'Lifecycle Analysis (LCA) & Pemilihan Material Berkelanjutan',
+            'description' => 'Menganalisis dampak karbon dari pemilihan material mentah.',
+            'sequence' => 2,
+            'is_project_based' => false,
+        ]);
+        Module::create([
+            'course_id' => $course1->id,
+            'title' => 'Prototyping Produk Ramah Lingkungan dengan Bambu & Plastik Daur Ulang',
+            'description' => 'Praktik membuat prototipe fisik dari bahan-bahan terbarukan.',
+            'sequence' => 3,
+            'is_project_based' => false,
+        ]);
+        Module::create([
+            'course_id' => $course1->id,
+            'title' => 'Kolaborasi Proyek PjBL bersama Mitra Pengrajin Lokal (UMKM Craft)',
+            'description' => 'Aksi nyata merancang produk minim emisi bersama mitra pengrajin lokal.',
+            'sequence' => 4,
+            'is_project_based' => true,
+        ]);
+
+        // Seed Course 2: Pengantar Ekonomi Sirkular (Original Course variable name)
+        $course = Course::create([
+            'title' => 'Pengantar Ekonomi Sirkular',
+            'description' => 'Kuasai kerangka kerja sistem closed-loop dan manajemen rantai pasok berkelanjutan.',
+            'category_id' => $catBusiness->id,
+            'instructor_id' => $instructor->id,
+            'is_published' => true,
+            'duration' => '6 Minggu',
+            'score' => 92,
+            'rating' => 4.80,
+            'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuAVGD11ABAueKi-5Z4ZSUaGGv3psLoXSaxc2NuMONFwKPWYHc9Jj9CIeMBTY1yq2Y9pCcqKQg7Vt2Hs7ZABlcts2EAtUY48ZDJy2eapctYlvxOq2Qm_6ZSq_c0hjMaXPIOY2f6gQfemGmnf6h0wSRZpesJHTFS8geGYTWtxlCj6lFRl-9fl5gmxNW6FHU2Qrgj-P7oFZI1a7Qxl_SxY6EmkjMI4xRzefFyOxiWbXHgafP8hONdgSAMB20mNmrz8SxBRyQPpNp13L4NA',
+            'level' => 'Dasar',
+            'full_description' => 'Pelajari bagaimana mendesain ulang rantai nilai bisnis untuk meminimalkan limbah, memaksimalkan efisiensi sumber daya secara berkelanjutan, dan mendesain rantai pasok ramah lingkungan.',
+        ]);
+        $course->partners()->attach([$p3->id, $p4->id]);
+
+        CourseSkill::create(['course_id' => $course->id, 'name' => 'Sistem Closed-Loop']);
+        CourseSkill::create(['course_id' => $course->id, 'name' => 'Pemetaan Rantai Nilai']);
+        CourseSkill::create(['course_id' => $course->id, 'name' => 'Valuasi Limbah']);
+        CourseSkill::create(['course_id' => $course->id, 'name' => 'Logistik Hijau']);
+
+        // Seed Course 3: Strategi Pemasaran Hijau
+        $course3 = Course::create([
+            'title' => 'Strategi Pemasaran Hijau',
+            'description' => 'Komunikasikan nilai produk tanpa greenwashing. Branding etis untuk konsumen modern.',
+            'category_id' => $catMarketing->id,
+            'instructor_id' => $instructor->id,
+            'is_published' => true,
+            'duration' => '5 Minggu',
+            'score' => 95,
+            'rating' => 5.00,
+            'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuDtMOianU1NrmW9bC5uCpmXxxBAkBL6nFv0hcJcTevkd6d9MRZv3FNB6NXFwwMMxuZXvjj4garynx5k903MZoHk_HDKsQ2GCqb4DMW3SZQBwd78Cb03YKz03rq-84bsOTjXc9tCPc2KbxU67bKvij56c8n1mHN6L9u98JUmuedWe3YNSUtRBkAYKNzniUYlWAvMAOO3T-ep5RZ9gqERUS9NQK91j2_5qJHemlC7t7BlgeUNZXi1xz1trB3o7DvAxkNT3GcUGX9RT-NR',
+            'level' => 'Lanjutan',
+            'full_description' => 'Kuasai taktik pemasaran etis untuk mengomunikasikan nilai keberlanjutan produk Anda tanpa terjebak dalam praktik greenwashing yang merusak reputasi brand.',
+        ]);
+        $course3->partners()->attach([$p5->id, $p6->id]);
+
+        CourseSkill::create(['course_id' => $course3->id, 'name' => 'Branding Etis']);
+        CourseSkill::create(['course_id' => $course3->id, 'name' => 'Strategi Anti-Greenwashing']);
+        CourseSkill::create(['course_id' => $course3->id, 'name' => 'Kampanye Eco-Digital']);
+        CourseSkill::create(['course_id' => $course3->id, 'name' => 'Komunikasi Dampak']);
+
+        Module::create([
+            'course_id' => $course3->id,
+            'title' => 'Perilaku Konsumen Sadar Lingkungan (Conscious Consumer)',
+            'description' => 'Memahami psikologi dan preferensi beli konsumen hijau.',
+            'sequence' => 1,
+            'is_project_based' => false,
+        ]);
+        Module::create([
+            'course_id' => $course3->id,
+            'title' => 'Branding Etis & Komunikasi Tanpa Greenwashing',
+            'description' => 'Cara mengomunikasikan dampak produk secara transparan tanpa klaim palsu.',
+            'sequence' => 2,
+            'is_project_based' => false,
+        ]);
+        Module::create([
+            'course_id' => $course3->id,
+            'title' => 'Kampanye Digital Hijau & Pengukuran Dampak Pemasaran',
+            'description' => 'Merancang kampanye digital untuk menjangkau pangsa pasar ramah lingkungan.',
+            'sequence' => 3,
+            'is_project_based' => false,
+        ]);
+        Module::create([
+            'course_id' => $course3->id,
+            'title' => 'Penyusunan Rencana Kampanye Pemasaran Hijau untuk UMKM Mitra',
+            'description' => 'Membantu menyusun rencana green marketing bagi UMKM binaan.',
+            'sequence' => 4,
+            'is_project_based' => true,
         ]);
 
         // 5. Seed Module 1: Pengenalan Sirkular Ekonomi

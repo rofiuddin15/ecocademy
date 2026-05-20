@@ -14,7 +14,7 @@ class CourseController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Course::query()->with(['category', 'instructor']);
+        $query = Course::query()->with(['category', 'instructor', 'skills', 'partners', 'modules']);
 
         // Filter by category
         if ($request->has('category_id')) {
@@ -54,6 +54,14 @@ class CourseController extends Controller
             'title' => 'required|string|max:150',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
+            'duration' => 'nullable|string|max:50',
+            'score' => 'nullable|integer',
+            'rating' => 'nullable|numeric',
+            'image' => 'nullable|string|max:255',
+            'level' => 'nullable|string|max:100',
+            'full_description' => 'nullable|string',
+            'skills' => 'nullable|array',
+            'partners' => 'nullable|array',
         ]);
 
         if ($validator->fails()) {
@@ -66,9 +74,25 @@ class CourseController extends Controller
             'category_id' => $request->category_id,
             'instructor_id' => auth('api')->id(),
             'is_published' => false,
+            'duration' => $request->duration,
+            'score' => $request->score ?? 0,
+            'rating' => $request->rating ?? 5.00,
+            'image' => $request->image,
+            'level' => $request->level,
+            'full_description' => $request->full_description,
         ]);
 
-        return response()->json($course->load(['category', 'instructor']), 201);
+        if ($request->has('skills')) {
+            foreach ($request->skills as $skillName) {
+                $course->skills()->create(['name' => $skillName]);
+            }
+        }
+
+        if ($request->has('partners')) {
+            $course->partners()->sync($request->partners);
+        }
+
+        return response()->json($course->load(['category', 'instructor', 'skills', 'partners']), 201);
     }
 
     /**
@@ -83,8 +107,8 @@ class CourseController extends Controller
             }
         }
 
-        // Load modules (with materials & quiz), and milestones
-        return response()->json($course->load(['category', 'instructor', 'modules.materials', 'modules.quiz.questions.options', 'milestones']));
+        // Load modules (with materials & quiz), milestones, skills, and partners
+        return response()->json($course->load(['category', 'instructor', 'modules.materials', 'modules.quiz.questions.options', 'milestones', 'skills', 'partners']));
     }
 
     /**
@@ -102,15 +126,38 @@ class CourseController extends Controller
             'description' => 'nullable|string',
             'category_id' => 'sometimes|required|exists:categories,id',
             'is_published' => 'sometimes|boolean',
+            'duration' => 'nullable|string|max:50',
+            'score' => 'nullable|integer',
+            'rating' => 'nullable|numeric',
+            'image' => 'nullable|string|max:255',
+            'level' => 'nullable|string|max:100',
+            'full_description' => 'nullable|string',
+            'skills' => 'nullable|array',
+            'partners' => 'nullable|array',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
-        $course->update($request->only(['title', 'description', 'category_id', 'is_published']));
+        $course->update($request->only([
+            'title', 'description', 'category_id', 'is_published',
+            'duration', 'score', 'rating', 'image', 'level',
+            'full_description'
+        ]));
 
-        return response()->json($course->load(['category', 'instructor']));
+        if ($request->has('skills')) {
+            $course->skills()->delete();
+            foreach ($request->skills as $skillName) {
+                $course->skills()->create(['name' => $skillName]);
+            }
+        }
+
+        if ($request->has('partners')) {
+            $course->partners()->sync($request->partners);
+        }
+
+        return response()->json($course->load(['category', 'instructor', 'skills', 'partners']));
     }
 
     /**

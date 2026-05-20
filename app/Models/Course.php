@@ -6,12 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Course extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['title', 'description', 'category_id', 'instructor_id', 'is_published'];
+    protected $fillable = [
+        'title', 
+        'description', 
+        'category_id', 
+        'instructor_id', 
+        'is_published',
+        'duration',
+        'score',
+        'rating',
+        'image',
+        'level',
+        'full_description'
+    ];
 
     protected $casts = [
         'is_published' => 'boolean',
@@ -40,5 +53,15 @@ class Course extends Model
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function skills(): HasMany
+    {
+        return $this->hasMany(CourseSkill::class);
+    }
+
+    public function partners(): BelongsToMany
+    {
+        return $this->belongsToMany(Partner::class);
     }
 }
