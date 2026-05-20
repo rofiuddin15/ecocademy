@@ -16,10 +16,10 @@ const DashboardLayout = () => {
 
     const navLinks = [
         { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-        { path: '/dashboard', label: 'Modules', icon: 'menu_book', isPlaceholder: true },
-        { path: '/dashboard', label: 'Green Showcase', icon: 'workspace_premium', isPlaceholder: true },
-        { path: '/dashboard', label: 'UMKM Directory', icon: 'location_on', isPlaceholder: true },
-        { path: '/dashboard/forum', label: 'Feedback Center', icon: 'forum' }
+        { path: '/dashboard', label: 'Modul', icon: 'menu_book', isPlaceholder: true },
+        { path: '/dashboard', label: 'Etalase Hijau', icon: 'workspace_premium', isPlaceholder: true },
+        { path: '/dashboard', label: 'Direktori UMKM', icon: 'location_on', isPlaceholder: true },
+        { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' }
     ];
 
     return (
@@ -79,8 +79,8 @@ const DashboardLayout = () => {
                 <div className="mt-auto space-y-4">
                     {/* Current Goal Widget */}
                     <div className="p-4 bg-primary-container rounded-xl text-primary-fixed">
-                        <p className="font-label-sm text-label-sm opacity-80 mb-2">Current Goal</p>
-                        <p className="font-label-md text-label-md mb-3">Impact Launchpad</p>
+                        <p className="font-label-sm text-label-sm opacity-80 mb-2">Tujuan Saat Ini</p>
+                        <p className="font-label-md text-label-md mb-3">Landasan Dampak</p>
                         <div className="h-1.5 w-full bg-on-primary-container/30 rounded-full overflow-hidden">
                             <div className="h-full bg-primary-fixed w-[65%]"></div>
                         </div>
@@ -101,7 +101,7 @@ const DashboardLayout = () => {
             <header className="fixed top-0 right-0 w-[calc(100%-16rem)] h-20 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant dark:border-tertiary-container z-40 flex justify-between items-center px-8">
                 <div className="relative w-96">
                     <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
-                    <input className="w-full pl-10 pr-4 py-2 bg-surface-container border border-outline-variant rounded-full font-label-md text-label-md focus:outline-none focus:border-primary transition-all" placeholder="Find Green Courses" type="text"/>
+                    <input className="w-full pl-10 pr-4 py-2 bg-surface-container border border-outline-variant rounded-full font-label-md text-label-md focus:outline-none focus:border-primary transition-all" placeholder="Cari Kursus Hijau" type="text"/>
                 </div>
                 <div className="flex items-center gap-6">
                     <button className="relative text-on-surface-variant hover:text-primary transition-colors">
@@ -114,7 +114,7 @@ const DashboardLayout = () => {
                     <div className="h-8 w-px bg-outline-variant"></div>
                     <div className="flex items-center gap-3">
                         <div className="text-right">
-                            <p className="font-label-md text-label-md text-on-surface leading-tight font-bold">{user?.name || 'Alex Rivera'}</p>
+                            <p className="font-label-md text-label-md text-on-surface leading-tight font-bold">{user?.name || 'Pengguna'}</p>
                             <p className="font-label-sm text-label-sm text-on-surface-variant">Eco-Warrior Level 4</p>
                         </div>
                         <img 
