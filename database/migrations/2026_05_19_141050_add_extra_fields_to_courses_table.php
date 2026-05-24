@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('duration', 50)->nullable()->after('is_published');
             $table->integer('score')->default(0)->after('duration');
             $table->decimal('rating', 3, 2)->default(5.00)->after('score');
-            $table->string('image', 255)->nullable()->after('rating');
+            $table->text('image')->nullable()->after('rating');
             $table->string('level', 100)->nullable()->after('image');
             $table->text('full_description')->nullable()->after('level');
         });
