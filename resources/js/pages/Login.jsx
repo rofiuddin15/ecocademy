@@ -6,10 +6,10 @@ import { loginUser, clearError } from '../store/slices/authSlice';
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    
+
     const { isAuthenticated, isLoading, error } = useSelector((state) => state.auth);
 
     useEffect(() => {
@@ -36,7 +36,7 @@ const Login = () => {
                     <div className="w-10 h-10 rounded bg-white text-primary flex items-center justify-center shrink-0 shadow-sm">
                         <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>eco</span>
                     </div>
-                    <span className="text-headline-md font-headline-md font-bold text-white">EcoVenture Academy</span>
+                    <span className="text-headline-md font-headline-md font-bold text-white">Eco Academy</span>
                 </div>
 
                 <div className="relative z-10 my-auto max-w-md">
@@ -46,7 +46,7 @@ const Login = () => {
                 </div>
 
                 <div className="relative z-10 border-t border-white/10 pt-6 text-label-sm text-slate-400">
-                    &copy; 2026 EcoVenture Academy. Membina generasi wirausaha hijau masa depan.
+                    &copy; 2026 Eco Academy. Membina generasi wirausaha hijau masa depan.
                 </div>
             </div>
 
@@ -59,7 +59,7 @@ const Login = () => {
                             <span className="text-label-sm font-semibold">Kembali ke Beranda</span>
                         </Link>
                         <h1 className="text-headline-md font-headline-md text-primary mb-2">Selamat Datang Kembali</h1>
-                        <p className="text-body-md text-on-surface-variant">Silakan masuk menggunakan akun EcoVenture Anda.</p>
+                        <p className="text-body-md text-on-surface-variant">Silakan masuk menggunakan akun Ecocademy Anda.</p>
                     </div>
 
                     {error && (
@@ -72,8 +72,8 @@ const Login = () => {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <label className="block text-label-sm font-medium text-primary mb-2">Alamat Email</label>
-                            <input 
-                                type="email" 
+                            <input
+                                type="email"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -86,8 +86,8 @@ const Login = () => {
                             <div className="flex justify-between items-center mb-2">
                                 <label className="block text-label-sm font-medium text-primary">Kata Sandi</label>
                             </div>
-                            <input 
-                                type="password" 
+                            <input
+                                type="password"
                                 required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
@@ -96,8 +96,8 @@ const Login = () => {
                             />
                         </div>
 
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             disabled={isLoading}
                             className="w-full h-[48px] bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md flex items-center justify-center gap-2 hover:scale-98 active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
                         >

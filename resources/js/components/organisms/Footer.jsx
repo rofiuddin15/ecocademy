@@ -9,7 +9,7 @@ const Footer = () => {
                         <div className="w-8 h-8 rounded bg-white text-primary flex items-center justify-center shrink-0 shadow-sm">
                             <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>eco</span>
                         </div>
-                        <span className="text-headline-md font-headline-md font-bold text-white">EcoVenture Academy</span>
+                        <span className="text-headline-md font-headline-md font-bold text-white">Eco Academy</span>
                     </div>
                     <p className="text-body-md font-body-md text-slate-300 max-w-sm">
                         Membina generasi wirausaha hijau (Greenpreneurs) berikutnya melalui pendidikan berbasis proyek dan kemitraan dengan UMKM lokal.
@@ -23,7 +23,7 @@ const Footer = () => {
                         <a className="hover:text-white transition-colors font-label-md text-label-sm hover:underline" href="#">Tentang Mitra UMKM Kami</a>
                     </div>
                     <p className="text-label-sm font-label-sm opacity-60 text-slate-400 text-left md:text-right">
-                        &copy; 2026 EcoVenture Academy. Membina generasi wirausaha hijau masa depan.
+                        &copy; 2026 Eco Academy. Membina generasi wirausaha hijau masa depan.
                     </p>
                 </div>
             </div>

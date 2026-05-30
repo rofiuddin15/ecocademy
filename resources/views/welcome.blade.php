@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>EcoVenture Academy | Empowering Next-Gen Greenpreneurs</title>
+    <title>Eco Academy | Empowering Next-Gen Greenpreneurs</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -151,8 +151,8 @@
 <nav class="w-full sticky top-0 z-50 bg-surface dark:bg-primary-container border-b border-surface-variant dark:border-outline-variant">
     <div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <div class="flex items-center gap-3">
-            <img alt="EcoVenture Academy Logo" class="h-10 w-10" src="https://lh3.googleusercontent.com/aida/ADBb0uhicVzvG3UADM8gAyvvVfQbhdsi25FUEAIoDsezZ2ejsN0_TRa432_44XFzkYiiV5KbOJoaKLUFFmja0C6v54TrNTgHrJHuTdvsmr0sunz_70WUkHZJ4xhNG5X2EqQhZjG6G5TBLSUj3wJj2XFCufXXIuz2JBi6h_kZWU2jSL_AX0gwC4FQHQr4xmSA2oZWlWmfLHwLZRtuM4n2_J4yjZb4q1KkkKzVUn14SOER43RuTIkxBHZRf1exQbsI"/>
-            <span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">EcoVenture Academy</span>
+            <img alt="Eco Academy Logo" class="h-10 w-10" src="https://lh3.googleusercontent.com/aida/ADBb0uhicVzvG3UADM8gAyvvVfQbhdsi25FUEAIoDsezZ2ejsN0_TRa432_44XFzkYiiV5KbOJoaKLUFFmja0C6v54TrNTgHrJHuTdvsmr0sunz_70WUkHZJ4xhNG5X2EqQhZjG6G5TBLSUj3wJj2XFCufXXIuz2JBi6h_kZWU2jSL_AX0gwC4FQHQr4xmSA2oZWlWmfLHwLZRtuM4n2_J4yjZb4q1KkkKzVUn14SOER43RuTIkxBHZRf1exQbsI"/>
+            <span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">Eco Academy</span>
         </div>
         <div class="hidden md:flex items-center gap-8">
             <a class="text-primary dark:text-primary-fixed font-bold border-b-2 border-primary dark:border-primary-fixed pb-1 font-label-md text-label-md" href="#">Courses</a>
@@ -424,7 +424,7 @@
                         </div>
                     </div>
                     <div class="mt-12 p-4 bg-white/5 rounded-lg border border-white/10">
-                        <p class="text-label-sm italic opacity-70 text-center">"EcoVenture Academy changed how we look at our waste. We've saved 15% in operational costs by implementing student designs." — UMKM Partner</p>
+                        <p class="text-label-sm italic opacity-70 text-center">"Eco Academy changed how we look at our waste. We've saved 15% in operational costs by implementing student designs." — UMKM Partner</p>
                     </div>
                 </div>
             </div>
@@ -451,8 +451,8 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
         <div>
             <div class="flex items-center gap-3 mb-6">
-                <img alt="EcoVenture Academy Logo" class="h-8 w-8 brightness-0 invert" src="https://lh3.googleusercontent.com/aida/ADBb0uhicVzvG3UADM8gAyvvVfQbhdsi25FUEAIoDsezZ2ejsN0_TRa432_44XFzkYiiV5KbOJoaKLUFFmja0C6v54TrNTgHrJHuTdvsmr0sunz_70WUkHZJ4xhNG5X2EqQhZjG6G5TBLSUj3wJj2XFCufXXIuz2JBi6h_kZWU2jSL_AX0gwC4FQHQr4xmSA2oZWlWmfLHwLZRtuM4n2_J4yjZb4q1KkkKzVUn14SOER43RuTIkxBHZRf1exQbsI"/>
-                <span class="text-headline-md font-headline-md font-bold text-on-primary dark:text-on-primary-container text-white">EcoVenture Academy</span>
+                <img alt="Eco Academy Logo" class="h-8 w-8 brightness-0 invert" src="https://lh3.googleusercontent.com/aida/ADBb0uhicVzvG3UADM8gAyvvVfQbhdsi25FUEAIoDsezZ2ejsN0_TRa432_44XFzkYiiV5KbOJoaKLUFFmja0C6v54TrNTgHrJHuTdvsmr0sunz_70WUkHZJ4xhNG5X2EqQhZjG6G5TBLSUj3wJj2XFCufXXIuz2JBi6h_kZWU2jSL_AX0gwC4FQHQr4xmSA2oZWlWmfLHwLZRtuM4n2_J4yjZb4q1KkkKzVUn14SOER43RuTIkxBHZRf1exQbsI"/>
+                <span class="text-headline-md font-headline-md font-bold text-on-primary dark:text-on-primary-container text-white">Eco Academy</span>
             </div>
             <p class="text-body-md font-body-md text-on-primary/80 dark:text-on-primary-container/80 max-w-sm text-slate-300">
                 Nurturing the next generation of Greenpreneurs through project-based education and local enterprise partnership.
@@ -466,7 +466,7 @@
                 <a class="hover:text-white transition-colors font-label-md text-label-sm hover:underline" href="#">About Our UMKM Partners</a>
             </div>
             <p class="text-label-sm font-label-sm opacity-60 text-slate-400">
-                &copy; 2026 EcoVenture Academy. Nurturing the next generation of Greenpreneurs.
+                &copy; 2026 Eco Academy. Nurturing the next generation of Greenpreneurs.
             </p>
         </div>
     </div>

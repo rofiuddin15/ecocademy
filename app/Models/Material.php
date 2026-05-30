@@ -10,7 +10,7 @@ class Material extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['module_id', 'title', 'content_type', 'content_url', 'body_text', 'sequence'];
+    protected $fillable = ['module_id', 'title', 'content_type', 'content_url', 'body_text', 'sequence', 'duration_minutes'];
 
     public function module(): BelongsTo
     {

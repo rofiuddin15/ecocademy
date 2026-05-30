@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('courses', function (Blueprint $table) {
-            $table->string('duration', 50)->nullable()->after('is_published');
+            $table->integer('duration')->default(0)->after('is_published');
             $table->integer('score')->default(0)->after('duration');
             $table->decimal('rating', 3, 2)->default(5.00)->after('score');
             $table->text('image')->nullable()->after('rating');

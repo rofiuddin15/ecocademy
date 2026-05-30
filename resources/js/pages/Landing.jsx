@@ -2,69 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../utils/api';
 
-const featuredCourses = [
-    {
-        id: 1,
-        title: "Desain Produk Berkelanjutan",
-        category: "Desain",
-        duration: "8 Minggu",
-        score: 98,
-        rating: 4.9,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCAz7ZDR4JpkNHb99yiH6SKi5RP5cq5oNUoGyZylnI-0Rl-E1El3Jzx0r6hLwVRbckAxi1wJBWwCT_KVBpchn-LkVIGpBg2X6erZGNt-6qwoYP7JF6scVoIMcXmSqxaqrN2kKtDK0lts2nVx0JvdFmm-VJ_iabODw5xRsL-c_ySRAwDpUYQyrpenDFrmPOUnCvnDb6fHhap9XqY2ynhLXnZUrAUrYlD6K5rqsACx1NrcNszfJj5_H_KzYCvjrQDPOqHhes8yL5SyAeV",
-        description: "Pelajari analisis siklus hidup dan ilmu material yang dibutuhkan untuk membangun produk bebas limbah.",
-        fullDescription: "Pelajari metode merancang produk dengan jejak karbon minimal. Kursus ini membimbing Anda dari pemahaman teori siklus hidup bahan hingga penciptaan prototipe produk nyata siap pasar bersama UMKM kriya lokal.",
-        level: "Kemitraan UMKM",
-        skills: ["Analisis Siklus Hidup (LCA)", "Ilmu Material", "Desain Sirkular", "Eco-modeling 3D"],
-        partners: ["Local Craft Co.", "Riau Eco-Bamboo"],
-        syllabus: [
-            { week: "Minggu 1-2", topic: "Pengantar Desain Hijau & Kerangka Kerja Eco-Design" },
-            { week: "Minggu 3-4", topic: "Lifecycle Analysis (LCA) & Pemilihan Material Berkelanjutan" },
-            { week: "Minggu 5-6", topic: "Prototyping Produk Ramah Lingkungan dengan Bambu & Plastik Daur Ulang" },
-            { week: "Minggu 7-8", topic: "Kolaborasi Proyek PjBL bersama Mitra Pengrajin Lokal (UMKM Craft)" }
-        ]
-    },
-    {
-        id: 2,
-        title: "Pengantar Ekonomi Sirkular",
-        category: "Bisnis",
-        duration: "6 Minggu",
-        score: 92,
-        rating: 4.8,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAVGD11ABAueKi-5Z4ZSUaGGv3psLoXSaxc2NuMONFwKPWYHc9Jj9CIeMBTY1yq2Y9pCcqKQg7Vt2Hs7ZABlcts2EAtUY48ZDJy2eapctYlvxOq2Qm_6ZSq_c0hjMaXPIOY2f6gQfemGmnf6h0wSRZpesJHTFS8geGYTWtxlCj6lFRl-9fl5gmxNW6FHU2Qrgj-P7oFZI1a7Qxl_SxY6EmkjMI4xRzefFyOxiWbXHgafP8hONdgSAMB20mNmrz8SxBRyQPpNp13L4NA",
-        description: "Kuasai kerangka kerja sistem closed-loop dan manajemen rantai pasok berkelanjutan.",
-        fullDescription: "Pelajari bagaimana mendesain ulang rantai nilai bisnis untuk meminimalkan limbah, memaksimalkan efisiensi sumber daya secara berkelanjutan, dan mendesain rantai pasok ramah lingkungan.",
-        level: "Dasar",
-        skills: ["Sistem Closed-Loop", "Pemetaan Rantai Nilai", "Valuasi Limbah", "Logistik Hijau"],
-        partners: ["EcoPack Solutions", "Green Logistics"],
-        syllabus: [
-            { week: "Minggu 1-2", topic: "Konsep Dasar Ekonomi Linier vs Ekonomi Sirkular" },
-            { week: "Minggu 3-4", topic: "Rantai Pasok Closed-Loop & Strategi Pengelolaan Limbah" },
-            { week: "Minggu 5-6", topic: "Desain Model Bisnis Berkelanjutan (Value Proposition Sirkular)" },
-            { week: "Minggu 7-8", topic: "Analisis Studi Kasus & Integrasi Operasional UMKM Logistik Hijau" }
-        ]
-    },
-    {
-        id: 3,
-        title: "Strategi Pemasaran Hijau",
-        category: "Pemasaran",
-        duration: "5 Minggu",
-        score: 95,
-        rating: 5.0,
-        image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDtMOianU1NrmW9bC5uCpmXxxBAkBL6nFv0hcJcTevkd6d9MRZv3FNB6NXFwwMMxuZXvjj4garynx5k903MZoHk_HDKsQ2GCqb4DMW3SZQBwd78Cb03YKz03rq-84bsOTjXc9tCPc2KbxU67bKvij56c8n1mHN6L9u98JUmuedWe3YNSUtRBkAYKNzniUYlWAvMAOO3T-ep5RZ9gqERUS9NQK91j2_5qJHemlC7t7BlgeUNZXi1xz1trB3o7DvAxkNT3GcUGX9RT-NR",
-        description: "Komunikasikan nilai produk tanpa greenwashing. Branding etis untuk konsumen modern.",
-        fullDescription: "Kuasai taktik pemasaran etis untuk mengomunikasikan nilai keberlanjutan produk Anda tanpa terjebak dalam praktik greenwashing yang merusak reputasi brand.",
-        level: "Lanjutan",
-        skills: ["Branding Etis", "Strategi Anti-Greenwashing", "Kampanye Eco-Digital", "Komunikasi Dampak"],
-        partners: ["Sustainable Craft Co.", "EarthCare Agency"],
-        syllabus: [
-            { week: "Minggu 1-2", topic: "Perilaku Konsumen Sadar Lingkungan (Conscious Consumer)" },
-            { week: "Minggu 3-4", topic: "Branding Etis & Komunikasi Tanpa Greenwashing" },
-            { week: "Minggu 5-6", topic: "Kampanye Digital Hijau & Pengukuran Dampak Pemasaran" },
-            { week: "Minggu 7-8", topic: "Penyusunan Rencana Kampanye Pemasaran Hijau untuk UMKM Mitra" }
-        ]
-    }
-];
-
 const Landing = () => {
     const [courses, setCourses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState(null);
@@ -377,7 +314,7 @@ const Landing = () => {
 
                     {/* Course Selection Cards Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-                        {(courses.length > 0 ? courses : featuredCourses).map((course) => (
+                        {courses.map((course) => (
                             <div 
                                 key={course.id}
                                 onClick={() => handleCourseClick(course)}
@@ -542,7 +479,7 @@ const Landing = () => {
                             </div>
                             <div className="mt-12 p-4 bg-white/5 rounded border border-white/10">
                                 <p className="text-label-sm italic text-white/90 text-center leading-relaxed">
-                                    "EcoVenture Academy mengubah cara kami memandang limbah usaha. Kami berhasil menghemat 15% biaya operasional dengan menerapkan hasil desain mahasiswa." — Mitra UMKM
+                                    "Eco Academy mengubah cara kami memandang limbah usaha. Kami berhasil menghemat 15% biaya operasional dengan menerapkan hasil desain mahasiswa." — Mitra UMKM
                                 </p>
                             </div>
                         </div>

@@ -19,7 +19,8 @@ class MilestoneController extends Controller
             'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:100',
             'instructions' => 'required|string',
-            'due_date' => 'nullable|date',
+            'duration_hours' => 'required|integer|min:0',
+            'report_type' => 'required|string|max:50',
             'sequence' => 'required|integer',
         ]);
 
@@ -35,6 +36,8 @@ class MilestoneController extends Controller
         }
 
         $milestone = Milestone::create($request->all());
+        
+        $course->recalculateDuration();
 
         return response()->json($milestone, 201);
     }
@@ -54,7 +57,8 @@ class MilestoneController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|string|max:100',
             'instructions' => 'sometimes|required|string',
-            'due_date' => 'nullable|date',
+            'duration_hours' => 'sometimes|required|integer|min:0',
+            'report_type' => 'sometimes|required|string|max:50',
             'sequence' => 'sometimes|required|integer',
         ]);
 
@@ -62,7 +66,9 @@ class MilestoneController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $milestone->update($request->only(['title', 'instructions', 'due_date', 'sequence']));
+        $milestone->update($request->only(['title', 'instructions', 'duration_hours', 'report_type', 'sequence']));
+        
+        $course->recalculateDuration();
 
         return response()->json($milestone);
     }
@@ -80,6 +86,8 @@ class MilestoneController extends Controller
         }
 
         $milestone->delete();
+        
+        $course->recalculateDuration();
 
         return response()->json(['message' => 'Milestone deleted successfully']);
     }

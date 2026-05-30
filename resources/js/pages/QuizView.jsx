@@ -16,6 +16,15 @@ const QuizView = () => {
     const [result, setResult] = useState(null); // { score, is_passed, correct_count }
     const [feedbackMsg, setFeedbackMsg] = useState('');
 
+    const shuffleArray = (array) => {
+        const newArr = [...array];
+        for (let i = newArr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+        }
+        return newArr;
+    };
+
     const fetchQuizAndAttempts = async () => {
         try {
             const courseResponse = await api.get(`/courses/${courseId}`);
@@ -23,7 +32,15 @@ const QuizView = () => {
 
             const activeModule = courseResponse.data.modules?.find(m => m.id === moduleId);
             if (activeModule && activeModule.quiz) {
-                setQuiz(activeModule.quiz);
+                // Shuffle questions and options
+                const randomizedQuiz = { ...activeModule.quiz };
+                if (randomizedQuiz.questions) {
+                    randomizedQuiz.questions = shuffleArray(randomizedQuiz.questions).map(q => ({
+                        ...q,
+                        options: q.options ? shuffleArray(q.options) : []
+                    }));
+                }
+                setQuiz(randomizedQuiz);
                 
                 // Fetch attempts log
                 const attemptsResponse = await api.get(`/quizzes/${activeModule.quiz.id}/attempts`);
@@ -163,8 +180,7 @@ const QuizView = () => {
                             /* Quiz Questions Form */
                             <form onSubmit={handleSubmitQuiz} className="space-y-8">
                                 {quiz.questions
-                                    ?.sort((a, b) => a.sequence - b.sequence)
-                                    .map((question, qIdx) => (
+                                    ?.map((question, qIdx) => (
                                         <div key={question.id} className="space-y-4">
                                             <h4 className="text-body-lg font-bold text-primary">
                                                 {qIdx + 1}. {question.question_text}

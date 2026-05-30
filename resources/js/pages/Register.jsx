@@ -6,14 +6,14 @@ import { registerUser, clearError } from '../store/slices/authSlice';
 const Register = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('student');
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const [bio, setBio] = useState('');
-    
+
     const { isAuthenticated, isLoading, error } = useSelector((state) => state.auth);
 
     useEffect(() => {
@@ -47,7 +47,7 @@ const Register = () => {
                     <div className="w-10 h-10 rounded bg-white text-primary flex items-center justify-center shrink-0 shadow-sm">
                         <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>eco</span>
                     </div>
-                    <span className="text-headline-md font-headline-md font-bold text-white">EcoVenture Academy</span>
+                    <span className="text-headline-md font-headline-md font-bold text-white">Eco Academy</span>
                 </div>
 
                 <div className="relative z-10 my-auto max-w-md">
@@ -57,7 +57,7 @@ const Register = () => {
                 </div>
 
                 <div className="relative z-10 border-t border-white/10 pt-6 text-label-sm text-slate-400">
-                    &copy; 2026 EcoVenture Academy. Membina generasi wirausaha hijau masa depan.
+                    &copy; 2026 Eco Academy. Membina generasi wirausaha hijau masa depan.
                 </div>
             </div>
 
@@ -94,8 +94,8 @@ const Register = () => {
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
                             <label className="block text-label-sm font-medium text-primary mb-1">Nama Lengkap</label>
-                            <input 
-                                type="text" 
+                            <input
+                                type="text"
                                 required
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
@@ -106,8 +106,8 @@ const Register = () => {
 
                         <div>
                             <label className="block text-label-sm font-medium text-primary mb-1">Alamat Email</label>
-                            <input 
-                                type="email" 
+                            <input
+                                type="email"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -118,7 +118,7 @@ const Register = () => {
 
                         <div>
                             <label className="block text-label-sm font-medium text-primary mb-1">Peran Pengguna (Role)</label>
-                            <select 
+                            <select
                                 value={role}
                                 onChange={(e) => setRole(e.target.value)}
                                 className="w-full h-[44px] px-4 rounded-lg border border-outline/30 bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all text-body-md"
@@ -130,7 +130,7 @@ const Register = () => {
 
                         <div>
                             <label className="block text-label-sm font-medium text-primary mb-1">Biografi Singkat (Opsional)</label>
-                            <textarea 
+                            <textarea
                                 value={bio}
                                 onChange={(e) => setBio(e.target.value)}
                                 placeholder="Ceritakan ketertarikan Anda pada keberlanjutan..."
@@ -141,8 +141,8 @@ const Register = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-label-sm font-medium text-primary mb-1">Kata Sandi</label>
-                                <input 
-                                    type="password" 
+                                <input
+                                    type="password"
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -152,8 +152,8 @@ const Register = () => {
                             </div>
                             <div>
                                 <label className="block text-label-sm font-medium text-primary mb-1">Konfirmasi Sandi</label>
-                                <input 
-                                    type="password" 
+                                <input
+                                    type="password"
                                     required
                                     value={passwordConfirmation}
                                     onChange={(e) => setPasswordConfirmation(e.target.value)}
@@ -163,8 +163,8 @@ const Register = () => {
                             </div>
                         </div>
 
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             disabled={isLoading}
                             className="w-full h-[48px] bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md flex items-center justify-center gap-2 hover:scale-98 active:scale-95 transition-all cursor-pointer disabled:opacity-50 disabled:pointer-events-none mt-2"
                         >

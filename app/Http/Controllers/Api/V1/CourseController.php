@@ -107,8 +107,8 @@ class CourseController extends Controller
             }
         }
 
-        // Load modules (with materials & quiz), milestones, skills, and partners
-        return response()->json($course->load(['category', 'instructor', 'modules.materials', 'modules.quiz.questions.options', 'milestones', 'skills', 'partners']));
+        // Load modules (with materials & quiz), milestones, skills, partners, and pblDetail
+        return response()->json($course->load(['category', 'instructor', 'modules.materials', 'modules.quiz.questions.options', 'milestones', 'skills', 'partners', 'pblDetail']));
     }
 
     /**

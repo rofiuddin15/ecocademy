@@ -14,13 +14,23 @@ const DashboardLayout = () => {
         navigate('/login');
     };
 
-    const navLinks = [
+    const studentNavLinks = [
         { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
         { path: '/dashboard', label: 'Modul', icon: 'menu_book', isPlaceholder: true },
         { path: '/dashboard', label: 'Etalase Hijau', icon: 'workspace_premium', isPlaceholder: true },
         { path: '/dashboard', label: 'Direktori UMKM', icon: 'location_on', isPlaceholder: true },
         { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' }
     ];
+
+    const instructorNavLinks = [
+        { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
+        { path: '/dashboard/manager', label: 'Course Management', icon: 'menu_book' },
+        { path: '/dashboard', label: 'Green Showcase', icon: 'workspace_premium', isPlaceholder: true },
+        { path: '/dashboard', label: 'UMKM Directory', icon: 'location_on', isPlaceholder: true },
+        { path: '/dashboard/forum', label: 'Feedback Center', icon: 'forum' }
+    ];
+
+    const navLinks = user?.role === 'instructor' ? instructorNavLinks : studentNavLinks;
 
     return (
         <div className="min-h-screen bg-[#f4fafd] text-on-surface">
@@ -31,7 +41,7 @@ const DashboardLayout = () => {
                         <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>eco</span>
                     </div>
                     <div>
-                        <h1 className="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed leading-tight">EcoVenture</h1>
+                        <h1 className="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed leading-tight">Ecocademy</h1>
                         <p className="font-label-sm text-label-sm text-on-surface-variant">Greenpreneur LMS</p>
                     </div>
                 </div>
@@ -77,14 +87,16 @@ const DashboardLayout = () => {
                 </nav>
 
                 <div className="mt-auto space-y-4">
-                    {/* Current Goal Widget */}
-                    <div className="p-4 bg-primary-container rounded-xl text-primary-fixed">
-                        <p className="font-label-sm text-label-sm opacity-80 mb-2">Tujuan Saat Ini</p>
-                        <p className="font-label-md text-label-md mb-3">Landasan Dampak</p>
-                        <div className="h-1.5 w-full bg-on-primary-container/30 rounded-full overflow-hidden">
-                            <div className="h-full bg-primary-fixed w-[65%]"></div>
+                    {/* Current Goal Widget (Student Only) */}
+                    {user?.role !== 'instructor' && (
+                        <div className="p-4 bg-primary-container rounded-xl text-primary-fixed">
+                            <p className="font-label-sm text-label-sm opacity-80 mb-2">Tujuan Saat Ini</p>
+                            <p className="font-label-md text-label-md mb-3">Landasan Dampak</p>
+                            <div className="h-1.5 w-full bg-on-primary-container/30 rounded-full overflow-hidden">
+                                <div className="h-full bg-primary-fixed w-[65%]"></div>
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Logout Button */}
                     <button 
@@ -111,7 +123,13 @@ const DashboardLayout = () => {
                     <button className="text-on-surface-variant hover:text-primary transition-colors">
                         <span className="material-symbols-outlined">settings</span>
                     </button>
-                    <div className="h-8 w-px bg-outline-variant"></div>
+                    {user?.role === 'instructor' && (
+                        <button className="hidden md:flex bg-primary text-on-primary font-label-md text-label-md px-6 py-2.5 rounded-lg hover:opacity-90 transition-opacity items-center gap-2">
+                            <span className="material-symbols-outlined text-[18px]">assessment</span>
+                            Evaluation Center
+                        </button>
+                    )}
+                    <div className="hidden md:block h-8 w-px bg-outline-variant"></div>
                     <div className="flex items-center gap-3">
                         <div className="text-right">
                             <p className="font-label-md text-label-md text-on-surface leading-tight font-bold">{user?.name || 'Pengguna'}</p>

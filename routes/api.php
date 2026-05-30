@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\V1\ProjectController;
 use App\Http\Controllers\Api\V1\SubmissionController;
 use App\Http\Controllers\Api\V1\FeedbackController;
 use App\Http\Controllers\Api\V1\ShowcaseController;
+use App\Http\Controllers\Api\V1\MaterialController;
+use App\Http\Controllers\Api\V1\PblDetailController;
 use App\Http\Controllers\Api\V1\ForumController;
 use App\Http\Controllers\Api\V1\QuizController;
 use Illuminate\Support\Facades\Route;
@@ -51,12 +53,16 @@ Route::prefix('v1')->group(function () {
         Route::post('projects', [ProjectController::class, 'store']);
         Route::get('projects/{project}', [ProjectController::class, 'show']);
         Route::put('projects/{project}', [ProjectController::class, 'update']);
+        Route::patch('projects/{project}/review', [ProjectController::class, 'review']);
 
         // Submissions
         Route::post('submissions', [SubmissionController::class, 'store']);
         Route::get('submissions/{submission}', [SubmissionController::class, 'show']);
 
         // Quizzes
+        Route::post('modules/{module}/quizzes', [QuizController::class, 'store']);
+        Route::put('quizzes/{quiz}', [QuizController::class, 'update']);
+        Route::delete('quizzes/{quiz}', [QuizController::class, 'destroy']);
         Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submit']);
         Route::get('quizzes/{quiz}/attempts', [QuizController::class, 'attempts']);
 
@@ -64,16 +70,24 @@ Route::prefix('v1')->group(function () {
         Route::post('feedbacks', [FeedbackController::class, 'store']);
         Route::get('feedbacks/{feedback}', [FeedbackController::class, 'show']);
 
-        // Course management (Instructors/Admins)
+        // Courses (Instructors)
         Route::post('courses', [CourseController::class, 'store']);
         Route::put('courses/{course}', [CourseController::class, 'update']);
         Route::delete('courses/{course}', [CourseController::class, 'destroy']);
-        Route::post('courses/{course}/publish', [CourseController::class, 'publish']);
+        Route::patch('courses/{course}/publish', [CourseController::class, 'publish']);
+        
+        // PBL Details (Instructors)
+        Route::post('courses/{course}/pbl', [PblDetailController::class, 'storeOrUpdate']);
 
         // Modules (Instructors/Admins)
         Route::post('modules', [ModuleController::class, 'store']);
-        Route::put('modules/{module}', [ModuleController::class, 'update']);
-        Route::delete('modules/{module}', [ModuleController::class, 'destroy']);
+        Route::delete('/modules/{module}', [ModuleController::class, 'destroy']);
+        Route::post('/modules/{module}/quizzes', [QuizController::class, 'store']);
+
+        // Materials
+        Route::post('/materials', [MaterialController::class, 'store']);
+        Route::put('/materials/{material}', [MaterialController::class, 'update']);
+        Route::delete('/materials/{material}', [MaterialController::class, 'destroy']);
 
         // Milestones (Instructors/Admins)
         Route::post('milestones', [MilestoneController::class, 'store']);

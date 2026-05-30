@@ -56,6 +56,7 @@ return new class extends Migration
             $table->string('content_url', 255)->nullable();
             $table->text('body_text')->nullable();
             $table->integer('sequence');
+            $table->integer('duration_minutes')->default(0);
             $table->timestamps();
 
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
@@ -127,7 +128,8 @@ return new class extends Migration
             $table->uuid('course_id');
             $table->string('title', 100);
             $table->text('instructions');
-            $table->dateTime('due_date')->nullable();
+            $table->integer('duration_hours')->default(0);
+            $table->string('report_type', 50)->default('text'); // text, document, link, etc.
             $table->integer('sequence');
             $table->timestamps();
 

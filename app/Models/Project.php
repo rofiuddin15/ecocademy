@@ -11,7 +11,12 @@ class Project extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['course_id', 'student_id', 'title', 'umkm_name', 'umkm_sector', 'status'];
+    protected $fillable = ['course_id', 'student_id', 'title', 'budget', 'proposal_description', 'target_partner_id', 'umkm_name', 'umkm_sector', 'status'];
+
+    public function targetPartner(): BelongsTo
+    {
+        return $this->belongsTo(Partner::class, 'target_partner_id');
+    }
 
     public function course(): BelongsTo
     {

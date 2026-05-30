@@ -18,6 +18,9 @@ import CourseDetail from './pages/CourseDetail';
 import QuizView from './pages/QuizView';
 import ProjectView from './pages/ProjectView';
 import ForumView from './pages/ForumView';
+import CourseManager from './pages/CourseManager';
+import CourseForm from './pages/CourseForm';
+import InstructorCourseDetail from './pages/InstructorCourseDetail';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -73,6 +76,12 @@ const App = () => {
                     <Route path="/dashboard/courses/:courseId/modules/:moduleId/quiz" element={<QuizView />} />
                     <Route path="/dashboard/courses/:courseId/project" element={<ProjectView />} />
                     <Route path="/dashboard/forum" element={<ForumView />} />
+                    
+                    {/* Instructor Routes */}
+                    <Route path="/dashboard/manager" element={<CourseManager />} />
+                    <Route path="/dashboard/manager/create" element={<CourseForm />} />
+                    <Route path="/dashboard/manager/edit/:id" element={<CourseForm />} />
+                    <Route path="/dashboard/manager/view/:id" element={<InstructorCourseDetail />} />
                 </Route>
 
                 {/* Fallback */}

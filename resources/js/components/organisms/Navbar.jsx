@@ -9,7 +9,7 @@ const Navbar = () => {
                     <div className="w-10 h-10 rounded bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-sm">
                         <span className="material-symbols-outlined text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>eco</span>
                     </div>
-                    <span className="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">EcoVenture Academy</span>
+                    <span className="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">Eco Academy</span>
                 </div>
                 <div className="hidden md:flex items-center gap-8">
                     <a className="text-on-surface-variant dark:text-on-tertiary-container hover:text-primary dark:hover:text-primary-fixed transition-colors font-label-md text-label-md" href="#courses">Kursus</a>

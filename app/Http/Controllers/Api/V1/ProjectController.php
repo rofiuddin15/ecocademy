@@ -22,7 +22,7 @@ class ProjectController extends Controller
             // Admin sees all
         } elseif ($user->hasRole('instructor')) {
             // Instructor sees projects in their courses
-            $courseIds = Course::where('instructor_id', $user->id)->pluck('id');
+            $courseIds = Course::query()->where('instructor_id', $user->id)->pluck('id');
             $query->whereIn('course_id', $courseIds);
         } else {
             // Students see their own projects
@@ -40,8 +40,11 @@ class ProjectController extends Controller
         $validator = Validator::make($request->all(), [
             'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:150',
-            'umkm_name' => 'required|string|max:100',
-            'umkm_sector' => 'required|string|max:50',
+            'umkm_name' => 'required_without:target_partner_id|string|max:100|nullable',
+            'umkm_sector' => 'required_without:target_partner_id|string|max:50|nullable',
+            'budget' => 'required|numeric|min:0',
+            'proposal_description' => 'required|string',
+            'target_partner_id' => 'nullable|exists:partners,id',
         ]);
 
         if ($validator->fails()) {
@@ -65,10 +68,13 @@ class ProjectController extends Controller
             'title' => $request->title,
             'umkm_name' => $request->umkm_name,
             'umkm_sector' => $request->umkm_sector,
-            'status' => 'planning',
+            'budget' => $request->budget,
+            'proposal_description' => $request->proposal_description,
+            'target_partner_id' => $request->target_partner_id,
+            'status' => 'pending', // Awaiting instructor approval
         ]);
 
-        return response()->json($project->load(['course', 'student']), 201);
+        return response()->json($project->load(['course', 'student', 'targetPartner']), 201);
     }
 
     /**
@@ -90,7 +96,8 @@ class ProjectController extends Controller
             'course.milestones',
             'student',
             'submissions.milestone',
-            'submissions.feedback.evaluator'
+            'submissions.feedback.evaluator',
+            'targetPartner'
         ]));
     }
 
@@ -110,16 +117,19 @@ class ProjectController extends Controller
 
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|string|max:150',
-            'umkm_name' => 'sometimes|required|string|max:100',
-            'umkm_sector' => 'sometimes|required|string|max:50',
-            'status' => 'sometimes|required|in:planning,executing,completed',
+            'umkm_name' => 'sometimes|string|max:100|nullable',
+            'umkm_sector' => 'sometimes|string|max:50|nullable',
+            'budget' => 'sometimes|required|numeric|min:0',
+            'proposal_description' => 'sometimes|required|string',
+            'target_partner_id' => 'sometimes|nullable|exists:partners,id',
+            'status' => 'sometimes|required|in:pending,approved,rejected,completed',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
-        $fields = $request->only(['title', 'umkm_name', 'umkm_sector', 'status']);
+        $fields = $request->only(['title', 'umkm_name', 'umkm_sector', 'budget', 'proposal_description', 'target_partner_id', 'status']);
         
         // Only instructor or admin can change status
         if ($request->has('status') && !$user->hasRole('admin') && $project->course->instructor_id !== $user->id) {
@@ -129,5 +139,32 @@ class ProjectController extends Controller
         $project->update($fields);
 
         return response()->json($project);
+    }
+
+    /**
+     * Review the specified project proposal (Approve/Reject).
+     */
+    public function review(Request $request, Project $project)
+    {
+        $user = auth('api')->user();
+
+        // Check permission: Must be instructor of course or admin
+        if (!$user->hasRole('admin') && $project->course->instructor_id !== $user->id) {
+            return response()->json(['error' => 'Unauthorized to review this proposal.'], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:approved,rejected',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $project->update([
+            'status' => $request->status,
+        ]);
+
+        return response()->json(['message' => 'Proposal ' . $request->status, 'project' => $project]);
     }
 }

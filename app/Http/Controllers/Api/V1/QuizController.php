@@ -6,11 +6,156 @@ use App\Http\Controllers\Controller;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use App\Models\QuizAttemptAnswer;
+use App\Models\Module;
+use App\Models\QuizQuestion;
+use App\Models\QuizOption;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class QuizController extends Controller
 {
+    /**
+     * Store a new quiz with its questions and options.
+     */
+    public function store(Request $request, Module $module)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'instructions' => 'nullable|string',
+            'questions' => 'required|array|min:1',
+            'questions.*.question_text' => 'required|string',
+            'questions.*.sequence' => 'nullable|integer',
+            'questions.*.options' => 'required|array|min:2',
+            'questions.*.options.*.option_text' => 'required|string',
+            'questions.*.options.*.is_correct' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $quiz = Quiz::create([
+                'module_id' => $module->id,
+                'title' => $request->title,
+                'instructions' => $request->instructions,
+            ]);
+
+            foreach ($request->questions as $idx => $qData) {
+                $question = QuizQuestion::create([
+                    'quiz_id' => $quiz->id,
+                    'question_text' => $qData['question_text'],
+                    'sequence' => $qData['sequence'] ?? ($idx + 1),
+                ]);
+
+                foreach ($qData['options'] as $optData) {
+                    QuizOption::create([
+                        'question_id' => $question->id,
+                        'option_text' => $optData['option_text'],
+                        'is_correct' => $optData['is_correct'],
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Quiz created successfully',
+                'quiz' => $quiz->load('questions.options')
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Failed to create quiz: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Update an existing quiz with its questions and options.
+     * Note: This replaces all existing questions and options for simplicity.
+     */
+    public function update(Request $request, Quiz $quiz)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'instructions' => 'nullable|string',
+            'questions' => 'required|array|min:1',
+            'questions.*.question_text' => 'required|string',
+            'questions.*.sequence' => 'nullable|integer',
+            'questions.*.options' => 'required|array|min:2',
+            'questions.*.options.*.option_text' => 'required|string',
+            'questions.*.options.*.is_correct' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $quiz->update([
+                'title' => $request->title,
+                'instructions' => $request->instructions,
+            ]);
+
+            // Delete old questions (options will cascade if foreign keys are set up, but let's be explicit)
+            foreach ($quiz->questions as $oldQuestion) {
+                $oldQuestion->options()->delete();
+                $oldQuestion->delete();
+            }
+
+            // Create new questions
+            foreach ($request->questions as $idx => $qData) {
+                $question = QuizQuestion::create([
+                    'quiz_id' => $quiz->id,
+                    'question_text' => $qData['question_text'],
+                    'sequence' => $qData['sequence'] ?? ($idx + 1),
+                ]);
+
+                foreach ($qData['options'] as $optData) {
+                    QuizOption::create([
+                        'question_id' => $question->id,
+                        'option_text' => $optData['option_text'],
+                        'is_correct' => $optData['is_correct'],
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Quiz updated successfully',
+                'quiz' => $quiz->load('questions.options')
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Failed to update quiz: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Delete a quiz.
+     */
+    public function destroy(Quiz $quiz)
+    {
+        try {
+            DB::beginTransaction();
+            foreach ($quiz->questions as $question) {
+                $question->options()->delete();
+                $question->delete();
+            }
+            $quiz->delete();
+            DB::commit();
+            return response()->json(['message' => 'Quiz deleted successfully.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Failed to delete quiz: ' . $e->getMessage()], 500);
+        }
+    }
+
     /**
      * Submit a quiz attempt.
      */

@@ -12,7 +12,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class EcoVentureApiTest extends TestCase
+class EcocademyApiTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -87,7 +87,7 @@ class EcoVentureApiTest extends TestCase
         // Courses list (only published)
         $response = $this->getJson('/api/v1/courses');
         $response->assertStatus(200)
-            ->assertJsonCount(1); // Seeder creates 1 published course
+            ->assertJsonCount(13); // Seeder creates 1 published course + 12 dummy courses
 
         // Showcase list (only completed projects)
         $response = $this->getJson('/api/v1/showcase');
@@ -109,7 +109,7 @@ class EcoVentureApiTest extends TestCase
         $studentToken = $this->getStudentToken();
         $instructorToken = $this->getInstructorToken();
 
-        $course = Course::first();
+        $course = Course::where('title', 'Pengantar Ekonomi Sirkular')->first();
         $milestone = Milestone::where('course_id', $course->id)->first();
 
         // 2. Student registers a new project in the course
@@ -181,7 +181,7 @@ class EcoVentureApiTest extends TestCase
     {
         $studentToken = $this->getStudentToken();
 
-        $course = Course::first();
+        $course = Course::where('title', 'Pengantar Ekonomi Sirkular')->first();
 
         // 1. Get Course details and check nested structure
         $courseResponse = $this->getJson('/api/v1/courses/' . $course->id, [
@@ -255,7 +255,7 @@ class EcoVentureApiTest extends TestCase
         ]);
 
         $attemptsResponse->assertStatus(200)
-            ->assertJsonCount(3); // 1 from seeder + 2 from this test
+            ->assertJsonCount(2); // 2 from this test
     }
 
     /**
@@ -299,7 +299,7 @@ class EcoVentureApiTest extends TestCase
     private function getStudentToken()
     {
         $response = $this->postJson('/api/v1/auth/login', [
-            'email' => 'student@ecoventure.com',
+            'email' => 'student@ecocademy.com',
             'password' => 'password',
         ]);
         return $response->json('access_token');
@@ -308,7 +308,7 @@ class EcoVentureApiTest extends TestCase
     private function getInstructorToken()
     {
         $response = $this->postJson('/api/v1/auth/login', [
-            'email' => 'instructor@ecoventure.com',
+            'email' => 'instructor@ecocademy.com',
             'password' => 'password',
         ]);
         return $response->json('access_token');
