@@ -57,7 +57,7 @@ class CourseController extends Controller
             'duration' => 'nullable|integer',
             'score' => 'nullable|integer',
             'rating' => 'nullable|numeric',
-            'image' => 'nullable|string|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'level' => 'nullable|string|max:100',
             'full_description' => 'nullable|string',
             'skills' => 'nullable|array',
@@ -66,6 +66,17 @@ class CourseController extends Controller
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
+        }
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $image = $manager->read($request->file('image'));
+            $image->cover(1280, 720);
+            $encoded = $image->toWebp(85);
+            $filename = 'courses/' . uniqid() . '.webp';
+            \Illuminate\Support\Facades\Storage::disk('public')->put($filename, $encoded->toString());
+            $imagePath = '/storage/' . $filename;
         }
 
         $course = Course::create([
@@ -77,7 +88,7 @@ class CourseController extends Controller
             'duration' => $request->duration ?? 0,
             'score' => $request->score ?? 0,
             'rating' => $request->rating ?? 5.00,
-            'image' => $request->image,
+            'image' => $imagePath,
             'level' => $request->level,
             'full_description' => $request->full_description,
         ]);
@@ -129,7 +140,7 @@ class CourseController extends Controller
             'duration' => 'nullable|integer',
             'score' => 'nullable|integer',
             'rating' => 'nullable|numeric',
-            'image' => 'nullable|string|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'level' => 'nullable|string|max:100',
             'full_description' => 'nullable|string',
             'skills' => 'nullable|array',
@@ -142,9 +153,25 @@ class CourseController extends Controller
 
         $dataToUpdate = $request->only([
             'title', 'description', 'category_id', 'is_published',
-            'score', 'rating', 'image', 'level',
+            'score', 'rating', 'level',
             'full_description'
         ]);
+
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($course->image && str_starts_with($course->image, '/storage/')) {
+                $oldPath = str_replace('/storage/', '', $course->image);
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+            }
+
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $image = $manager->read($request->file('image'));
+            $image->cover(1280, 720);
+            $encoded = $image->toWebp(85);
+            $filename = 'courses/' . uniqid() . '.webp';
+            \Illuminate\Support\Facades\Storage::disk('public')->put($filename, $encoded->toString());
+            $dataToUpdate['image'] = '/storage/' . $filename;
+        }
 
         if ($request->has('duration')) {
             $dataToUpdate['duration'] = $request->duration ?? 0;

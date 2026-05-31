@@ -23,8 +23,10 @@ const CourseForm = () => {
         level: '',
         duration: '',
         is_published: false,
-        image: ''
+        image: '',
+        imagePreview: ''
     });
+    const [imageFile, setImageFile] = useState(null);
 
     // Curriculum Data
     const [modules, setModules] = useState([]);
@@ -80,7 +82,8 @@ const CourseForm = () => {
                 level: c.level || '',
                 duration: c.duration || '',
                 is_published: !!c.is_published,
-                image: c.image || ''
+                image: c.image || '',
+                imagePreview: c.image || ''
             });
             setModules(c.modules || []);
             setMilestones(c.milestones || []);
@@ -109,15 +112,44 @@ const CourseForm = () => {
         }));
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 10 * 1024 * 1024) { // 10MB
+                alert('Ukuran file maksimal adalah 10MB.');
+                e.target.value = null; // reset input
+                return;
+            }
+            setImageFile(file);
+            setFormData(prev => ({ ...prev, imagePreview: URL.createObjectURL(file) }));
+        }
+    };
+
     const handleSaveBasic = async (e) => {
         e.preventDefault();
         setIsSaving(true);
         try {
+            const submitData = new FormData();
+            submitData.append('title', formData.title);
+            submitData.append('description', formData.description || '');
+            submitData.append('category_id', formData.category_id);
+            submitData.append('level', formData.level || '');
+            submitData.append('is_published', formData.is_published ? '1' : '0');
+            
+            if (imageFile) {
+                submitData.append('image', imageFile);
+            }
+
             if (isEditing) {
-                await api.put(`/courses/${id}`, formData);
+                submitData.append('_method', 'PUT');
+                await api.post(`/courses/${id}`, submitData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
                 alert('Course info updated successfully.');
             } else {
-                const res = await api.post('/courses', formData);
+                const res = await api.post('/courses', submitData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
                 navigate(`/dashboard/manager/edit/${res.data.id}`);
             }
         } catch (error) {
@@ -390,8 +422,20 @@ const CourseForm = () => {
                             <p className="text-xs text-on-surface-variant">Berdasarkan durasi materi dan tahapan PBL.</p>
                         </div>
                         <div className="space-y-2">
-                            <label className="block font-label-md text-on-surface">Thumbnail Image URL</label>
-                            <input type="url" name="image" value={formData.image} onChange={handleChange} className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" />
+                            <label className="block font-label-md text-on-surface">Course Thumbnail Image (Max 10MB)</label>
+                            <input 
+                                type="file" 
+                                name="image" 
+                                accept="image/jpeg,image/png,image/webp,image/jpg"
+                                onChange={handleImageChange} 
+                                className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" 
+                            />
+                            {formData.imagePreview && (
+                                <div className="mt-4 p-2 border border-outline-variant rounded-lg inline-block">
+                                    <p className="text-xs text-on-surface-variant mb-2">Preview (Auto-cropped to 16:9 during upload):</p>
+                                    <img src={formData.imagePreview} alt="Course Preview" className="h-32 rounded object-cover" />
+                                </div>
+                            )}
                         </div>
                     </div>
 
