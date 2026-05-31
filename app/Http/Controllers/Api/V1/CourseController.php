@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class CourseController extends Controller
 {
@@ -70,7 +72,7 @@ class CourseController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $manager = \Intervention\Image\ImageManager::gd();
             $image = $manager->read($request->file('image'));
             $image->cover(1280, 720);
             $encoded = $image->toWebp(85);
@@ -164,7 +166,7 @@ class CourseController extends Controller
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
             }
 
-            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $manager = \Intervention\Image\ImageManager::gd();
             $image = $manager->read($request->file('image'));
             $image->cover(1280, 720);
             $encoded = $image->toWebp(85);
