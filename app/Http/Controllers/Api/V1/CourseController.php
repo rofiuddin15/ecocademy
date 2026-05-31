@@ -54,7 +54,7 @@ class CourseController extends Controller
             'title' => 'required|string|max:150',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
-            'duration' => 'nullable|string|max:50',
+            'duration' => 'nullable|integer',
             'score' => 'nullable|integer',
             'rating' => 'nullable|numeric',
             'image' => 'nullable|string|max:2048',
@@ -74,7 +74,7 @@ class CourseController extends Controller
             'category_id' => $request->category_id,
             'instructor_id' => auth('api')->id(),
             'is_published' => false,
-            'duration' => $request->duration,
+            'duration' => $request->duration ?? 0,
             'score' => $request->score ?? 0,
             'rating' => $request->rating ?? 5.00,
             'image' => $request->image,
@@ -126,7 +126,7 @@ class CourseController extends Controller
             'description' => 'nullable|string',
             'category_id' => 'sometimes|required|exists:categories,id',
             'is_published' => 'sometimes|boolean',
-            'duration' => 'nullable|string|max:50',
+            'duration' => 'nullable|integer',
             'score' => 'nullable|integer',
             'rating' => 'nullable|numeric',
             'image' => 'nullable|string|max:2048',
@@ -140,11 +140,17 @@ class CourseController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $course->update($request->only([
+        $dataToUpdate = $request->only([
             'title', 'description', 'category_id', 'is_published',
-            'duration', 'score', 'rating', 'image', 'level',
+            'score', 'rating', 'image', 'level',
             'full_description'
-        ]));
+        ]);
+
+        if ($request->has('duration')) {
+            $dataToUpdate['duration'] = $request->duration ?? 0;
+        }
+
+        $course->update($dataToUpdate);
 
         if ($request->has('skills')) {
             $course->skills()->delete();
@@ -170,7 +176,7 @@ class CourseController extends Controller
             return response()->json(['error' => 'Unauthorized action. You do not own this course.'], 403);
         }
 
-        $course->delete();
+        $course->deleteOrFail();
 
         return response()->json(['message' => 'Course deleted successfully']);
     }
