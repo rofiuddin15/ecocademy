@@ -19,7 +19,7 @@ const Navbar = () => {
                 </div>
                 <div className="flex items-center gap-4">
                     <Link to="/login" className="hidden lg:block text-primary font-label-md text-label-md hover:opacity-80 transition-opacity font-bold">Masuk</Link>
-                    <Link to="/register" className="bg-primary text-on-primary px-6 py-3 rounded-md font-label-md text-label-md hover:scale-95 active:scale-90 transition-transform shadow-sm flex items-center justify-center font-bold">Mulai Sekarang</Link>
+                    <Link to="/register" className="bg-primary text-on-primary px-6 py-3 rounded-lg font-label-md text-label-md hover:scale-95 active:scale-90 transition-transform shadow-sm flex items-center justify-center font-bold">Mulai Sekarang</Link>
                 </div>
             </div>
         </nav>

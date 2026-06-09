@@ -163,7 +163,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-surface w-full max-w-4xl rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="bg-surface w-full max-w-4xl rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
                 <div className="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest">
                     <div>
                         <h3 className="font-headline-sm text-primary">{initialData ? 'Edit Interactive Quiz' : 'Create Interactive Quiz'}</h3>
@@ -177,7 +177,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                 <div className="p-6 overflow-y-auto flex-1 bg-[#f4fafd]">
                     <form id="quizForm" onSubmit={handleSubmit} className="space-y-8">
                         {/* Quiz Header Info */}
-                        <div className="bg-white p-6 rounded-xl border border-outline-variant shadow-sm space-y-4">
+                        <div className="bg-white p-6 rounded-lg border border-outline-variant shadow-sm space-y-4">
                             <h4 className="font-label-lg text-primary border-b border-outline-variant pb-2">Quiz Details</h4>
                             <div className="space-y-2">
                                 <label className="block font-label-md text-on-surface">Quiz Title</label>
@@ -212,7 +212,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                             </div>
 
                             {quizData.questions.map((q, qIndex) => (
-                                <div key={qIndex} className="bg-white p-6 rounded-xl border border-outline-variant shadow-sm relative group">
+                                <div key={qIndex} className="bg-white p-6 rounded-lg border border-outline-variant shadow-sm relative group">
                                     {quizData.questions.length > 1 && (
                                         <button 
                                             type="button" 
@@ -279,7 +279,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                             <button 
                                 type="button" 
                                 onClick={addQuestion}
-                                className="w-full py-4 border-2 border-dashed border-tertiary/40 rounded-xl text-tertiary hover:bg-tertiary/5 transition-colors font-label-md flex items-center justify-center gap-2"
+                                className="w-full py-4 border-2 border-dashed border-tertiary/40 rounded-lg text-tertiary hover:bg-tertiary/5 transition-colors font-label-md flex items-center justify-center gap-2"
                             >
                                 <span className="material-symbols-outlined">add_circle</span>
                                 Add Another Question

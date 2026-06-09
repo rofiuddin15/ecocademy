@@ -65,7 +65,7 @@ const CourseManager = () => {
                     <div 
                         key={course.id} 
                         onClick={() => navigate(`/dashboard/manager/view/${course.id}`)}
-                        className="bg-white/80 backdrop-blur-md border border-outline-variant p-6 rounded-xl shadow-sm flex flex-col md:flex-row gap-6 items-start md:items-center hover:border-primary cursor-pointer transition-colors group"
+                        className="bg-white/80 backdrop-blur-md border border-outline-variant p-6 rounded-lg shadow-sm flex flex-col md:flex-row gap-6 items-start md:items-center hover:border-primary cursor-pointer transition-colors group"
                     >
                         <img 
                             src={course.image || 'https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?w=400&q=80'} 
@@ -90,7 +90,7 @@ const CourseManager = () => {
                 ))}
                 
                 {courses.length === 0 && (
-                    <div className="text-center py-16 bg-white/50 backdrop-blur-md border border-dashed border-outline-variant rounded-xl">
+                    <div className="text-center py-16 bg-white/50 backdrop-blur-md border border-dashed border-outline-variant rounded-lg">
                         <span className="material-symbols-outlined text-[48px] text-outline mb-4">menu_book</span>
                         <h3 className="font-headline-sm text-on-surface">No Courses Found</h3>
                         <p className="text-on-surface-variant mb-6 mt-2">You haven't created any courses yet.</p>

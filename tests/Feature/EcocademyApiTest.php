@@ -87,7 +87,7 @@ class EcocademyApiTest extends TestCase
         // Courses list (only published)
         $response = $this->getJson('/api/v1/courses');
         $response->assertStatus(200)
-            ->assertJsonCount(13); // Seeder creates 1 published course + 12 dummy courses
+            ->assertJsonCount(14); // Seeder creates 1 published course + 12 dummy + 1 Kewirausahaan PjBL
 
         // Showcase list (only completed projects)
         $response = $this->getJson('/api/v1/showcase');
@@ -124,7 +124,7 @@ class EcocademyApiTest extends TestCase
 
         $projectResponse->assertStatus(201)
             ->assertJsonPath('title', 'Inovasi Panel Surya Untuk UMKM Pengrajin Perak')
-            ->assertJsonPath('status', 'planning');
+            ->assertJsonPath('status', 'pending'); // Menunggu persetujuan dosen
 
         $projectId = $projectResponse->json('id');
 

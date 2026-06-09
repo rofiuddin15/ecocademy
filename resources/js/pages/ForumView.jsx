@@ -143,7 +143,7 @@ const ForumView = () => {
                                 <button
                                     key={thread.id}
                                     onClick={() => fetchThreadDetails(thread.id)}
-                                    className={`w-full p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between gap-2 ${
+                                    className={`w-full p-4 rounded-lg border text-left transition-all cursor-pointer flex flex-col justify-between gap-2 ${
                                         activeThread?.id === thread.id 
                                             ? 'border-primary bg-primary-container/10 font-bold' 
                                             : 'border-outline-variant/30 bg-white hover:bg-surface-container-low/50'
@@ -167,7 +167,7 @@ const ForumView = () => {
                 <div className="lg:col-span-2">
                     {isCreatingThread ? (
                         /* Create New Thread Form */
-                        <div className="bg-white p-6 rounded-xl border border-outline-variant/30 shadow-sm space-y-6">
+                        <div className="bg-white p-6 rounded-lg border border-outline-variant/30 shadow-sm space-y-6">
                             <h3 className="text-headline-md font-headline-md text-primary">Mulai Topik Diskusi Baru</h3>
                             <form onSubmit={handleCreateThread} className="space-y-4">
                                 <div>
@@ -219,7 +219,7 @@ const ForumView = () => {
                         /* Display Thread Details & Comments */
                         <div className="space-y-6">
                             {/* Thread Main Card */}
-                            <div className="bg-white p-6 rounded-xl border border-outline-variant/30 shadow-sm">
+                            <div className="bg-white p-6 rounded-lg border border-outline-variant/30 shadow-sm">
                                 <div className="flex items-center gap-3 mb-4 text-on-surface-variant text-[12px] font-semibold">
                                     <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center font-bold text-primary">
                                         {activeThread.user?.name?.charAt(0).toUpperCase()}
@@ -234,7 +234,7 @@ const ForumView = () => {
                             </div>
 
                             {/* Comment Section */}
-                            <div className="bg-white p-6 rounded-xl border border-outline-variant/30 shadow-sm space-y-6">
+                            <div className="bg-white p-6 rounded-lg border border-outline-variant/30 shadow-sm space-y-6">
                                 <h3 className="text-label-sm font-bold text-primary border-b border-outline-variant/10 pb-4">
                                     Komentar ({activeThread.comments?.length || 0})
                                 </h3>
@@ -278,7 +278,7 @@ const ForumView = () => {
                         </div>
                     ) : (
                         /* Initial state (no active thread loaded/available) */
-                        <div className="bg-white p-12 rounded-xl border border-outline-variant/30 text-center shadow-sm">
+                        <div className="bg-white p-12 rounded-lg border border-outline-variant/30 text-center shadow-sm">
                             <span className="material-symbols-outlined text-[48px] text-on-surface-variant/30 mb-3">forum</span>
                             <p className="text-body-md text-on-surface-variant">Pilih topik diskusi di panel kiri atau buat diskusi baru.</p>
                         </div>

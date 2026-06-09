@@ -39,7 +39,7 @@ const MaterialModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) =>
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-            <div className="bg-surface w-full max-w-2xl rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="bg-surface w-full max-w-2xl rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
                 <div className="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest">
                     <div>
                         <h3 className="font-headline-sm text-primary">{initialData ? 'Edit Material' : 'Add Material'}</h3>

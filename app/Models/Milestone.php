@@ -11,7 +11,13 @@ class Milestone extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['course_id', 'title', 'instructions', 'duration_hours', 'report_type', 'sequence'];
+    protected $fillable = [
+        'course_id', 'title', 'instructions',
+        'student_activities', 'lms_deliverable', 'content_format',
+        'assessment_indicators', 'weight',
+        'duration_hours', 'report_type', 'sequence',
+    ];
+
 
 
 

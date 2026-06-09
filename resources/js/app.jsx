@@ -21,6 +21,9 @@ import ForumView from './pages/ForumView';
 import CourseManager from './pages/CourseManager';
 import CourseForm from './pages/CourseForm';
 import InstructorCourseDetail from './pages/InstructorCourseDetail';
+import StudentModules from './pages/StudentModules';
+import GreenShowcase from './pages/GreenShowcase';
+import UmkmDirectory from './pages/UmkmDirectory';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -76,6 +79,9 @@ const App = () => {
                     <Route path="/dashboard/courses/:courseId/modules/:moduleId/quiz" element={<QuizView />} />
                     <Route path="/dashboard/courses/:courseId/project" element={<ProjectView />} />
                     <Route path="/dashboard/forum" element={<ForumView />} />
+                    <Route path="/dashboard/modules" element={<StudentModules />} />
+                    <Route path="/dashboard/showcase" element={<GreenShowcase />} />
+                    <Route path="/dashboard/directory" element={<UmkmDirectory />} />
                     
                     {/* Instructor Routes */}
                     <Route path="/dashboard/manager" element={<CourseManager />} />

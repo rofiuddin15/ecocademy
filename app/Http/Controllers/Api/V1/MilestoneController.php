@@ -16,12 +16,17 @@ class MilestoneController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'course_id' => 'required|exists:courses,id',
-            'title' => 'required|string|max:100',
-            'instructions' => 'required|string',
-            'duration_hours' => 'required|integer|min:0',
-            'report_type' => 'required|string|max:50',
-            'sequence' => 'required|integer',
+            'course_id'             => 'required|exists:courses,id',
+            'title'                 => 'required|string|max:100',
+            'instructions'          => 'required|string',
+            'student_activities'    => 'nullable|string',
+            'lms_deliverable'       => 'nullable|string',
+            'content_format'        => 'nullable|string',
+            'assessment_indicators' => 'nullable|string',
+            'weight'                => 'nullable|integer|min:0|max:100',
+            'duration_hours'        => 'required|integer|min:0',
+            'report_type'           => 'required|string|max:50',
+            'sequence'              => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -55,18 +60,28 @@ class MilestoneController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'title' => 'sometimes|required|string|max:100',
-            'instructions' => 'sometimes|required|string',
-            'duration_hours' => 'sometimes|required|integer|min:0',
-            'report_type' => 'sometimes|required|string|max:50',
-            'sequence' => 'sometimes|required|integer',
+            'title'                 => 'sometimes|required|string|max:100',
+            'instructions'          => 'sometimes|required|string',
+            'student_activities'    => 'nullable|string',
+            'lms_deliverable'       => 'nullable|string',
+            'content_format'        => 'nullable|string',
+            'assessment_indicators' => 'nullable|string',
+            'weight'                => 'nullable|integer|min:0|max:100',
+            'duration_hours'        => 'sometimes|required|integer|min:0',
+            'report_type'           => 'sometimes|required|string|max:50',
+            'sequence'              => 'sometimes|required|integer',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
-        $milestone->update($request->only(['title', 'instructions', 'duration_hours', 'report_type', 'sequence']));
+        $milestone->update($request->only([
+            'title', 'instructions',
+            'student_activities', 'lms_deliverable', 'content_format',
+            'assessment_indicators', 'weight',
+            'duration_hours', 'report_type', 'sequence',
+        ]));
         
         $course->recalculateDuration();
 

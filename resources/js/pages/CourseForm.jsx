@@ -4,6 +4,8 @@ import api from '../utils/api';
 import MaterialModal from '../components/molecules/MaterialModal';
 import QuizModal from '../components/molecules/QuizModal';
 import MilestoneModal from '../components/molecules/MilestoneModal';
+import ModuleModal from '../components/molecules/ModuleModal';
+import { GREENPRENEURSHIP_TEMPLATES } from '../constants/pjblTemplates';
 
 const CourseForm = () => {
     const { id } = useParams();
@@ -44,6 +46,7 @@ const CourseForm = () => {
     const [milestones, setMilestones] = useState([]);
 
     // Modal States
+    const [isModuleModalOpen, setIsModuleModalOpen] = useState(false);
     const [isMaterialModalOpen, setIsMaterialModalOpen] = useState(false);
     const [isQuizModalOpen, setIsQuizModalOpen] = useState(false);
     const [activeModuleForModal, setActiveModuleForModal] = useState(null);
@@ -161,16 +164,19 @@ const CourseForm = () => {
     };
 
     // --- Curriculum Handlers ---
-    const handleAddModule = async () => {
-        const title = prompt("Enter module title:");
-        if (!title) return;
+    const handleAddModule = () => {
+        setIsModuleModalOpen(true);
+    };
+
+    const handleSaveModule = async (moduleData) => {
         try {
             const res = await api.post('/modules', {
                 course_id: id,
-                title: title,
+                title: moduleData.title,
                 sequence: modules.length + 1
             });
             setModules([...modules, res.data]);
+            setIsModuleModalOpen(false);
         } catch (error) {
             console.error(error);
             alert('Failed to add module');
@@ -306,26 +312,44 @@ const CourseForm = () => {
 
     const handleSaveMilestone = async (milestoneData) => {
         try {
-            let res;
             if (editingMilestone) {
-                res = await api.put(`/milestones/${editingMilestone.id}`, milestoneData);
-                setMilestones(milestones.map(m => m.id === editingMilestone.id ? res.data : m));
+                await api.put(`/milestones/${editingMilestone.id}`, milestoneData);
             } else {
-                res = await api.post('/milestones', {
-                    course_id: id,
+                await api.post('/milestones', {
                     ...milestoneData,
+                    course_id: id,
                     sequence: milestones.length + 1
                 });
-                setMilestones([...milestones, res.data]);
             }
             setIsMilestoneModalOpen(false);
-            setEditingMilestone(null);
-            
-            // Re-fetch course data to get the updated auto-calculated duration
             fetchCourseData();
         } catch (error) {
             console.error(error);
             alert('Failed to save milestone');
+        }
+    };
+
+    const handleGenerateGreenpreneurship = async () => {
+        if (!window.confirm('Apakah Anda yakin ingin men-generate 6 Tahap PjBL Greenpreneurship? Ini akan menambahkan 6 tahapan secara berurutan.')) return;
+        
+        try {
+            setIsLoading(true);
+            // Add all templates sequentially
+            for (let i = 0; i < GREENPRENEURSHIP_TEMPLATES.length; i++) {
+                const template = GREENPRENEURSHIP_TEMPLATES[i];
+                await api.post('/milestones', {
+                    ...template,
+                    course_id: id,
+                    sequence: milestones.length + 1 + i
+                });
+            }
+            await fetchCourseData();
+            alert('6 Tahap PjBL berhasil di-generate!');
+        } catch (error) {
+            console.error('Error generating templates:', error);
+            alert('Gagal men-generate template PjBL.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -367,19 +391,19 @@ const CourseForm = () => {
                     <div className="flex bg-surface-container rounded-lg p-1">
                         <button 
                             onClick={() => setActiveTab('basic')}
-                            className={`px-4 py-2 rounded-md font-label-md transition-colors ${activeTab === 'basic' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:text-primary'}`}
+                            className={`px-4 py-2 rounded-lg font-label-md transition-colors ${activeTab === 'basic' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:text-primary'}`}
                         >
                             Basic Info
                         </button>
                         <button 
                             onClick={() => setActiveTab('curriculum')}
-                            className={`px-4 py-2 rounded-md font-label-md transition-colors ${activeTab === 'curriculum' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:text-primary'}`}
+                            className={`px-4 py-2 rounded-lg font-label-md transition-colors ${activeTab === 'curriculum' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:text-primary'}`}
                         >
                             Curriculum
                         </button>
                         <button 
                             onClick={() => setActiveTab('milestones')}
-                            className={`px-4 py-2 rounded-md font-label-md transition-colors ${activeTab === 'milestones' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:text-primary'}`}
+                            className={`px-4 py-2 rounded-lg font-label-md transition-colors ${activeTab === 'milestones' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:text-primary'}`}
                         >
                             PBL Milestones
                         </button>
@@ -389,7 +413,7 @@ const CourseForm = () => {
 
             {/* TAB: BASIC INFO */}
             {activeTab === 'basic' && (
-                <form onSubmit={handleSaveBasic} className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-xl p-8 shadow-sm space-y-6">
+                <form onSubmit={handleSaveBasic} className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-8 shadow-sm space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2 md:col-span-2">
                             <label className="block font-label-md text-on-surface">Course Title</label>
@@ -428,7 +452,7 @@ const CourseForm = () => {
                                 name="image" 
                                 accept="image/jpeg,image/png,image/webp,image/jpg"
                                 onChange={handleImageChange} 
-                                className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" 
+                                className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" 
                             />
                             {formData.imagePreview && (
                                 <div className="mt-4 p-2 border border-outline-variant rounded-lg inline-block">
@@ -462,7 +486,7 @@ const CourseForm = () => {
 
             {/* TAB: CURRICULUM */}
             {activeTab === 'curriculum' && (
-                <div className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-xl p-8 shadow-sm space-y-6">
+                <div className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-8 shadow-sm space-y-6">
                     <div className="flex justify-between items-center border-b border-outline-variant pb-4">
                         <div>
                             <h3 className="font-headline-md text-primary">Modules & Materials</h3>
@@ -485,7 +509,7 @@ const CourseForm = () => {
                                         <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">{index + 1}</div>
                                         <h4 className="font-label-lg text-on-surface font-bold">{mod.title}</h4>
                                     </div>
-                                    <button onClick={() => handleDeleteModule(mod.id)} className="text-error hover:bg-error/10 p-2 rounded-md transition-colors">
+                                    <button onClick={() => handleDeleteModule(mod.id)} className="text-error hover:bg-error/10 p-2 rounded-lg transition-colors">
                                         <span className="material-symbols-outlined text-[18px]">delete</span>
                                     </button>
                                 </div>
@@ -493,7 +517,7 @@ const CourseForm = () => {
                                     {/* Materials List */}
                                     <div className="space-y-2">
                                         {mod.materials && mod.materials.length > 0 ? mod.materials.map((mat, mIndex) => (
-                                            <div key={mat.id} className="flex justify-between items-center p-3 border border-outline-variant rounded-md bg-white group">
+                                            <div key={mat.id} className="flex justify-between items-center p-3 border border-outline-variant rounded-lg bg-white group">
                                                 <div className="flex items-center gap-3">
                                                     <span className="material-symbols-outlined text-secondary">article</span>
                                                     <span className="font-body-md text-on-surface">{mat.title}</span>
@@ -509,7 +533,7 @@ const CourseForm = () => {
                                     
                                     {/* Quiz List */}
                                     {mod.quiz && (
-                                        <div className="flex justify-between items-center p-3 border border-tertiary/30 bg-tertiary-container/10 rounded-md group">
+                                        <div className="flex justify-between items-center p-3 border border-tertiary/30 bg-tertiary-container/10 rounded-lg group">
                                             <div className="flex items-center gap-3">
                                                 <span className="material-symbols-outlined text-tertiary">quiz</span>
                                                 <span className="font-body-md text-on-surface font-bold">{mod.quiz.title}</span>
@@ -542,7 +566,7 @@ const CourseForm = () => {
             {activeTab === 'milestones' && (
                 <div className="space-y-6">
                     {/* Master PBL Configuration Form */}
-                    <form onSubmit={handleSavePbl} className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-xl p-8 shadow-sm space-y-6">
+                    <form onSubmit={handleSavePbl} className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-8 shadow-sm space-y-6">
                         <div className="border-b border-outline-variant pb-4">
                             <h3 className="font-headline-md text-primary">Master Project Configuration</h3>
                             <p className="text-on-surface-variant font-body-sm mt-1">Define the main project details, targets, and reporting requirements for this course.</p>
@@ -577,15 +601,20 @@ const CourseForm = () => {
                     </form>
 
                     {/* Milestones List */}
-                    <div className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-xl p-8 shadow-sm space-y-6">
+                    <div className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-8 shadow-sm space-y-6">
                         <div className="flex justify-between items-center border-b border-outline-variant pb-4">
                             <div>
                                 <h3 className="font-headline-md text-primary">Project Milestones</h3>
                                 <p className="text-on-surface-variant font-body-sm mt-1">Define the step-by-step stages for the project above.</p>
                             </div>
-                            <button onClick={openAddMilestoneModal} className="bg-secondary/10 text-secondary border border-secondary/20 px-4 py-2 rounded-lg font-label-sm hover:bg-secondary/20 transition-colors flex items-center gap-2">
-                                <span className="material-symbols-outlined text-[18px]">add</span> Add Milestone
-                            </button>
+                            <div className="flex items-center gap-2">
+                                <button onClick={handleGenerateGreenpreneurship} type="button" className="bg-primary/10 text-primary border border-primary/20 px-4 py-2 rounded-lg font-label-sm hover:bg-primary/20 transition-colors flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-[18px]">auto_awesome</span> Generate 6 Tahap
+                                </button>
+                                <button onClick={openAddMilestoneModal} type="button" className="bg-secondary/10 text-secondary border border-secondary/20 px-4 py-2 rounded-lg font-label-sm hover:bg-secondary/20 transition-colors flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-[18px]">add</span> Add Milestone
+                                </button>
+                            </div>
                         </div>
 
                         <div className="space-y-4">
@@ -614,10 +643,10 @@ const CourseForm = () => {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2 ml-4">
-                                        <button onClick={() => openEditMilestoneModal(mile)} className="text-primary hover:bg-primary/10 p-2 rounded-md transition-colors">
+                                        <button onClick={() => openEditMilestoneModal(mile)} className="text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors">
                                             <span className="material-symbols-outlined text-[18px]">edit</span>
                                         </button>
-                                        <button onClick={() => handleDeleteMilestone(mile.id)} className="text-error hover:bg-error/10 p-2 rounded-md transition-colors">
+                                        <button onClick={() => handleDeleteMilestone(mile.id)} className="text-error hover:bg-error/10 p-2 rounded-lg transition-colors">
                                             <span className="material-symbols-outlined text-[18px]">delete</span>
                                         </button>
                                     </div>
@@ -629,6 +658,12 @@ const CourseForm = () => {
             )}
 
             {/* Modals */}
+            <ModuleModal 
+                isOpen={isModuleModalOpen}
+                onClose={() => setIsModuleModalOpen(false)}
+                onSave={handleSaveModule}
+            />
+
             <MaterialModal 
                 isOpen={isMaterialModalOpen} 
                 onClose={() => { setIsMaterialModalOpen(false); setEditingMaterial(null); }} 

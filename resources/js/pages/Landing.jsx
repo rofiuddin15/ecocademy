@@ -161,7 +161,7 @@ const Landing = () => {
                                     {(selectedCourse.partners || []).map((partner, idx) => {
                                         const partnerName = typeof partner === 'object' ? partner.name : partner;
                                         return (
-                                            <div key={idx} className="bg-surface-container-low/50 border border-outline-variant/30 rounded-md p-4 flex items-center gap-4">
+                                            <div key={idx} className="bg-surface-container-low/50 border border-outline-variant/30 rounded-lg p-4 flex items-center gap-4">
                                                 <div className="w-12 h-12 rounded bg-secondary/10 text-secondary flex items-center justify-center shrink-0">
                                                     <span className="material-symbols-outlined text-[24px]">handshake</span>
                                                 </div>

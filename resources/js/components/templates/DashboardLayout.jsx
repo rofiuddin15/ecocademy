@@ -16,9 +16,9 @@ const DashboardLayout = () => {
 
     const studentNavLinks = [
         { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-        { path: '/dashboard', label: 'Modul', icon: 'menu_book', isPlaceholder: true },
-        { path: '/dashboard', label: 'Etalase Hijau', icon: 'workspace_premium', isPlaceholder: true },
-        { path: '/dashboard', label: 'Direktori UMKM', icon: 'location_on', isPlaceholder: true },
+        { path: '/dashboard/modules', label: 'Modul', icon: 'menu_book' },
+        { path: '/dashboard/showcase', label: 'Etalase Hijau', icon: 'workspace_premium' },
+        { path: '/dashboard/directory', label: 'Direktori UMKM', icon: 'location_on' },
         { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' }
     ];
 
@@ -89,7 +89,7 @@ const DashboardLayout = () => {
                 <div className="mt-auto space-y-4">
                     {/* Current Goal Widget (Student Only) */}
                     {user?.role !== 'instructor' && (
-                        <div className="p-4 bg-primary-container rounded-xl text-primary-fixed">
+                        <div className="p-4 bg-primary-container rounded-lg text-primary-fixed">
                             <p className="font-label-sm text-label-sm opacity-80 mb-2">Tujuan Saat Ini</p>
                             <p className="font-label-md text-label-md mb-3">Landasan Dampak</p>
                             <div className="h-1.5 w-full bg-on-primary-container/30 rounded-full overflow-hidden">

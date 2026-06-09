@@ -113,7 +113,7 @@ const QuizView = () => {
 
     if (!quiz) {
         return (
-            <div className="py-20 text-center bg-white rounded-xl border border-outline-variant/30">
+            <div className="py-20 text-center bg-white rounded-lg border border-outline-variant/30">
                 <span className="material-symbols-outlined text-[48px] text-error mb-3">error</span>
                 <p className="text-body-md text-on-surface-variant font-bold">Kuis tidak ditemukan untuk modul ini.</p>
                 <Link to={`/dashboard/courses/${courseId}`} className="mt-4 inline-block text-primary font-semibold hover:underline">Kembali ke Kelas</Link>
@@ -132,7 +132,7 @@ const QuizView = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Main Quiz Area */}
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white p-8 rounded-xl border border-outline-variant/30 shadow-sm">
+                    <div className="bg-white p-8 rounded-lg border border-outline-variant/30 shadow-sm">
                         <div className="mb-6 pb-6 border-b border-outline-variant/20">
                             <span className="inline-block py-1 px-3 rounded-full bg-primary-fixed text-on-primary-fixed text-label-sm font-label-sm mb-4">Ujian Evaluasi</span>
                             <h1 className="text-[28px] font-bold text-primary mb-2">{quiz.title}</h1>
@@ -232,7 +232,7 @@ const QuizView = () => {
 
                 {/* Sidebar Attempt History */}
                 <div className="space-y-6">
-                    <div className="bg-white p-6 rounded-xl border border-outline-variant/30 shadow-sm">
+                    <div className="bg-white p-6 rounded-lg border border-outline-variant/30 shadow-sm">
                         <h3 className="text-headline-md font-headline-md text-primary mb-4 flex items-center gap-2">
                             <span className="material-symbols-outlined">history</span>
                             Riwayat Percobaan

@@ -50,7 +50,7 @@ class CourseManagementTest extends TestCase
                 'title' => 'Test Eco Course',
                 'description' => 'A course about ecology',
                 'category_id' => $this->category->id,
-                'duration' => '4 Weeks',
+                'duration' => 4,
                 'level' => 'Beginner',
             ]);
 
@@ -85,11 +85,12 @@ class CourseManagementTest extends TestCase
         // 4. Add Material
         $materialResponse = $this->withHeader('Authorization', 'Bearer ' . $this->token)
             ->postJson('/api/v1/materials', [
-                'module_id' => $moduleId,
-                'title' => 'What is Green Tech?',
-                'content_type' => 'article',
-                'body_text' => 'Green tech is awesome.',
-                'sequence' => 1,
+                'module_id'        => $moduleId,
+                'title'            => 'What is Green Tech?',
+                'content_type'     => 'article',
+                'body_text'        => 'Green tech is awesome.',
+                'sequence'         => 1,
+                'duration_minutes' => 15,
             ]);
 
         $materialResponse->assertStatus(201);
@@ -116,10 +117,12 @@ class CourseManagementTest extends TestCase
         // 6. Add Milestone
         $milestoneResponse = $this->withHeader('Authorization', 'Bearer ' . $this->token)
             ->postJson('/api/v1/milestones', [
-                'course_id' => $courseId,
-                'title' => 'Phase 1: Research',
-                'instructions' => 'Interview 3 farmers.',
-                'sequence' => 1,
+                'course_id'      => $courseId,
+                'title'          => 'Phase 1: Research',
+                'instructions'   => 'Interview 3 farmers.',
+                'sequence'       => 1,
+                'duration_hours' => 10,
+                'report_type'    => 'laporan',
             ]);
 
         $milestoneResponse->assertStatus(201);

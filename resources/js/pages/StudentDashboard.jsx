@@ -101,7 +101,7 @@ const StudentDashboard = () => {
                 {/* Active Project Section & Enrolled Courses (Left Column) */}
                 <div className="col-span-12 lg:col-span-8 space-y-8">
                     {/* Active Project Card (Bento Style) */}
-                    <div className="bg-white rounded-xl border border-outline-variant overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+                    <div className="bg-white rounded-lg border border-outline-variant overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
                         <div className="relative h-48 overflow-hidden">
                             <img 
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
@@ -125,7 +125,7 @@ const StudentDashboard = () => {
                                             : 'Building a circular economy pipeline for local organic eateries.'}
                                     </p>
                                 </div>
-                                <span className="bg-primary-fixed text-on-primary-fixed px-4 py-1.5 rounded-md font-label-md text-label-md shrink-0">
+                                <span className="bg-primary-fixed text-on-primary-fixed px-4 py-1.5 rounded-lg font-label-md text-label-md shrink-0">
                                     Project-Based Learning
                                 </span>
                             </div>
@@ -239,14 +239,14 @@ const StudentDashboard = () => {
                             <div className="mt-10 flex gap-4">
                                 <Link 
                                     to={activeProject ? `/dashboard/courses/${activeProject.course_id}/project` : '#'}
-                                    className="bg-primary text-white px-8 py-3 rounded-md font-label-md text-label-md hover:opacity-90 transition-all flex items-center gap-2"
+                                    className="bg-primary text-white px-8 py-3 rounded-lg font-label-md text-label-md hover:opacity-90 transition-all flex items-center gap-2"
                                 >
                                     <span className="material-symbols-outlined text-[16px]">play_arrow</span>
                                     Continue Planning
                                 </Link>
                                 <Link 
                                     to={activeProject ? `/dashboard/courses/${activeProject.course_id}` : '#'}
-                                    className="border border-primary text-primary px-8 py-3 rounded-md font-label-md text-label-md hover:bg-primary-fixed/5 transition-all"
+                                    className="border border-primary text-primary px-8 py-3 rounded-lg font-label-md text-label-md hover:bg-primary-fixed/5 transition-all"
                                 >
                                     View Project Brief
                                 </Link>
@@ -267,7 +267,7 @@ const StudentDashboard = () => {
                                     <Link 
                                         key={course.id}
                                         to={`/dashboard/courses/${course.id}`}
-                                        className="bg-white p-6 rounded-xl border border-outline-variant hover:border-primary transition-colors flex flex-col justify-between cursor-pointer group"
+                                        className="bg-white p-6 rounded-lg border border-outline-variant hover:border-primary transition-colors flex flex-col justify-between cursor-pointer group"
                                     >
                                         <div>
                                             <span className="material-symbols-outlined text-primary text-3xl mb-4 group-hover:scale-110 transition-transform block">
@@ -293,7 +293,7 @@ const StudentDashboard = () => {
                 {/* Sidebar Column (Right Column) */}
                 <div className="col-span-12 lg:col-span-4 space-y-8">
                     {/* Upcoming Deadlines */}
-                    <div className="bg-white p-8 rounded-xl border border-outline-variant shadow-sm">
+                    <div className="bg-white p-8 rounded-lg border border-outline-variant shadow-sm">
                         <h3 className="font-headline-md text-headline-md text-primary mb-6">Upcoming Deadlines</h3>
                         <div className="space-y-6">
                             {activeProject && activeProject.course && activeProject.course.milestones ? (
@@ -303,7 +303,7 @@ const StudentDashboard = () => {
                                     const date = new Date(milestone.due_date || Date.now() + 86400000);
                                     return (
                                         <div key={idx} className="flex gap-4 p-3 rounded-lg hover:bg-surface-container transition-colors group">
-                                            <div className="flex-shrink-0 w-12 h-12 bg-surface-container text-on-surface-variant rounded-md flex flex-col items-center justify-center">
+                                            <div className="flex-shrink-0 w-12 h-12 bg-surface-container text-on-surface-variant rounded-lg flex flex-col items-center justify-center">
                                                 <span className="font-label-md text-label-md leading-none font-bold">{date.getDate()}</span>
                                                 <span className="text-[10px] uppercase font-bold">{date.toLocaleString('default', { month: 'short' })}</span>
                                             </div>
@@ -318,14 +318,14 @@ const StudentDashboard = () => {
                                 <p className="text-on-surface-variant">Tidak ada tenggat waktu dalam waktu dekat.</p>
                             )}
                         </div>
-                        <button className="w-full mt-8 py-3 font-label-md text-label-md text-primary bg-primary-fixed/20 rounded-md hover:bg-primary-fixed/40 transition-colors font-bold">
+                        <button className="w-full mt-8 py-3 font-label-md text-label-md text-primary bg-primary-fixed/20 rounded-lg hover:bg-primary-fixed/40 transition-colors font-bold">
                             Full Calendar View
                         </button>
                     </div>
 
                     {/* UMKM Spotlight */}
                     {activeProject && activeProject.umkm_name ? (
-                        <div className="bg-primary-container rounded-xl p-8 text-primary-fixed relative overflow-hidden">
+                        <div className="bg-primary-container rounded-lg p-8 text-primary-fixed relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-10">
                                 <span className="material-symbols-outlined text-[80px]" style={{ fontVariationSettings: "'FILL' 1" }}>eco</span>
                             </div>
@@ -333,12 +333,12 @@ const StudentDashboard = () => {
                             <p className="font-body-md text-body-md opacity-80 mb-6 relative z-10 text-slate-300">
                                 Meet {activeProject.umkm_name}, our partner in {activeProject.umkm_sector}.
                             </p>
-                            <button className="bg-white text-primary px-6 py-2.5 rounded-md font-label-md text-label-md relative z-10 hover:shadow-lg transition-all font-bold">
+                            <button className="bg-white text-primary px-6 py-2.5 rounded-lg font-label-md text-label-md relative z-10 hover:shadow-lg transition-all font-bold">
                                 View Project Details
                             </button>
                         </div>
                     ) : (
-                        <div className="bg-surface-container rounded-xl p-8 text-on-surface relative overflow-hidden border border-outline-variant">
+                        <div className="bg-surface-container rounded-lg p-8 text-on-surface relative overflow-hidden border border-outline-variant">
                             <h3 className="font-headline-md text-headline-md mb-2 relative z-10 font-bold">UMKM Network</h3>
                             <p className="font-body-md text-body-md text-on-surface-variant mb-6 relative z-10">
                                 Daftar ke proyek PBL untuk berkolaborasi dengan mitra UMKM kami.

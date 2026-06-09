@@ -38,13 +38,13 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'course_id' => 'required|exists:courses,id',
-            'title' => 'required|string|max:150',
-            'umkm_name' => 'required_without:target_partner_id|string|max:100|nullable',
-            'umkm_sector' => 'required_without:target_partner_id|string|max:50|nullable',
-            'budget' => 'required|numeric|min:0',
-            'proposal_description' => 'required|string',
-            'target_partner_id' => 'nullable|exists:partners,id',
+            'course_id'          => 'required|exists:courses,id',
+            'title'              => 'required|string|max:150',
+            'umkm_name'          => 'nullable|string|max:100',
+            'umkm_sector'        => 'nullable|string|max:50',
+            'budget'             => 'nullable|numeric|min:0',
+            'proposal_description' => 'nullable|string',
+            'target_partner_id'  => 'nullable|exists:partners,id',
         ]);
 
         if ($validator->fails()) {
@@ -53,25 +53,25 @@ class ProjectController extends Controller
 
         $user = auth('api')->user();
 
-        // Check if student already has a project in this course
+        // Cek apakah mahasiswa sudah mendaftar proyek di kursus ini
         $existing = Project::where('course_id', $request->course_id)
             ->where('student_id', $user->id)
             ->first();
 
         if ($existing) {
-            return response()->json(['error' => 'You already have a project registered for this course.'], 400);
+            return response()->json(['error' => 'Anda sudah memiliki proyek yang terdaftar untuk kursus ini.'], 400);
         }
 
         $project = Project::create([
-            'course_id' => $request->course_id,
-            'student_id' => $user->id,
-            'title' => $request->title,
-            'umkm_name' => $request->umkm_name,
-            'umkm_sector' => $request->umkm_sector,
-            'budget' => $request->budget,
+            'course_id'            => $request->course_id,
+            'student_id'           => $user->id,
+            'title'                => $request->title,
+            'umkm_name'            => $request->umkm_name,
+            'umkm_sector'          => $request->umkm_sector,
+            'budget'               => $request->budget,
             'proposal_description' => $request->proposal_description,
-            'target_partner_id' => $request->target_partner_id,
-            'status' => 'pending', // Awaiting instructor approval
+            'target_partner_id'    => $request->target_partner_id,
+            'status'               => 'pending', // Menunggu persetujuan dosen
         ]);
 
         return response()->json($project->load(['course', 'student', 'targetPartner']), 201);
@@ -116,13 +116,13 @@ class ProjectController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'title' => 'sometimes|required|string|max:150',
-            'umkm_name' => 'sometimes|string|max:100|nullable',
-            'umkm_sector' => 'sometimes|string|max:50|nullable',
-            'budget' => 'sometimes|required|numeric|min:0',
-            'proposal_description' => 'sometimes|required|string',
-            'target_partner_id' => 'sometimes|nullable|exists:partners,id',
-            'status' => 'sometimes|required|in:pending,approved,rejected,completed',
+            'title'                => 'sometimes|required|string|max:150',
+            'umkm_name'            => 'sometimes|nullable|string|max:100',
+            'umkm_sector'          => 'sometimes|nullable|string|max:50',
+            'budget'               => 'sometimes|nullable|numeric|min:0',
+            'proposal_description' => 'sometimes|nullable|string',
+            'target_partner_id'    => 'sometimes|nullable|exists:partners,id',
+            'status'               => 'sometimes|required|in:pending,approved,rejected,completed',
         ]);
 
         if ($validator->fails()) {
@@ -131,9 +131,15 @@ class ProjectController extends Controller
 
         $fields = $request->only(['title', 'umkm_name', 'umkm_sector', 'budget', 'proposal_description', 'target_partner_id', 'status']);
         
-        // Only instructor or admin can change status
+        // Hanya instruktur/admin yang bisa mengubah status
         if ($request->has('status') && !$user->hasRole('admin') && $project->course->instructor_id !== $user->id) {
             unset($fields['status']);
+        }
+
+        // Jika mahasiswa mengedit proposal yang ditolak, reset status ke pending
+        if ($project->status === 'rejected' && $project->student_id === $user->id) {
+            $fields['status'] = 'pending';
+            $fields['rejection_comment'] = null;
         }
 
         $project->update($fields);
@@ -154,17 +160,29 @@ class ProjectController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'status' => 'required|in:approved,rejected',
+            'status'             => 'required|in:approved,rejected',
+            'rejection_comment'  => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
-        $project->update([
-            'status' => $request->status,
-        ]);
+        $updateData = ['status' => $request->status];
 
-        return response()->json(['message' => 'Proposal ' . $request->status, 'project' => $project]);
+        if ($request->status === 'approved') {
+            // Hapus catatan penolakan sebelumnya (jika ada)
+            $updateData['rejection_comment'] = null;
+        } elseif ($request->status === 'rejected') {
+            $updateData['rejection_comment'] = $request->rejection_comment;
+        }
+
+        $project->update($updateData);
+
+        $message = $request->status === 'approved'
+            ? 'Proposal proyek berhasil disetujui.'
+            : 'Proposal proyek ditolak. Mahasiswa dapat merevisi dan mengajukan kembali.';
+
+        return response()->json(['message' => $message, 'project' => $project]);
     }
 }

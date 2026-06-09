@@ -70,7 +70,7 @@ const InstructorCourseDetail = () => {
                     <img 
                         src={course.image || 'https://images.unsplash.com/photo-1611284446314-60a58ac0deb9?w=400&q=80'} 
                         alt={course.title} 
-                        className="w-32 h-32 object-cover rounded-2xl shadow-sm"
+                        className="w-32 h-32 object-cover rounded-lg shadow-sm"
                     />
                     <div>
                         <div className="flex items-center gap-3 mb-2">
@@ -78,7 +78,7 @@ const InstructorCourseDetail = () => {
                                 {course.is_published ? 'Published' : 'Draft'}
                             </span>
                             <span className="text-on-surface-variant font-label-sm">{course.category?.name}</span>
-                            <span className="text-on-surface-variant font-label-sm px-2 py-0.5 bg-secondary-fixed/30 text-secondary rounded-md">{course.level}</span>
+                            <span className="text-on-surface-variant font-label-sm px-2 py-0.5 bg-secondary-fixed/30 text-secondary rounded-lg">{course.level}</span>
                             <span className="text-on-surface-variant font-label-sm flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">schedule</span> {course.duration} Jam</span>
                         </div>
                         <h1 className="font-headline-xl text-headline-xl text-primary mb-2">{course.title}</h1>
@@ -89,14 +89,14 @@ const InstructorCourseDetail = () => {
                 <div className="flex items-center gap-3 w-full md:w-auto">
                     <Link 
                         to={`/dashboard/manager/edit/${course.id}`}
-                        className="flex-1 md:flex-none bg-primary text-white px-5 py-2.5 rounded-xl font-label-md text-label-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                        className="flex-1 md:flex-none bg-primary text-white px-5 py-2.5 rounded-lg font-label-md text-label-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-sm"
                     >
                         <span className="material-symbols-outlined text-[20px]">edit</span>
                         Edit Course
                     </Link>
                     <button 
                         onClick={handleDelete}
-                        className="p-2.5 text-error border border-error/20 bg-error/5 rounded-xl hover:bg-error/10 transition-colors"
+                        className="p-2.5 text-error border border-error/20 bg-error/5 rounded-lg hover:bg-error/10 transition-colors"
                         title="Delete Course"
                     >
                         <span className="material-symbols-outlined text-[20px]">delete</span>
@@ -113,14 +113,14 @@ const InstructorCourseDetail = () => {
                     </div>
 
                     {course.modules?.length === 0 ? (
-                        <div className="text-center py-10 bg-white/50 backdrop-blur-md border border-dashed border-outline-variant rounded-xl">
+                        <div className="text-center py-10 bg-white/50 backdrop-blur-md border border-dashed border-outline-variant rounded-lg">
                             <span className="material-symbols-outlined text-[40px] text-outline mb-2">inventory_2</span>
                             <p className="text-on-surface-variant font-body-sm">Belum ada modul kurikulum.</p>
                         </div>
                     ) : (
                         <div className="space-y-4">
                             {course.modules?.map((mod, index) => (
-                                <div key={mod.id} className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-2xl p-5 shadow-sm">
+                                <div key={mod.id} className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-5 shadow-sm">
                                     <div 
                                         className="flex items-start gap-4 mb-4 cursor-pointer group select-none"
                                         onClick={() => toggleModule(mod.id)}
@@ -143,7 +143,7 @@ const InstructorCourseDetail = () => {
                                         <div className="pl-12 space-y-2 animate-fade-in mt-4">
                                             {/* Materials */}
                                             {mod.materials?.map((mat, i) => (
-                                                <div key={mat.id} className="bg-surface-container-low rounded-xl border border-outline-variant/50 group overflow-hidden">
+                                                <div key={mat.id} className="bg-surface-container-low rounded-lg border border-outline-variant/50 group overflow-hidden">
                                                     <div 
                                                         className="flex items-center justify-between p-3 cursor-pointer"
                                                         onClick={() => toggleMaterial(mat.id)}
@@ -193,7 +193,7 @@ const InstructorCourseDetail = () => {
                                             
                                             {/* Quiz */}
                                             {mod.quiz && (
-                                                <div className="flex items-center justify-between bg-tertiary-fixed/10 p-3 rounded-xl border border-tertiary/20 group">
+                                                <div className="flex items-center justify-between bg-tertiary-fixed/10 p-3 rounded-lg border border-tertiary/20 group">
                                                     <div className="flex items-center gap-3">
                                                         <span className="material-symbols-outlined text-tertiary text-[20px]">quiz</span>
                                                         <div>
@@ -220,9 +220,9 @@ const InstructorCourseDetail = () => {
 
                 {/* PBL Sidebar */}
                 <div className="space-y-6">
-                    <div className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-2xl p-6 shadow-sm">
+                    <div className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-6 shadow-sm">
                         <div className="flex items-center gap-3 mb-4 border-b border-outline-variant pb-4">
-                            <div className="p-2 bg-secondary-fixed/20 rounded-xl text-secondary">
+                            <div className="p-2 bg-secondary-fixed/20 rounded-lg text-secondary">
                                 <span className="material-symbols-outlined">nature_people</span>
                             </div>
                             <h2 className="font-headline-sm text-primary">Proyek Akhir (PBL)</h2>
