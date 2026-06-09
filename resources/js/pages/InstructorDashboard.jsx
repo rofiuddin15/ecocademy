@@ -21,6 +21,11 @@ const InstructorDashboard = () => {
     const [showRubricModal, setShowRubricModal] = useState(false);
     const [showMapModal, setShowMapModal] = useState(false);
 
+    // State untuk detail kartu bento box
+    const [showActiveProjectsModal, setShowActiveProjectsModal] = useState(false);
+    const [showPendingProposalsModal, setShowPendingProposalsModal] = useState(false);
+    const [showPartnersModal, setShowPartnersModal] = useState(false);
+
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
@@ -246,7 +251,10 @@ const InstructorDashboard = () => {
                 {/* Bento Grid: Stats & Map */}
                 <div className="grid grid-cols-12 gap-4 mb-6">
                     {/* Stat Cards */}
-                    <div className="col-span-12 md:col-span-3 bg-white/80 backdrop-blur-md border border-outline-variant p-4 rounded-lg flex flex-col justify-between h-36 shadow-sm">
+                    <div 
+                        onClick={() => setShowActiveProjectsModal(true)}
+                        className="col-span-12 md:col-span-3 bg-white/80 backdrop-blur-md border border-outline-variant p-4 rounded-lg flex flex-col justify-between h-36 shadow-sm cursor-pointer hover:shadow-md hover:border-primary transition-all"
+                    >
                         <div className="flex justify-between items-start">
                             <span className="material-symbols-outlined text-primary bg-primary-fixed/20 p-1.5 rounded-lg text-[20px]">rocket_launch</span>
                             <span className="text-on-surface-variant font-label-sm">+2 minggu ini</span>
@@ -257,7 +265,10 @@ const InstructorDashboard = () => {
                         </div>
                     </div>
 
-                    <div className="col-span-12 md:col-span-3 bg-white/80 backdrop-blur-md border border-outline-variant p-4 rounded-lg flex flex-col justify-between h-36 shadow-sm border-l-4 border-l-secondary">
+                    <div 
+                        onClick={() => setShowPendingProposalsModal(true)}
+                        className="col-span-12 md:col-span-3 bg-white/80 backdrop-blur-md border border-outline-variant p-4 rounded-lg flex flex-col justify-between h-36 shadow-sm border-l-4 border-l-secondary cursor-pointer hover:shadow-md hover:border-secondary transition-all"
+                    >
                         <div className="flex justify-between items-start">
                             <span className="material-symbols-outlined text-secondary bg-secondary-container/20 p-1.5 rounded-lg text-[20px]">pending_actions</span>
                             <span className="text-error font-label-md font-bold">Prioritas</span>
@@ -268,7 +279,10 @@ const InstructorDashboard = () => {
                         </div>
                     </div>
 
-                    <div className="col-span-12 md:col-span-3 bg-white/80 backdrop-blur-md border border-outline-variant p-4 rounded-lg flex flex-col justify-between h-36 shadow-sm">
+                    <div 
+                        onClick={() => setShowPartnersModal(true)}
+                        className="col-span-12 md:col-span-3 bg-white/80 backdrop-blur-md border border-outline-variant p-4 rounded-lg flex flex-col justify-between h-36 shadow-sm cursor-pointer hover:shadow-md hover:border-tertiary transition-all"
+                    >
                         <div className="flex justify-between items-start">
                             <span className="material-symbols-outlined text-tertiary bg-tertiary-fixed/40 p-1.5 rounded-lg text-[20px]">handshake</span>
                             <span className="text-on-surface-variant font-label-sm">Kemitraan</span>
@@ -818,6 +832,211 @@ const InstructorDashboard = () => {
                             <button onClick={() => setShowMapModal(false)}
                                 className="px-5 py-2.5 bg-primary text-on-primary hover:bg-primary/95 rounded-lg font-label-md text-label-md transition-colors cursor-pointer font-bold">
                                 Tutup Peta
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ============================================================
+                MODAL DAFTAR PROYEK AKTIF
+                ============================================================ */}
+            {showActiveProjectsModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+                    <div className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col max-h-[90vh]">
+                        <div className="px-6 py-4 border-b border-outline-variant bg-primary-fixed/10 flex justify-between items-center shrink-0">
+                            <div className="flex items-center gap-2">
+                                <span className="material-symbols-outlined text-primary text-[28px]">rocket_launch</span>
+                                <h3 className="font-headline-sm text-primary font-bold">Daftar Proyek Aktif</h3>
+                            </div>
+                            <button onClick={() => setShowActiveProjectsModal(false)} className="text-on-surface-variant hover:text-error p-1 rounded-lg hover:bg-error/10 transition-colors cursor-pointer">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <div className="p-6 overflow-y-auto flex-1">
+                            <div className="overflow-x-auto border border-outline-variant rounded-xl shadow-sm">
+                                <table className="w-full text-left border-collapse text-xs">
+                                    <thead>
+                                        <tr className="bg-slate-50 border-b border-outline-variant text-on-surface-variant font-bold">
+                                            <th className="py-3 px-4">Nama Mahasiswa</th>
+                                            <th className="py-3 px-4">Judul Proyek</th>
+                                            <th className="py-3 px-4">Mitra UMKM</th>
+                                            <th className="py-3 px-4">Progres Proyek</th>
+                                            <th className="py-3 px-4">Status</th>
+                                            <th className="py-3 px-4">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-outline-variant/50">
+                                        {projects.filter(p => ['approved', 'executing', 'completed'].includes(p.status)).map((project, idx) => {
+                                            const studentName = project.student?.name || project.user?.name || 'Mahasiswa';
+                                            const progress = getProjectProgress(project);
+                                            return (
+                                                <tr key={project.id || idx} className="hover:bg-slate-50">
+                                                    <td className="py-3 px-4 font-bold">{studentName}</td>
+                                                    <td className="py-3 px-4 font-medium text-primary">{project.title}</td>
+                                                    <td className="py-3 px-4 text-on-surface-variant">{project.umkm_name || '—'}</td>
+                                                    <td className="py-3 px-4">
+                                                        <div className="flex items-center gap-2">
+                                                            <div className="w-20 bg-slate-100 rounded-full h-1.5 shrink-0">
+                                                                <div className="h-1.5 rounded-full bg-primary" style={{ width: `${progress.percent}%` }}></div>
+                                                            </div>
+                                                            <span className="text-[10px] text-on-surface-variant font-medium">{progress.percent}%</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="py-3 px-4">{statusBadge(project.status)}</td>
+                                                    <td className="py-3 px-4">
+                                                        <button 
+                                                            onClick={() => {
+                                                                setShowActiveProjectsModal(false);
+                                                                handleOpenReview(project);
+                                                            }}
+                                                            className="text-primary hover:underline font-bold cursor-pointer"
+                                                        >
+                                                            Detail
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                        {projects.filter(p => ['approved', 'executing', 'completed'].includes(p.status)).length === 0 && (
+                                            <tr>
+                                                <td colSpan="6" className="py-8 text-center text-slate-400 italic">
+                                                    Tidak ada proyek aktif saat ini.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div className="px-6 py-4 border-t border-outline-variant bg-surface-container-lowest flex justify-end shrink-0">
+                            <button onClick={() => setShowActiveProjectsModal(false)}
+                                className="px-5 py-2.5 bg-primary text-on-primary hover:bg-primary/95 rounded-lg font-label-md text-label-md transition-colors cursor-pointer font-bold">
+                                Tutup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ============================================================
+                MODAL DAFTAR PROPOSAL MENUNGGU REVIEW
+                ============================================================ */}
+            {showPendingProposalsModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+                    <div className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col max-h-[90vh]">
+                        <div className="px-6 py-4 border-b border-outline-variant bg-secondary-container/20 flex justify-between items-center shrink-0">
+                            <div className="flex items-center gap-2">
+                                <span className="material-symbols-outlined text-secondary-fixed-variant text-[28px]">pending_actions</span>
+                                <h3 className="font-headline-sm text-secondary-fixed-variant font-bold">Proposal Menunggu Review</h3>
+                            </div>
+                            <button onClick={() => setShowPendingProposalsModal(false)} className="text-on-surface-variant hover:text-error p-1 rounded-lg hover:bg-error/10 transition-colors cursor-pointer">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <div className="p-6 overflow-y-auto flex-1">
+                            <div className="overflow-x-auto border border-outline-variant rounded-xl shadow-sm">
+                                <table className="w-full text-left border-collapse text-xs">
+                                    <thead>
+                                        <tr className="bg-slate-50 border-b border-outline-variant text-on-surface-variant font-bold">
+                                            <th className="py-3 px-4">Nama Mahasiswa</th>
+                                            <th className="py-3 px-4">Judul Proyek</th>
+                                            <th className="py-3 px-4">Mitra UMKM</th>
+                                            <th className="py-3 px-4">Estimasi Anggaran</th>
+                                            <th className="py-3 px-4">Tanggal Pengajuan</th>
+                                            <th className="py-3 px-4">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-outline-variant/50">
+                                        {projects.filter(p => p.status === 'pending').map((project, idx) => {
+                                            const studentName = project.student?.name || project.user?.name || 'Mahasiswa';
+                                            return (
+                                                <tr key={project.id || idx} className="hover:bg-slate-50">
+                                                    <td className="py-3 px-4 font-bold">{studentName}</td>
+                                                    <td className="py-3 px-4 font-medium text-primary">{project.title}</td>
+                                                    <td className="py-3 px-4 text-on-surface-variant">{project.umkm_name || '—'}</td>
+                                                    <td className="py-3 px-4 font-semibold text-emerald-700 font-mono">Rp {Number(project.budget || 0).toLocaleString('id-ID')}</td>
+                                                    <td className="py-3 px-4 text-on-surface-variant">
+                                                        {project.created_at ? new Date(project.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' }) : '—'}
+                                                    </td>
+                                                    <td className="py-3 px-4">
+                                                        <button 
+                                                            onClick={() => {
+                                                                setShowPendingProposalsModal(false);
+                                                                handleOpenReview(project);
+                                                            }}
+                                                            className="text-white bg-secondary text-[11px] px-2.5 py-1.5 rounded-lg hover:bg-secondary/90 transition-colors flex items-center gap-1 cursor-pointer font-bold animate-pulse"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[12px]">rate_review</span>
+                                                            Tinjau
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                        {projects.filter(p => p.status === 'pending').length === 0 && (
+                                            <tr>
+                                                <td colSpan="6" className="py-8 text-center text-slate-400 italic">
+                                                    Tidak ada proposal menunggu review saat ini.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div className="px-6 py-4 border-t border-outline-variant bg-surface-container-lowest flex justify-end shrink-0">
+                            <button onClick={() => setShowPendingProposalsModal(false)}
+                                className="px-5 py-2.5 bg-primary text-on-primary hover:bg-primary/95 rounded-lg font-label-md text-label-md transition-colors cursor-pointer font-bold">
+                                Tutup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ============================================================
+                MODAL DAFTAR MITRA UMKM
+                ============================================================ */}
+            {showPartnersModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+                    <div className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col max-h-[90vh]">
+                        <div className="px-6 py-4 border-b border-outline-variant bg-primary-fixed/10 flex justify-between items-center shrink-0">
+                            <div className="flex items-center gap-2">
+                                <span className="material-symbols-outlined text-primary text-[28px]">handshake</span>
+                                <h3 className="font-headline-sm text-primary font-bold">Kemitraan UMKM Terdaftar</h3>
+                            </div>
+                            <button onClick={() => setShowPartnersModal(false)} className="text-on-surface-variant hover:text-error p-1 rounded-lg hover:bg-error/10 transition-colors cursor-pointer">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <div className="p-6 overflow-y-auto flex-1">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {partners.map((partner) => (
+                                    <div key={partner.id} className="flex items-start p-4 border border-outline-variant rounded-xl bg-slate-50 shadow-sm hover:shadow-md transition-shadow">
+                                        <img className="w-16 h-16 rounded-lg object-cover mr-4 shrink-0 shadow border border-outline-variant/50" src={getPartnerLogo(partner.name)} alt={partner.name} />
+                                        <div className="space-y-1">
+                                            <p className="font-bold text-primary text-label-lg leading-tight">{partner.name}</p>
+                                            <p className="text-[10px] font-bold text-secondary-fixed-variant bg-secondary-container/30 px-2 py-0.5 rounded-full w-fit">
+                                                {getPartnerMeta(partner)}
+                                            </p>
+                                            <p className="text-xs text-on-surface-variant leading-relaxed line-clamp-2" title={partner.description}>
+                                                {partner.description || 'Tidak ada deskripsi tersedia.'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                                {partners.length === 0 && (
+                                    <div className="col-span-2 text-center text-slate-400 italic py-8">
+                                        Tidak ada data kemitraan UMKM terdaftar saat ini.
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="px-6 py-4 border-t border-outline-variant bg-surface-container-lowest flex justify-end shrink-0">
+                            <button onClick={() => setShowPartnersModal(false)}
+                                className="px-5 py-2.5 bg-primary text-on-primary hover:bg-primary/95 rounded-lg font-label-md text-label-md transition-colors cursor-pointer font-bold">
+                                Tutup
                             </button>
                         </div>
                     </div>
