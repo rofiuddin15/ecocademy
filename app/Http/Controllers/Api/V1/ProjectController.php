@@ -122,7 +122,7 @@ class ProjectController extends Controller
             'budget'               => 'sometimes|nullable|numeric|min:0',
             'proposal_description' => 'sometimes|nullable|string',
             'target_partner_id'    => 'sometimes|nullable|exists:partners,id',
-            'status'               => 'sometimes|required|in:pending,approved,rejected,completed',
+            'status'               => 'sometimes|required|in:pending,approved,rejected,planning,executing,completed',
         ]);
 
         if ($validator->fails()) {

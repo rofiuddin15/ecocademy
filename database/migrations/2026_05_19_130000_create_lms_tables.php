@@ -144,7 +144,7 @@ return new class extends Migration
             $table->string('title', 150);
             $table->string('umkm_name', 100);
             $table->string('umkm_sector', 50);
-            $table->enum('status', ['planning', 'executing', 'completed'])->default('planning');
+            $table->enum('status', ['pending', 'approved', 'rejected', 'planning', 'executing', 'completed'])->default('pending');
             $table->timestamps();
 
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
