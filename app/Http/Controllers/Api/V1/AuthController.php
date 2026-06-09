@@ -115,6 +115,82 @@ class AuthController extends Controller
     }
 
     /**
+     * Update the authenticated user's profile.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = auth('api')->user();
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:100',
+            'email' => 'required|string|email|max:100|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:6',
+            'bio' => 'nullable|string',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->bio = $request->bio;
+
+        if ($request->has('password') && !empty($request->password)) {
+            $user->password = Hash::make($request->password);
+        }
+
+        if ($request->hasFile('avatar')) {
+            // Delete old avatar if exists
+            if ($user->avatar) {
+                $oldPath = public_path(str_replace(url('/'), '', $user->avatar));
+                if (file_exists($oldPath)) {
+                    @unlink($oldPath);
+                }
+            }
+
+            $file = $request->file('avatar');
+            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/avatars'), $fileName);
+            $user->avatar = url('uploads/avatars/' . $fileName);
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'user' => $user->load('roles')
+        ]);
+    }
+
+    /**
+     * Delete the authenticated user's account.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteAccount()
+    {
+        $user = auth('api')->user();
+
+        // Delete avatar if exists
+        if ($user->avatar) {
+            $path = public_path(str_replace(url('/'), '', $user->avatar));
+            if (file_exists($path)) {
+                @unlink($path);
+            }
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'message' => 'Account deleted successfully'
+        ]);
+    }
+
+    /**
      * Get the token array structure.
      *
      * @param  string $token

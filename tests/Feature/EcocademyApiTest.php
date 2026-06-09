@@ -295,6 +295,47 @@ class EcocademyApiTest extends TestCase
             ->assertJsonCount(1, 'comments');
     }
 
+    /**
+     * Test authenticated profile updates and account deletion.
+     */
+    public function test_profile_management()
+    {
+        $studentToken = $this->getStudentToken();
+
+        // 1. Update Profile (POST auth/profile)
+        $updateResponse = $this->postJson('/api/v1/auth/profile', [
+            'name' => 'Aditya Pratama Baru',
+            'email' => 'adityabaru@example.com',
+            'bio' => 'Biografi ter-update',
+        ], [
+            'Authorization' => 'Bearer ' . $studentToken
+        ]);
+
+        $updateResponse->assertStatus(200)
+            ->assertJsonPath('message', 'Profile updated successfully')
+            ->assertJsonPath('user.name', 'Aditya Pratama Baru')
+            ->assertJsonPath('user.email', 'adityabaru@example.com')
+            ->assertJsonPath('user.bio', 'Biografi ter-update');
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'adityabaru@example.com',
+            'name' => 'Aditya Pratama Baru',
+            'bio' => 'Biografi ter-update',
+        ]);
+
+        // 2. Delete Account (DELETE auth/profile)
+        $deleteResponse = $this->deleteJson('/api/v1/auth/profile', [], [
+            'Authorization' => 'Bearer ' . $studentToken
+        ]);
+
+        $deleteResponse->assertStatus(200)
+            ->assertJsonPath('message', 'Account deleted successfully');
+
+        $this->assertDatabaseMissing('users', [
+            'email' => 'adityabaru@example.com'
+        ]);
+    }
+
     // Helper functions
     private function getStudentToken()
     {

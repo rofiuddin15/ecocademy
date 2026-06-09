@@ -24,6 +24,7 @@ import InstructorCourseDetail from './pages/InstructorCourseDetail';
 import StudentModules from './pages/StudentModules';
 import GreenShowcase from './pages/GreenShowcase';
 import UmkmDirectory from './pages/UmkmDirectory';
+import Profile from './pages/Profile';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -75,6 +76,7 @@ const App = () => {
                     }
                 >
                     <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/dashboard/profile" element={<Profile />} />
                     <Route path="/dashboard/courses/:id" element={<CourseDetail />} />
                     <Route path="/dashboard/courses/:courseId/modules/:moduleId/quiz" element={<QuizView />} />
                     <Route path="/dashboard/courses/:courseId/project" element={<ProjectView />} />

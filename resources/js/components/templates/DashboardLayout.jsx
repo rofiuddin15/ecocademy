@@ -19,7 +19,8 @@ const DashboardLayout = () => {
         { path: '/dashboard/modules', label: 'Modul', icon: 'menu_book' },
         { path: '/dashboard/showcase', label: 'Etalase Hijau', icon: 'workspace_premium' },
         { path: '/dashboard/directory', label: 'Direktori UMKM', icon: 'location_on' },
-        { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' }
+        { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' },
+        { path: '/dashboard/profile', label: 'Profil Saya', icon: 'person' }
     ];
 
     const instructorNavLinks = [
@@ -27,7 +28,8 @@ const DashboardLayout = () => {
         { path: '/dashboard/manager', label: 'Manajemen Kursus', icon: 'menu_book' },
         { path: '/dashboard', label: 'Etalase Hijau', icon: 'workspace_premium', isPlaceholder: true },
         { path: '/dashboard', label: 'Direktori UMKM', icon: 'location_on', isPlaceholder: true },
-        { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' }
+        { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' },
+        { path: '/dashboard/profile', label: 'Profil Instruktur', icon: 'person' }
     ];
 
     const navLinks = user?.role === 'instructor' ? instructorNavLinks : studentNavLinks;
@@ -78,7 +80,7 @@ const DashboardLayout = () => {
                                     isActive 
                                         ? 'text-primary dark:text-primary-fixed font-bold border-r-4 border-primary dark:border-primary-fixed bg-primary-fixed/10' 
                                         : 'text-on-surface-variant dark:text-on-tertiary-container hover:bg-primary-fixed/5 hover:text-primary'
-                                }`}
+                                  }`}
                             >
                                 {content}
                             </Link>
@@ -120,9 +122,9 @@ const DashboardLayout = () => {
                         <span className="material-symbols-outlined">notifications</span>
                         <span className="absolute top-0 right-0 w-2 h-2 bg-secondary rounded-full"></span>
                     </button>
-                    <button className="text-on-surface-variant hover:text-primary transition-colors">
+                    <Link to="/dashboard/profile" className="text-on-surface-variant hover:text-primary transition-colors flex items-center">
                         <span className="material-symbols-outlined">settings</span>
-                    </button>
+                    </Link>
                     {user?.role === 'instructor' && (
                         <button className="hidden md:flex bg-primary text-on-primary font-label-md text-label-md px-6 py-2.5 rounded-lg hover:opacity-90 transition-opacity items-center gap-2">
                             <span className="material-symbols-outlined text-[18px]">assessment</span>
@@ -130,17 +132,25 @@ const DashboardLayout = () => {
                         </button>
                     )}
                     <div className="hidden md:block h-8 w-px bg-outline-variant"></div>
-                    <div className="flex items-center gap-3">
+                    <Link to="/dashboard/profile" className="flex items-center gap-3 hover:opacity-85 transition-opacity">
                         <div className="text-right">
                             <p className="font-label-md text-label-md text-on-surface leading-tight font-bold">{user?.name || 'Pengguna'}</p>
-                            <p className="font-label-sm text-label-sm text-on-surface-variant">Eco-Warrior Level 4</p>
+                            <p className="font-label-sm text-label-sm text-on-surface-variant">
+                                {user?.role === 'instructor' ? 'Instruktur' : 'Eco-Warrior Level 4'}
+                            </p>
                         </div>
-                        <img 
-                            className="w-10 h-10 rounded-full object-cover border-2 border-primary-fixed shadow-sm" 
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEOPBlmD7aedNfO5UOqEZLWlJf1iJcmaeQf1ei-7bBIi8tIubzbLbfeycYJZihbwwOMuU6Bp_DAAzEWrmYt9Awacx9KRvjcofhNc_rHVkKhRYK-SM0QSiwQtYIlOkRJM1CPx-iVE_QDwprpMrB5LHFKczQgMRwSx5oxxl-3ULPRlbnj4fZ2wSEdj61Hg5jmpdZhlR-3qfXUTvWRsw5kq7FwZkWrpmZU8VBTgBv_yL-G2WUwirOssTtKzTMVEVpiq2JgpkZ3toPxyxB" 
-                            alt="User Profile"
-                        />
-                    </div>
+                        {user?.avatar ? (
+                            <img 
+                                className="w-10 h-10 rounded-full object-cover border-2 border-primary-fixed shadow-sm" 
+                                src={user.avatar} 
+                                alt="User Profile"
+                            />
+                        ) : (
+                            <div className="w-10 h-10 rounded-full border-2 border-primary-fixed shadow-sm bg-primary-fixed/20 text-primary-fixed flex items-center justify-center font-bold text-lg">
+                                {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                            </div>
+                        )}
+                    </Link>
                 </div>
             </header>
 

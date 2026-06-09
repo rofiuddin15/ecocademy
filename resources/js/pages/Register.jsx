@@ -13,6 +13,10 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const [bio, setBio] = useState('');
+    
+    // Show/Hide password states
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const { isAuthenticated, isLoading, error } = useSelector((state) => state.auth);
 
@@ -25,6 +29,33 @@ const Register = () => {
             navigate('/dashboard');
         }
     }, [isAuthenticated, navigate]);
+
+    // Password strength evaluator function
+    const getPasswordStrength = (pass) => {
+        if (!pass) return { score: 0, label: '', color: 'bg-slate-100', textColor: 'text-on-surface-variant' };
+        
+        let score = 0;
+        if (pass.length >= 6) score += 1;
+        if (/[A-Z]/.test(pass)) score += 1;
+        if (/[0-9]/.test(pass)) score += 1;
+        if (/[^A-Za-z0-9]/.test(pass)) score += 1;
+
+        switch (score) {
+            case 0:
+            case 1:
+                return { score, label: 'Sangat Lemah', color: 'bg-red-500', textColor: 'text-red-600' };
+            case 2:
+                return { score, label: 'Lemah', color: 'bg-orange-500', textColor: 'text-orange-600' };
+            case 3:
+                return { score, label: 'Sedang', color: 'bg-amber-500', textColor: 'text-amber-600' };
+            case 4:
+                return { score, label: 'Kuat', color: 'bg-emerald-500', textColor: 'text-emerald-600' };
+            default:
+                return { score: 0, label: '', color: 'bg-slate-100', textColor: 'text-on-surface-variant' };
+        }
+    };
+
+    const passwordStrength = getPasswordStrength(password);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -138,28 +169,69 @@ const Register = () => {
                             />
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-4">
                             <div>
                                 <label className="block text-label-sm font-medium text-primary mb-1">Kata Sandi</label>
-                                <input
-                                    type="password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="••••••••"
-                                    className="w-full h-[44px] px-4 rounded-lg border border-outline/30 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all text-body-md"
-                                />
+                                <div className="relative">
+                                    <input
+                                        type={showPassword ? 'text' : 'password'}
+                                        required
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        placeholder="••••••••"
+                                        className="w-full h-[44px] pl-4 pr-10 rounded-lg border border-outline/30 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all text-body-md"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors flex items-center cursor-pointer"
+                                    >
+                                        <span className="material-symbols-outlined text-[20px]">
+                                            {showPassword ? 'visibility_off' : 'visibility'}
+                                        </span>
+                                    </button>
+                                </div>
+                                
+                                {password && (
+                                    <div className="mt-2 space-y-1.5 transition-all">
+                                        <div className="flex justify-between items-center text-label-sm">
+                                            <span className="text-on-surface-variant/80">Kekuatan Sandi:</span>
+                                            <span className={`font-bold ${passwordStrength.textColor}`}>{passwordStrength.label}</span>
+                                        </div>
+                                        <div className="h-1.5 w-full flex gap-1">
+                                            <div className={`h-full flex-1 rounded-full transition-all duration-300 ${passwordStrength.score >= 1 ? passwordStrength.color : 'bg-slate-100'}`}></div>
+                                            <div className={`h-full flex-1 rounded-full transition-all duration-300 ${passwordStrength.score >= 2 ? passwordStrength.color : 'bg-slate-100'}`}></div>
+                                            <div className={`h-full flex-1 rounded-full transition-all duration-300 ${passwordStrength.score >= 3 ? passwordStrength.color : 'bg-slate-100'}`}></div>
+                                            <div className={`h-full flex-1 rounded-full transition-all duration-300 ${passwordStrength.score >= 4 ? passwordStrength.color : 'bg-slate-100'}`}></div>
+                                        </div>
+                                        <p className="text-[10px] text-on-surface-variant/70 leading-normal">
+                                            Kombinasikan huruf besar, angka, dan simbol untuk kata sandi yang lebih aman.
+                                        </p>
+                                    </div>
+                                )}
                             </div>
+
                             <div>
                                 <label className="block text-label-sm font-medium text-primary mb-1">Konfirmasi Sandi</label>
-                                <input
-                                    type="password"
-                                    required
-                                    value={passwordConfirmation}
-                                    onChange={(e) => setPasswordConfirmation(e.target.value)}
-                                    placeholder="••••••••"
-                                    className="w-full h-[44px] px-4 rounded-lg border border-outline/30 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all text-body-md"
-                                />
+                                <div className="relative">
+                                    <input
+                                        type={showConfirmPassword ? 'text' : 'password'}
+                                        required
+                                        value={passwordConfirmation}
+                                        onChange={(e) => setPasswordConfirmation(e.target.value)}
+                                        placeholder="••••••••"
+                                        className="w-full h-[44px] pl-4 pr-10 rounded-lg border border-outline/30 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all text-body-md"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors flex items-center cursor-pointer"
+                                    >
+                                        <span className="material-symbols-outlined text-[20px]">
+                                            {showConfirmPassword ? 'visibility_off' : 'visibility'}
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
