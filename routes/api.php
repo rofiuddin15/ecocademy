@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V1\MaterialController;
 use App\Http\Controllers\Api\V1\PblDetailController;
 use App\Http\Controllers\Api\V1\ForumController;
 use App\Http\Controllers\Api\V1\QuizController;
+use App\Http\Controllers\Api\V1\PartnerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,7 @@ Route::prefix('v1')->group(function () {
     Route::get('categories/{category}', [CategoryController::class, 'show']);
     Route::get('courses', [CourseController::class, 'index']);
     Route::get('courses/{course}', [CourseController::class, 'show']);
+    Route::get('partners', [PartnerController::class, 'index']);
 
     Route::get('forum', [ForumController::class, 'index']);
     Route::get('forum/{forumThread}', [ForumController::class, 'show']);
@@ -55,7 +57,7 @@ Route::prefix('v1')->group(function () {
         Route::post('projects', [ProjectController::class, 'store']);
         Route::get('projects/{project}', [ProjectController::class, 'show']);
         Route::put('projects/{project}', [ProjectController::class, 'update']);
-        Route::patch('projects/{project}/review', [ProjectController::class, 'review']);
+        Route::post('projects/{project}/review', [ProjectController::class, 'review']);
 
         // Submissions
         Route::post('submissions', [SubmissionController::class, 'store']);
