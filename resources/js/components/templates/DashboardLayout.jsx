@@ -26,8 +26,8 @@ const DashboardLayout = () => {
     const instructorNavLinks = [
         { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
         { path: '/dashboard/manager', label: 'Manajemen Kursus', icon: 'menu_book' },
-        { path: '/dashboard', label: 'Etalase Hijau', icon: 'workspace_premium', isPlaceholder: true },
-        { path: '/dashboard', label: 'Direktori UMKM', icon: 'location_on', isPlaceholder: true },
+        { path: '/dashboard/showcase', label: 'Etalase Hijau', icon: 'workspace_premium' },
+        { path: '/dashboard/directory', label: 'Direktori UMKM', icon: 'location_on' },
         { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' },
         { path: '/dashboard/profile', label: 'Profil Instruktur', icon: 'person' }
     ];
