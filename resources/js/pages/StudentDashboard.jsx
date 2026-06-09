@@ -76,6 +76,19 @@ const StudentDashboard = () => {
         return { progress: 0, icon: 'school', label: title };
     };
 
+    const checkIsEnrolled = (courseId, title) => {
+        const enrolledStorage = JSON.parse(localStorage.getItem('enrolled_courses') || '[]');
+        const isLocallyEnrolled = enrolledStorage.includes(String(courseId));
+        
+        const t = title.toLowerCase();
+        const isDefaultEnrolled = ['desain', 'design', 'ekonomi', 'circular', 'pemasaran', 'marketing'].some(k => t.includes(k));
+        
+        return isLocallyEnrolled || isDefaultEnrolled;
+    };
+
+    const enrolledCourses = courses.filter(course => checkIsEnrolled(course.id, course.title));
+    const availableCourses = courses.filter(course => !checkIsEnrolled(course.id, course.title));
+
     if (isLoading) {
         return (
             <div className="py-20 flex flex-col items-center justify-center gap-3">
@@ -254,40 +267,116 @@ const StudentDashboard = () => {
                         </div>
                     </div>
 
-                    {/* Courses Grid */}
-                    <div>
-                        <div className="flex justify-between items-center mb-6">
-                            <h3 className="font-headline-md text-headline-md text-primary">Enrolled Courses</h3>
-                            <button className="text-secondary font-label-md text-label-md hover:underline">See all modules</button>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {courses.map((course) => {
-                                const meta = getCourseMetadata(course.title);
-                                return (
-                                    <Link 
-                                        key={course.id}
-                                        to={`/dashboard/courses/${course.id}`}
-                                        className="bg-white p-6 rounded-lg border border-outline-variant hover:border-primary transition-colors flex flex-col justify-between cursor-pointer group"
-                                    >
-                                        <div>
-                                            <span className="material-symbols-outlined text-primary text-3xl mb-4 group-hover:scale-110 transition-transform block">
-                                                {meta.icon}
-                                            </span>
-                                            <h4 className="font-label-md text-label-md text-on-surface mb-2 font-bold group-hover:text-primary transition-colors">
-                                                {meta.label}
-                                            </h4>
-                                        </div>
-                                        <div className="pt-4 flex items-center justify-between border-t border-outline-variant/10 mt-4">
-                                            <span className="font-label-sm text-label-sm text-on-surface-variant">Progress: {meta.progress}%</span>
-                                            <div className="w-12 h-1 bg-surface-container rounded-full overflow-hidden">
-                                                <div className="h-full bg-primary" style={{ width: `${meta.progress}%` }}></div>
+                    {/* Enrolled Courses Grid */}
+                    {enrolledCourses.length > 0 && (
+                        <div className="mb-10">
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="font-headline-md text-headline-md text-primary flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-primary text-[24px]">school</span>
+                                    Kursus yang Diikuti ({enrolledCourses.length})
+                                </h3>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {enrolledCourses.map((course) => {
+                                    const meta = getCourseMetadata(course.title);
+                                    return (
+                                        <Link 
+                                            key={course.id}
+                                            to={`/dashboard/courses/${course.id}`}
+                                            className="bg-white rounded-lg border border-outline-variant overflow-hidden hover:shadow-md hover:border-primary transition-all flex flex-col justify-between cursor-pointer group"
+                                        >
+                                            <div>
+                                                <div className="relative aspect-[16/9] w-full overflow-hidden">
+                                                    <img 
+                                                        src={course.image || 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80'} 
+                                                        alt={course.title} 
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                    />
+                                                    <div className="absolute top-3 right-3 bg-secondary text-on-secondary px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                                                        {course.score || 95} Poin Hijau
+                                                    </div>
+                                                </div>
+                                                <div className="p-5">
+                                                    <span className="text-[11px] font-bold text-secondary uppercase tracking-wider block mb-1">
+                                                        {course.category?.name || 'Umum'}
+                                                    </span>
+                                                    <h4 className="font-label-md text-label-md text-on-surface mb-2 font-bold group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                                                        {meta.label}
+                                                    </h4>
+                                                    <p className="text-body-sm text-on-surface-variant line-clamp-2">
+                                                        {course.description}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </Link>
-                                );
-                            })}
+                                            <div className="p-5 pt-4 flex items-center justify-between border-t border-outline-variant/10 mt-auto bg-surface-container-lowest">
+                                                <span className="font-label-sm text-label-sm text-on-surface-variant font-medium">Progress: {meta.progress}%</span>
+                                                <div className="w-16 h-1.5 bg-surface-container rounded-full overflow-hidden">
+                                                    <div className="h-full bg-primary" style={{ width: `${meta.progress}%` }}></div>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    )}
+
+                    {/* Available Courses Grid */}
+                    {availableCourses.length > 0 && (
+                        <div>
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="font-headline-md text-headline-md text-primary flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-primary text-[24px]">explore</span>
+                                    Kursus yang Tersedia ({availableCourses.length})
+                                </h3>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {availableCourses.map((course) => {
+                                    return (
+                                        <Link 
+                                            key={course.id}
+                                            to={`/dashboard/courses/${course.id}`}
+                                            className="bg-white rounded-lg border border-outline-variant overflow-hidden hover:shadow-md hover:border-primary transition-all flex flex-col justify-between cursor-pointer group"
+                                        >
+                                            <div>
+                                                <div className="relative aspect-[16/9] w-full overflow-hidden">
+                                                    <img 
+                                                        src={course.image || 'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80'} 
+                                                        alt={course.title} 
+                                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                    />
+                                                    <div className="absolute top-3 right-3 bg-primary text-on-primary px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                                                        {course.level || 'Semua Tingkat'}
+                                                    </div>
+                                                </div>
+                                                <div className="p-5">
+                                                    <span className="text-[11px] font-bold text-secondary uppercase tracking-wider block mb-1">
+                                                        {course.category?.name || 'Umum'}
+                                                    </span>
+                                                    <h4 className="font-label-md text-label-md text-on-surface mb-2 font-bold group-hover:text-primary transition-colors line-clamp-2 leading-tight">
+                                                        {course.title}
+                                                    </h4>
+                                                    <p className="text-body-sm text-on-surface-variant line-clamp-2">
+                                                        {course.description}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="p-5 pt-4 flex items-center justify-between border-t border-outline-variant/10 mt-auto bg-surface-container-lowest">
+                                                <div className="flex items-center gap-1.5 text-label-sm text-secondary font-bold">
+                                                    <span className="material-symbols-outlined text-[16px] text-yellow-400" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                                                    <span>{course.rating || '4.8'}</span>
+                                                </div>
+                                                <span className="text-primary font-bold text-label-sm hover:underline flex items-center gap-1">
+                                                    Gabung Kelas
+                                                    <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                                                </span>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Sidebar Column (Right Column) */}
