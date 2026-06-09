@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import api from '../utils/api';
 
 const CourseDetail = () => {
     const { id } = useParams();
     const { user } = useSelector((state) => state.auth);
+    const navigate = useNavigate();
     const [course, setCourse] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedMaterial, setSelectedMaterial] = useState(null);
@@ -57,7 +58,18 @@ const CourseDetail = () => {
     return (
         <>
             {/* Back Button */}
-            <Link to="/dashboard" className="flex items-center gap-2 mb-6 text-primary hover:opacity-85 font-semibold">
+            <Link 
+                to="/dashboard" 
+                onClick={(e) => {
+                    e.preventDefault();
+                    if (window.history.length > 1) {
+                        navigate(-1);
+                    } else {
+                        navigate('/dashboard');
+                    }
+                }}
+                className="flex items-center gap-2 mb-6 text-primary hover:opacity-85 font-semibold"
+            >
                 <span className="material-symbols-outlined text-[20px]">arrow_back</span>
                 <span>Kembali ke Katalog</span>
             </Link>
