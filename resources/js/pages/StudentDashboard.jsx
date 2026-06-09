@@ -65,13 +65,13 @@ const StudentDashboard = () => {
     const getCourseMetadata = (title) => {
         const t = title.toLowerCase();
         if (t.includes('desain') || t.includes('design')) {
-            return { progress: 45, icon: 'architecture', label: 'Sustainable Product Design' };
+            return { progress: 45, icon: 'architecture', label: 'Desain Produk Berkelanjutan' };
         }
         if (t.includes('ekonomi') || t.includes('circular')) {
-            return { progress: 12, icon: 'recycling', label: 'Circular Economy 101' };
+            return { progress: 12, icon: 'recycling', label: 'Dasar Ekonomi Sirkular' };
         }
         if (t.includes('pemasaran') || t.includes('marketing')) {
-            return { progress: 88, icon: 'campaign', label: 'Green Marketing Strategies' };
+            return { progress: 88, icon: 'campaign', label: 'Strategi Pemasaran Hijau' };
         }
         return { progress: 0, icon: 'school', label: title };
     };
@@ -103,10 +103,10 @@ const StudentDashboard = () => {
             {/* Hero Greeting */}
             <section className="mb-12">
                 <h2 className="font-headline-xl text-headline-xl text-primary mb-2 transition-all hover:translate-x-1 duration-300">
-                    Welcome back, Eco-Warrior!
+                    Selamat datang kembali, Eco-Warrior!
                 </h2>
                 <p className="font-body-lg text-body-lg text-on-surface-variant">
-                    Your journey to digital stewardship continues. {activeProject ? '1' : '2'} projects need your attention today.
+                    Perjalanan kepemimpinan digital Anda berlanjut. {activeProject ? '1' : '2'} proyek membutuhkan perhatian Anda hari ini.
                 </p>
             </section>
 
@@ -121,8 +121,8 @@ const StudentDashboard = () => {
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWegNJh0Yw4pFj94l7o6JKDKx2n21rnwNtYhOaNYoBUudIevgu6Chq0knKEBC_pXCFKRfNMFV_RPT4J-VWd3A5SAwfuT4G1CQy9nwdH0kQLoDMVrYPPEQhntldeJLdF5stzxMc3qXg44qd6ugO90GIEkjF0GQH4myu8tg25d26Tu-dibUCFq7myevyi65bClBnwGMoC5EnG2Ui0Es-sp0py0c-5SrnZNNZgjI-mqszLRu-DpkWm9KXVF6nKikcmVj6kAagjOvf6A7B" 
                                 alt="Culinary packaging" 
                             />
-                            <div className="absolute top-4 right-4 bg-secondary text-on-secondary px-3 py-1 rounded-full font-label-sm text-label-sm uppercase tracking-wider">
-                                Sustainability Score: {activeProject ? (activeProject.course?.score || 92) : 92}
+                            <div className="absolute top-4 right-4 bg-secondary text-on-secondary px-3 py-1 rounded-full font-label-sm text-label-sm uppercase tracking-wider font-bold">
+                                Skor Keberlanjutan: {activeProject ? (activeProject.course?.score || 92) : 92}
                             </div>
                         </div>
 
@@ -135,11 +135,11 @@ const StudentDashboard = () => {
                                     <p className="font-body-md text-body-md text-on-surface-variant">
                                         {activeProject 
                                             ? `Mengembangkan sistem closed-loop bersama ${activeProject.umkm_name} (${activeProject.umkm_sector}).`
-                                            : 'Building a circular economy pipeline for local organic eateries.'}
+                                            : 'Membangun rantai ekonomi sirkular untuk rumah makan organik lokal.'}
                                     </p>
                                 </div>
-                                <span className="bg-primary-fixed text-on-primary-fixed px-4 py-1.5 rounded-lg font-label-md text-label-md shrink-0">
-                                    Project-Based Learning
+                                <span className="bg-primary-fixed text-on-primary-fixed px-4 py-1.5 rounded-lg font-label-md text-label-md shrink-0 font-bold">
+                                    Pembelajaran Berbasis Proyek (PjBL)
                                 </span>
                             </div>
 
@@ -178,7 +178,7 @@ const StudentDashboard = () => {
                                         </div>
                                         <span className={`font-label-sm text-label-sm mt-2 ${
                                             getMilestoneStatus(1) !== 'upcoming' ? 'text-primary font-bold' : 'text-on-surface-variant'
-                                        }`}>Formulation</span>
+                                        }`}>Formulasi</span>
                                     </div>
 
                                     {/* Step 2: Planning */}
@@ -200,7 +200,7 @@ const StudentDashboard = () => {
                                         </div>
                                         <span className={`font-label-sm text-label-sm mt-2 ${
                                             getMilestoneStatus(2) !== 'upcoming' ? 'text-primary font-bold' : 'text-on-surface-variant'
-                                        }`}>Planning</span>
+                                        }`}>Perencanaan</span>
                                     </div>
 
                                     {/* Step 3: Execution */}
@@ -222,7 +222,7 @@ const StudentDashboard = () => {
                                         </div>
                                         <span className={`font-label-sm text-label-sm mt-2 ${
                                             getMilestoneStatus(3) !== 'upcoming' ? 'text-primary font-bold' : 'text-on-surface-variant'
-                                        }`}>Execution</span>
+                                        }`}>Eksekusi</span>
                                     </div>
 
                                     {/* Step 4: Impact */}
@@ -244,7 +244,7 @@ const StudentDashboard = () => {
                                         </div>
                                         <span className={`font-label-sm text-label-sm mt-2 ${
                                             getMilestoneStatus(4) !== 'upcoming' ? 'text-primary font-bold' : 'text-on-surface-variant'
-                                        }`}>Impact</span>
+                                        }`}>Dampak</span>
                                     </div>
                                 </div>
                             </div>
@@ -255,13 +255,13 @@ const StudentDashboard = () => {
                                     className="bg-primary text-white px-8 py-3 rounded-lg font-label-md text-label-md hover:opacity-90 transition-all flex items-center gap-2"
                                 >
                                     <span className="material-symbols-outlined text-[16px]">play_arrow</span>
-                                    Continue Planning
+                                    Lanjutkan Proyek
                                 </Link>
                                 <Link 
                                     to={activeProject ? `/dashboard/courses/${activeProject.course_id}` : '#'}
                                     className="border border-primary text-primary px-8 py-3 rounded-lg font-label-md text-label-md hover:bg-primary-fixed/5 transition-all"
                                 >
-                                    View Project Brief
+                                    Lihat Panduan Proyek
                                 </Link>
                             </div>
                         </div>
@@ -309,7 +309,7 @@ const StudentDashboard = () => {
                                                 </div>
                                             </div>
                                             <div className="p-5 pt-4 flex items-center justify-between border-t border-outline-variant/10 mt-auto bg-surface-container-lowest">
-                                                <span className="font-label-sm text-label-sm text-on-surface-variant font-medium">Progress: {meta.progress}%</span>
+                                                <span className="font-label-sm text-label-sm text-on-surface-variant font-medium">Progres: {meta.progress}%</span>
                                                 <div className="w-16 h-1.5 bg-surface-container rounded-full overflow-hidden">
                                                     <div className="h-full bg-primary" style={{ width: `${meta.progress}%` }}></div>
                                                 </div>
@@ -383,7 +383,7 @@ const StudentDashboard = () => {
                 <div className="col-span-12 lg:col-span-4 space-y-8">
                     {/* Upcoming Deadlines */}
                     <div className="bg-white p-8 rounded-lg border border-outline-variant shadow-sm">
-                        <h3 className="font-headline-md text-headline-md text-primary mb-6">Upcoming Deadlines</h3>
+                        <h3 className="font-headline-md text-headline-md text-primary mb-6">Tenggat Waktu Mendatang</h3>
                         <div className="space-y-6">
                             {activeProject && activeProject.course && activeProject.course.milestones ? (
                                 activeProject.course.milestones.map((milestone, idx) => {
@@ -408,7 +408,7 @@ const StudentDashboard = () => {
                             )}
                         </div>
                         <button className="w-full mt-8 py-3 font-label-md text-label-md text-primary bg-primary-fixed/20 rounded-lg hover:bg-primary-fixed/40 transition-colors font-bold">
-                            Full Calendar View
+                            Lihat Kalender Lengkap
                         </button>
                     </div>
 
@@ -418,17 +418,17 @@ const StudentDashboard = () => {
                             <div className="absolute top-0 right-0 p-4 opacity-10">
                                 <span className="material-symbols-outlined text-[80px]" style={{ fontVariationSettings: "'FILL' 1" }}>eco</span>
                             </div>
-                            <h3 className="font-headline-md text-headline-md mb-2 relative z-10 text-white font-bold">Partner Spotlight</h3>
+                            <h3 className="font-headline-md text-headline-md mb-2 relative z-10 text-white font-bold">Sorotan Mitra</h3>
                             <p className="font-body-md text-body-md opacity-80 mb-6 relative z-10 text-slate-300">
-                                Meet {activeProject.umkm_name}, our partner in {activeProject.umkm_sector}.
+                                Kenalkan {activeProject.umkm_name}, mitra kami di bidang {activeProject.umkm_sector}.
                             </p>
                             <button className="bg-white text-primary px-6 py-2.5 rounded-lg font-label-md text-label-md relative z-10 hover:shadow-lg transition-all font-bold">
-                                View Project Details
+                                Lihat Detail Proyek
                             </button>
                         </div>
                     ) : (
                         <div className="bg-surface-container rounded-lg p-8 text-on-surface relative overflow-hidden border border-outline-variant">
-                            <h3 className="font-headline-md text-headline-md mb-2 relative z-10 font-bold">UMKM Network</h3>
+                            <h3 className="font-headline-md text-headline-md mb-2 relative z-10 font-bold">Jaringan UMKM</h3>
                             <p className="font-body-md text-body-md text-on-surface-variant mb-6 relative z-10">
                                 Daftar ke proyek PBL untuk berkolaborasi dengan mitra UMKM kami.
                             </p>

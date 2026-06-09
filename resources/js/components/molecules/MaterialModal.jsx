@@ -42,8 +42,8 @@ const MaterialModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) =>
             <div className="bg-surface w-full max-w-2xl rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
                 <div className="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest">
                     <div>
-                        <h3 className="font-headline-sm text-primary">{initialData ? 'Edit Material' : 'Add Material'}</h3>
-                        <p className="text-on-surface-variant font-label-sm">To: {moduleTitle}</p>
+                        <h3 className="font-headline-sm text-primary">{initialData ? 'Edit Materi' : 'Tambah Materi'}</h3>
+                        <p className="text-on-surface-variant font-label-sm">Untuk: {moduleTitle}</p>
                     </div>
                     <button onClick={onClose} className="text-on-surface-variant hover:text-error transition-colors p-1">
                         <span className="material-symbols-outlined">close</span>
@@ -53,7 +53,7 @@ const MaterialModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) =>
                 <div className="p-6 overflow-y-auto flex-1">
                     <form id="materialForm" onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-2">
-                            <label className="block font-label-md text-on-surface">Material Title</label>
+                            <label className="block font-label-md text-on-surface">Judul Materi</label>
                             <input 
                                 type="text" 
                                 name="title" 
@@ -61,26 +61,26 @@ const MaterialModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) =>
                                 onChange={handleChange} 
                                 required
                                 className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all"
-                                placeholder="e.g., Introduction to Circular Economy"
+                                placeholder="Contoh: Pengantar Ekonomi Sirkular"
                             />
                         </div>
 
                         <div className="space-y-2">
-                            <label className="block font-label-md text-on-surface">Content Type</label>
+                            <label className="block font-label-md text-on-surface">Tipe Konten</label>
                             <select 
                                 name="content_type" 
                                 value={formData.content_type} 
                                 onChange={handleChange}
                                 className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all"
                             >
-                                <option value="article">Article / Text</option>
+                                <option value="article">Artikel / Teks</option>
                                 <option value="video">Video (YouTube/URL)</option>
-                                <option value="pdf">PDF Document (URL)</option>
+                                <option value="pdf">Dokumen PDF (URL)</option>
                             </select>
                         </div>
 
                         <div className="space-y-2">
-                            <label className="block font-label-md text-on-surface">Estimated Duration (Minutes)</label>
+                            <label className="block font-label-md text-on-surface">Estimasi Durasi (Menit)</label>
                             <input 
                                 type="number" 
                                 name="duration_minutes" 
@@ -89,13 +89,13 @@ const MaterialModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) =>
                                 required
                                 min="0"
                                 className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all"
-                                placeholder="e.g., 30"
+                                placeholder="Contoh: 30"
                             />
                         </div>
 
                         {formData.content_type !== 'article' && (
                             <div className="space-y-2">
-                                <label className="block font-label-md text-on-surface">Content URL</label>
+                                <label className="block font-label-md text-on-surface">Tautan Konten (URL)</label>
                                 <input 
                                     type="url" 
                                     name="content_url" 
@@ -110,7 +110,7 @@ const MaterialModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) =>
 
                         {formData.content_type === 'article' && (
                             <div className="space-y-2">
-                                <label className="block font-label-md text-on-surface">Content Body (Markdown/Text)</label>
+                                <label className="block font-label-md text-on-surface">Isi Konten (Markdown/Teks)</label>
                                 <textarea 
                                     name="body_text" 
                                     value={formData.body_text} 
@@ -118,7 +118,7 @@ const MaterialModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) =>
                                     required
                                     rows="8"
                                     className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all resize-none font-mono text-sm"
-                                    placeholder="Write your lesson content here..."
+                                    placeholder="Tulis isi materi pelajaran Anda di sini..."
                                 />
                             </div>
                         )}
@@ -127,10 +127,10 @@ const MaterialModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) =>
                 
                 <div className="px-6 py-4 border-t border-outline-variant bg-surface-container-low flex justify-end gap-3">
                     <button onClick={onClose} className="px-6 py-2.5 rounded-lg font-label-md text-on-surface-variant hover:bg-outline-variant/20 transition-colors">
-                        Cancel
+                        Batal
                     </button>
                     <button type="submit" form="materialForm" className="bg-primary text-white px-6 py-2.5 rounded-lg font-label-md hover:bg-primary/90 transition-colors shadow-sm">
-                        Save Material
+                        Simpan Materi
                     </button>
                 </div>
             </div>

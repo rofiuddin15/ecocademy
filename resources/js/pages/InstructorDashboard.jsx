@@ -94,13 +94,13 @@ const InstructorDashboard = () => {
                 {/* Header Section */}
             <div className="mb-10 flex flex-col md:flex-row justify-between items-end gap-6">
                 <div>
-                    <p className="text-primary font-label-md text-label-md mb-2">Welcome back, {user?.name || 'Instructor'}</p>
-                    <h2 className="font-headline-xl text-headline-xl text-primary">Instructor Monitoring</h2>
+                    <p className="text-primary font-label-md text-label-md mb-2">Selamat datang kembali, {user?.name || 'Instruktur'}</p>
+                    <h2 className="font-headline-xl text-headline-xl text-primary">Pemantauan Instruktur</h2>
                 </div>
                 <div className="bg-primary-container text-on-primary-container px-6 py-4 rounded-lg flex items-center gap-4 border border-primary/20 shadow-sm">
                     <span className="material-symbols-outlined text-[32px]" style={{ fontVariationSettings: "'FILL' 1" }}>eco</span>
                     <div>
-                        <p className="font-label-sm text-label-sm uppercase tracking-wider opacity-80">Academy Impact Score</p>
+                        <p className="font-label-sm text-label-sm uppercase tracking-wider opacity-80">Skor Dampak Akademi</p>
                         <p className="font-headline-md text-headline-md font-bold">92.4</p>
                     </div>
                 </div>
@@ -112,10 +112,10 @@ const InstructorDashboard = () => {
                 <div className="col-span-12 md:col-span-3 bg-white/80 backdrop-blur-md border border-outline-variant p-4 rounded-lg flex flex-col justify-between h-36 shadow-sm">
                     <div className="flex justify-between items-start">
                         <span className="material-symbols-outlined text-primary bg-primary-fixed/20 p-1.5 rounded-lg text-[20px]">rocket_launch</span>
-                        <span className="text-on-surface-variant font-label-sm">+2 this week</span>
+                        <span className="text-on-surface-variant font-label-sm">+2 minggu ini</span>
                     </div>
                     <div>
-                        <p className="text-on-surface-variant font-label-sm">Active Projects</p>
+                        <p className="text-on-surface-variant font-label-sm">Proyek Aktif</p>
                         <p className="text-primary font-headline-lg text-headline-lg font-bold">{projects.length || 12}</p>
                     </div>
                 </div>
@@ -123,7 +123,7 @@ const InstructorDashboard = () => {
                 <div className="col-span-12 md:col-span-3 bg-white/80 backdrop-blur-md border border-outline-variant p-4 rounded-lg flex flex-col justify-between h-36 shadow-sm border-l-4 border-l-secondary">
                     <div className="flex justify-between items-start">
                         <span className="material-symbols-outlined text-secondary bg-secondary-container/20 p-1.5 rounded-lg text-[20px]">pending_actions</span>
-                        <span className="text-error font-label-md font-bold">Priority</span>
+                        <span className="text-error font-label-md font-bold">Prioritas</span>
                     </div>
                     <div>
                         <p className="text-on-surface-variant font-label-sm leading-tight">Proposal Menunggu Review</p>
@@ -134,10 +134,10 @@ const InstructorDashboard = () => {
                 <div className="col-span-12 md:col-span-3 bg-white/80 backdrop-blur-md border border-outline-variant p-4 rounded-lg flex flex-col justify-between h-36 shadow-sm">
                     <div className="flex justify-between items-start">
                         <span className="material-symbols-outlined text-tertiary bg-tertiary-fixed/40 p-1.5 rounded-lg text-[20px]">handshake</span>
-                        <span className="text-on-surface-variant font-label-sm">Partnered</span>
+                        <span className="text-on-surface-variant font-label-sm">Kemitraan</span>
                     </div>
                     <div>
-                        <p className="text-on-surface-variant font-label-sm">Partner UMKM</p>
+                        <p className="text-on-surface-variant font-label-sm">Mitra UMKM</p>
                         <p className="text-primary font-headline-lg text-headline-lg font-bold">08</p>
                     </div>
                 </div>
@@ -151,7 +151,7 @@ const InstructorDashboard = () => {
                     <div className="absolute inset-0 bg-primary/40 flex items-center justify-center backdrop-blur-[2px]">
                         <div className="text-center text-white">
                             <span className="material-symbols-outlined text-3xl">map</span>
-                            <p className="font-label-md text-label-md">Partner Map View</p>
+                            <p className="font-label-md text-label-md">Tampilan Peta Mitra</p>
                         </div>
                     </div>
                 </div>
@@ -160,13 +160,13 @@ const InstructorDashboard = () => {
             {/* Project Monitoring Table */}
             <div className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg overflow-hidden mb-6 shadow-sm">
                 <div className="px-5 py-4 flex justify-between items-center border-b border-outline-variant bg-surface-container-low">
-                    <h3 className="font-headline-md text-headline-md text-primary">Project Monitoring</h3>
+                    <h3 className="font-headline-md text-headline-md text-primary">Pemantauan Proyek</h3>
                     <div className="flex gap-2">
                         <button className="bg-surface-container border border-outline-variant px-4 py-2 rounded-lg font-label-sm text-label-sm flex items-center gap-2 hover:bg-outline-variant/10 transition-colors">
                             <span className="material-symbols-outlined text-[16px]">filter_list</span> Filter
                         </button>
                         <button className="bg-surface-container border border-outline-variant px-4 py-2 rounded-lg font-label-sm text-label-sm flex items-center gap-2 hover:bg-outline-variant/10 transition-colors">
-                            <span className="material-symbols-outlined text-[16px]">download</span> Export
+                            <span className="material-symbols-outlined text-[16px]">download</span> Ekspor
                         </button>
                     </div>
                 </div>
@@ -174,12 +174,12 @@ const InstructorDashboard = () => {
                     <table className="w-full text-left border-collapse min-w-[800px]">
                         <thead>
                             <tr className="bg-surface-container-high/50 text-on-surface-variant font-label-md text-label-md border-b border-outline-variant">
-                                <th className="px-5 py-3">Student Name</th>
-                                <th className="px-5 py-3">Project Title</th>
-                                <th className="px-5 py-3">Current Milestone</th>
-                                <th className="px-5 py-3">MSME Partner</th>
+                                <th className="px-5 py-3">Nama Mahasiswa</th>
+                                <th className="px-5 py-3">Judul Proyek</th>
+                                <th className="px-5 py-3">Milestone Saat Ini</th>
+                                <th className="px-5 py-3">Mitra UMKM</th>
                                 <th className="px-5 py-3">Status</th>
-                                <th className="px-5 py-3">Action</th>
+                                <th className="px-5 py-3">Aksi</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-outline-variant">
@@ -214,7 +214,7 @@ const InstructorDashboard = () => {
                                                     className="text-white bg-secondary text-label-sm px-3 py-1.5 rounded-lg hover:bg-secondary/90 transition-colors flex items-center gap-1"
                                                 >
                                                     <span className="material-symbols-outlined text-[14px]">rate_review</span>
-                                                    Review
+                                                    Tinjau
                                                 </button>
                                             ) : (
                                                 <button className="text-primary font-label-md text-label-md hover:underline">Detail</button>
@@ -236,9 +236,9 @@ const InstructorDashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="md:col-span-2 bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-5 shadow-sm">
                     <div className="flex justify-between items-center mb-4">
-                        <h3 className="font-headline-md text-headline-md text-primary">UMKM Partner Directory</h3>
+                        <h3 className="font-headline-md text-headline-md text-primary">Direktori Mitra UMKM</h3>
                         <a className="text-primary font-label-md text-label-md flex items-center gap-1 hover:gap-2 transition-all" href="#">
-                            View All <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+                            Lihat Semua <span className="material-symbols-outlined text-[18px]">chevron_right</span>
                         </a>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -246,14 +246,14 @@ const InstructorDashboard = () => {
                             <img className="w-14 h-14 rounded-lg object-cover mr-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNWFoIUGsT0AgReNPIN48B9pNQEwFYjxStKvVWQgihtP5rhH6Q8V_oOW4Ig55DxBE5G-MlciTNy6cuibk2-2XtY3Nnukvh83vSV-fqDO2hyeo_K6D1WrdyUXGuZXZBM0fXt-MwUU3SmkDpAkGRkW6_hfuPwRzvkIj-cr_D1GAdFiZUm2uF3B33pPcl0wbHbMXFPf7EbeZkSpuDD1XQLl7jtANqEtR4ftAf6tU-0Fe6vB5Y_aLw9dAFYl6Uq-_u9-ey2GNBUORuQUkb" alt="Handicrafts" />
                             <div>
                                 <p className="font-label-md text-label-md text-primary">Kriya Kreasi</p>
-                                <p className="text-xs text-on-surface-variant">Handicrafts • Bali</p>
+                                <p className="text-xs text-on-surface-variant">Kerajinan • Bali</p>
                             </div>
                         </div>
                         <div className="flex items-center p-4 border border-outline-variant rounded-lg bg-surface-container-lowest hover:shadow-md transition-shadow">
                             <img className="w-14 h-14 rounded-lg object-cover mr-4" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU9z9KistK31fJecjJKRAAR-6RUcvKtJ24weKhbaWKGnEDrCJWKsyYgzNCyoThVazAoykd5oV1HHxBSHn0-mpG8yAjujOkxzF_gf1M5fwUNdpgChbAr0wOfEALec9W6taY2zRGnuZRTUs6DBRroihanaZe4QgObCI19VhyUxEFqntGMED2zg9FlNUVuGrgY5wVsLQfh5wpa5-0BZ8YCLSwnPltFZkFmk1vl6N88VQwUWMYTDISCTAZF4Q3-M_hbzfKDkJ-yfG_9MiQ" alt="Organic Harvest" />
                             <div>
                                 <p className="font-label-md text-label-md text-primary">Organic Harvest</p>
-                                <p className="text-xs text-on-surface-variant">Agriculture • Malang</p>
+                                <p className="text-xs text-on-surface-variant">Pertanian • Malang</p>
                             </div>
                         </div>
                     </div>
@@ -261,11 +261,11 @@ const InstructorDashboard = () => {
 
                 <div className="bg-primary text-on-primary rounded-lg p-5 flex flex-col justify-between overflow-hidden relative group shadow-sm">
                     <div className="relative z-10">
-                        <h3 className="font-headline-md text-headline-md mb-2">Green Metrics Rubric</h3>
-                        <p className="font-body-md opacity-80 mb-4">Review the 2024 sustainability standards for student assessment.</p>
+                        <h3 className="font-headline-md text-headline-md mb-2">Rubrik Metrik Hijau</h3>
+                        <p className="font-body-md opacity-80 mb-4">Tinjau standar keberlanjutan 2024 untuk penilaian mahasiswa.</p>
                         <button className="bg-white text-primary px-6 py-3 rounded-lg font-label-md text-label-md w-full flex items-center justify-center gap-2 hover:bg-primary-fixed transition-colors">
                             <span className="material-symbols-outlined">menu_book</span>
-                            Open Rubric
+                            Buka Rubrik
                         </button>
                     </div>
                     {/* Abstract visual element */}

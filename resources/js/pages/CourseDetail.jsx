@@ -203,7 +203,9 @@ const CourseDetail = () => {
                                                                             </span>
                                                                             <span className="text-body-md font-medium text-on-surface hover:text-primary transition-colors">{material.title}</span>
                                                                         </div>
-                                                                        <span className="text-label-sm text-on-surface-variant capitalize">{material.content_type}</span>
+                                                                        <span className="text-label-sm text-on-surface-variant capitalize">
+                                                                            {material.content_type === 'video' ? 'Video' : material.content_type === 'pdf' ? 'PDF' : 'Bacaan'}
+                                                                        </span>
                                                                     </button>
                                                                 ))}
                                                         </div>
@@ -278,7 +280,9 @@ const CourseDetail = () => {
                         {/* Modal Header */}
                         <div className="p-6 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-low">
                             <div>
-                                <span className="text-label-sm text-secondary font-bold capitalize mb-1">Materi {selectedMaterial.content_type}</span>
+                                <span className="text-label-sm text-secondary font-bold capitalize mb-1">
+                                    Materi {selectedMaterial.content_type === 'video' ? 'Video' : selectedMaterial.content_type === 'pdf' ? 'PDF' : 'Bacaan'}
+                                </span>
                                 <h3 className="text-headline-md font-headline-md text-primary font-bold">{selectedMaterial.title}</h3>
                             </div>
                             <button

@@ -100,7 +100,7 @@ const CourseForm = () => {
             }
         } catch (error) {
             console.error('Error fetching course:', error);
-            alert('Failed to load course details');
+            alert('Gagal memuat detail kursus');
         } finally {
             setIsLoading(false);
         }
@@ -148,7 +148,7 @@ const CourseForm = () => {
                 await api.post(`/courses/${id}`, submitData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 });
-                alert('Course info updated successfully.');
+                alert('Informasi kursus berhasil diperbarui.');
             } else {
                 const res = await api.post('/courses', submitData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
@@ -157,7 +157,7 @@ const CourseForm = () => {
             }
         } catch (error) {
             console.error('Error saving course:', error);
-            alert('Failed to save course. Check console for details.');
+            alert('Gagal menyimpan kursus. Periksa konsol untuk detailnya.');
         } finally {
             setIsSaving(false);
         }
@@ -179,18 +179,18 @@ const CourseForm = () => {
             setIsModuleModalOpen(false);
         } catch (error) {
             console.error(error);
-            alert('Failed to add module');
+            alert('Gagal menambahkan modul');
         }
     };
 
     const handleDeleteModule = async (moduleId) => {
-        if (!window.confirm('Delete this module?')) return;
+        if (!window.confirm('Hapus modul ini?')) return;
         try {
             await api.delete(`/modules/${moduleId}`);
             setModules(modules.filter(m => m.id !== moduleId));
         } catch (error) {
             console.error(error);
-            alert('Failed to delete module');
+            alert('Gagal menghapus modul');
         }
     };
 
@@ -239,7 +239,7 @@ const CourseForm = () => {
             setEditingMaterial(null);
         } catch (error) {
             console.error(error);
-            alert('Failed to save material');
+            alert('Gagal menyimpan materi');
         }
     };
             
@@ -275,7 +275,7 @@ const CourseForm = () => {
             setEditingQuiz(null);
         } catch (error) {
             console.error(error);
-            alert('Failed to save quiz');
+            alert('Gagal menyimpan kuis');
         }
     };
 
@@ -290,10 +290,10 @@ const CourseForm = () => {
         setIsSavingPbl(true);
         try {
             await api.post(`/courses/${id}/pbl`, pblData);
-            alert('PBL Configuration saved successfully.');
+            alert('Konfigurasi PjBL berhasil disimpan.');
         } catch (error) {
             console.error('Error saving PBL:', error);
-            alert('Failed to save PBL Configuration.');
+            alert('Gagal menyimpan Konfigurasi PjBL.');
         } finally {
             setIsSavingPbl(false);
         }
@@ -325,7 +325,7 @@ const CourseForm = () => {
             fetchCourseData();
         } catch (error) {
             console.error(error);
-            alert('Failed to save milestone');
+            alert('Gagal menyimpan milestone');
         }
     };
 
@@ -354,13 +354,13 @@ const CourseForm = () => {
     };
 
     const handleDeleteMilestone = async (milestoneId) => {
-        if (!window.confirm('Delete this milestone?')) return;
+        if (!window.confirm('Hapus milestone ini?')) return;
         try {
             await api.delete(`/milestones/${milestoneId}`);
             setMilestones(milestones.filter(m => m.id !== milestoneId));
         } catch (error) {
             console.error(error);
-            alert('Failed to delete milestone');
+            alert('Gagal menghapus milestone');
         }
     };
 
@@ -381,9 +381,9 @@ const CourseForm = () => {
                         <span className="material-symbols-outlined">arrow_back</span>
                     </Link>
                     <div>
-                        <h2 className="font-headline-xl text-headline-xl text-primary">{isEditing ? 'Course Builder' : 'Create New Course'}</h2>
+                        <h2 className="font-headline-xl text-headline-xl text-primary">{isEditing ? 'Pengembang Kursus' : 'Buat Kursus Baru'}</h2>
                         <p className="font-body-md text-on-surface-variant mt-1">
-                            {isEditing ? `Managing curriculum for: ${formData.title}` : 'Set up the basics for your new course module.'}
+                            {isEditing ? `Kelola kurikulum untuk: ${formData.title}` : 'Atur info dasar untuk modul kursus baru Anda.'}
                         </p>
                     </div>
                 </div>
@@ -393,19 +393,19 @@ const CourseForm = () => {
                             onClick={() => setActiveTab('basic')}
                             className={`px-4 py-2 rounded-lg font-label-md transition-colors ${activeTab === 'basic' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:text-primary'}`}
                         >
-                            Basic Info
+                            Info Dasar
                         </button>
                         <button 
                             onClick={() => setActiveTab('curriculum')}
                             className={`px-4 py-2 rounded-lg font-label-md transition-colors ${activeTab === 'curriculum' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:text-primary'}`}
                         >
-                            Curriculum
+                            Kurikulum
                         </button>
                         <button 
                             onClick={() => setActiveTab('milestones')}
                             className={`px-4 py-2 rounded-lg font-label-md transition-colors ${activeTab === 'milestones' ? 'bg-primary text-white shadow-sm' : 'text-on-surface-variant hover:text-primary'}`}
                         >
-                            PBL Milestones
+                            Tahapan PjBL
                         </button>
                     </div>
                 )}
@@ -416,15 +416,15 @@ const CourseForm = () => {
                 <form onSubmit={handleSaveBasic} className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-8 shadow-sm space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2 md:col-span-2">
-                            <label className="block font-label-md text-on-surface">Course Title</label>
+                            <label className="block font-label-md text-on-surface">Judul Kursus</label>
                             <input type="text" name="title" value={formData.title} onChange={handleChange} required className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" />
                         </div>
                         <div className="space-y-2 md:col-span-2">
-                            <label className="block font-label-md text-on-surface">Description</label>
+                            <label className="block font-label-md text-on-surface">Deskripsi</label>
                             <textarea name="description" value={formData.description} onChange={handleChange} required rows="4" className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none" />
                         </div>
                         <div className="space-y-2">
-                            <label className="block font-label-md text-on-surface">Category</label>
+                            <label className="block font-label-md text-on-surface">Kategori</label>
                             <select name="category_id" value={formData.category_id} onChange={handleChange} required className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">
                                 {categories.map(cat => (
                                     <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -432,11 +432,11 @@ const CourseForm = () => {
                             </select>
                         </div>
                         <div className="space-y-2">
-                            <label className="block font-label-md text-on-surface">Level / Focus Area</label>
+                            <label className="block font-label-md text-on-surface">Tingkat / Area Fokus</label>
                             <input type="text" name="level" value={formData.level} onChange={handleChange} required className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" />
                         </div>
                         <div className="space-y-2">
-                            <label className="block font-label-md text-on-surface">Total Duration (Auto-Calculated)</label>
+                            <label className="block font-label-md text-on-surface">Total Durasi (Dihitung Otomatis)</label>
                             <input 
                                 type="text" 
                                 value={formData.duration ? `${formData.duration} Jam` : 'Belum dihitung'} 
@@ -446,7 +446,7 @@ const CourseForm = () => {
                             <p className="text-xs text-on-surface-variant">Berdasarkan durasi materi dan tahapan PBL.</p>
                         </div>
                         <div className="space-y-2">
-                            <label className="block font-label-md text-on-surface">Course Thumbnail Image (Max 10MB)</label>
+                            <label className="block font-label-md text-on-surface">Gambar Miniatur Kursus (Maks 10MB)</label>
                             <input 
                                 type="file" 
                                 name="image" 
@@ -469,8 +469,8 @@ const CourseForm = () => {
                                 <input type="checkbox" name="is_published" checked={formData.is_published} onChange={handleChange} className="w-5 h-5 border-2 border-outline-variant rounded text-primary focus:ring-primary focus:ring-offset-0 transition-all cursor-pointer" />
                             </div>
                             <div>
-                                <p className="font-label-md text-on-surface">Publish Course</p>
-                                <p className="text-xs text-on-surface-variant">Make this course visible to students in the catalog.</p>
+                                <p className="font-label-md text-on-surface">Terbitkan Kursus</p>
+                                <p className="text-xs text-on-surface-variant">Buat kursus ini dapat dilihat oleh mahasiswa di katalog.</p>
                             </div>
                         </label>
                     </div>
@@ -478,7 +478,7 @@ const CourseForm = () => {
                     <div className="pt-6 flex justify-end gap-4">
                         <button type="submit" disabled={isSaving} className="bg-primary text-white px-8 py-3 rounded-lg font-label-md hover:bg-primary/90 transition-colors disabled:opacity-70 flex items-center gap-2 shadow-sm">
                             {isSaving ? <span className="material-symbols-outlined animate-spin text-[18px]">sync</span> : <span className="material-symbols-outlined text-[18px]">save</span>}
-                            {isEditing ? 'Save Changes' : 'Create & Continue to Curriculum'}
+                            {isEditing ? 'Simpan Perubahan' : 'Buat & Lanjutkan ke Kurikulum'}
                         </button>
                     </div>
                 </form>
@@ -489,18 +489,18 @@ const CourseForm = () => {
                 <div className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-8 shadow-sm space-y-6">
                     <div className="flex justify-between items-center border-b border-outline-variant pb-4">
                         <div>
-                            <h3 className="font-headline-md text-primary">Modules & Materials</h3>
-                            <p className="text-on-surface-variant font-body-sm mt-1">Build your course structure by adding modules, reading materials, and quizzes.</p>
+                            <h3 className="font-headline-md text-primary">Modul & Materi</h3>
+                            <p className="text-on-surface-variant font-body-sm mt-1">Bangun struktur kursus Anda dengan menambahkan modul, materi bacaan, dan kuis.</p>
                         </div>
                         <button onClick={handleAddModule} className="bg-primary/10 text-primary border border-primary/20 px-4 py-2 rounded-lg font-label-sm hover:bg-primary/20 transition-colors flex items-center gap-2">
-                            <span className="material-symbols-outlined text-[18px]">add</span> Add Module
+                            <span className="material-symbols-outlined text-[18px]">add</span> Tambah Modul
                         </button>
                     </div>
 
                     <div className="space-y-4">
                         {modules.length === 0 ? (
                             <div className="text-center py-10 bg-surface-container-lowest border border-dashed border-outline-variant rounded-lg text-on-surface-variant">
-                                No modules created yet. Click "Add Module" to start.
+                                Belum ada modul yang dibuat. Klik "Tambah Modul" untuk memulai.
                             </div>
                         ) : modules.map((mod, index) => (
                             <div key={mod.id} className="border border-outline-variant rounded-lg overflow-hidden bg-surface-container-lowest">
@@ -527,7 +527,7 @@ const CourseForm = () => {
                                                 </button>
                                             </div>
                                         )) : (
-                                            <p className="text-sm text-on-surface-variant italic">No materials added yet.</p>
+                                            <p className="text-sm text-on-surface-variant italic">Belum ada materi yang ditambahkan.</p>
                                         )}
                                     </div>
                                     
@@ -547,11 +547,11 @@ const CourseForm = () => {
                                     {/* Module Actions */}
                                     <div className="flex gap-3 pt-4 border-t border-outline-variant/50">
                                         <button onClick={() => openMaterialModal(mod)} className="text-primary font-label-sm hover:underline flex items-center gap-1">
-                                            <span className="material-symbols-outlined text-[16px]">add_box</span> Add Material
+                                            <span className="material-symbols-outlined text-[16px]">add_box</span> Tambah Materi
                                         </button>
                                         {!mod.quiz && (
                                             <button onClick={() => openQuizModal(mod)} className="text-tertiary font-label-sm hover:underline flex items-center gap-1">
-                                                <span className="material-symbols-outlined text-[16px]">add_box</span> Add Quiz
+                                                <span className="material-symbols-outlined text-[16px]">add_box</span> Tambah Kuis
                                             </button>
                                         )}
                                     </div>
@@ -568,34 +568,34 @@ const CourseForm = () => {
                     {/* Master PBL Configuration Form */}
                     <form onSubmit={handleSavePbl} className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-8 shadow-sm space-y-6">
                         <div className="border-b border-outline-variant pb-4">
-                            <h3 className="font-headline-md text-primary">Master Project Configuration</h3>
-                            <p className="text-on-surface-variant font-body-sm mt-1">Define the main project details, targets, and reporting requirements for this course.</p>
+                            <h3 className="font-headline-md text-primary">Konfigurasi Proyek Utama</h3>
+                            <p className="text-on-surface-variant font-body-sm mt-1">Tentukan detail proyek utama, target, dan persyaratan pelaporan untuk kursus ini.</p>
                         </div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2 md:col-span-2">
-                                <label className="block font-label-md text-on-surface">Project Title</label>
-                                <input type="text" name="title" value={pblData.title} onChange={handlePblChange} required className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all" placeholder="e.g., Waste Management App UI/UX Design" />
+                                <label className="block font-label-md text-on-surface">Judul Proyek</label>
+                                <input type="text" name="title" value={pblData.title} onChange={handlePblChange} required className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all" placeholder="Contoh: Pengolahan Limbah Kulit Apel Menjadi Vegan Leather" />
                             </div>
                             <div className="space-y-2 md:col-span-2">
-                                <label className="block font-label-md text-on-surface">Description & Objectives</label>
-                                <textarea name="description" value={pblData.description} onChange={handlePblChange} required rows="3" className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all resize-none" placeholder="Explain the main goal of this project..." />
+                                <label className="block font-label-md text-on-surface">Deskripsi & Tujuan</label>
+                                <textarea name="description" value={pblData.description} onChange={handlePblChange} required rows="3" className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all resize-none" placeholder="Jelaskan tujuan utama proyek ini..." />
                             </div>
                             <div className="space-y-2">
-                                <label className="block font-label-md text-on-surface">Target Audience / Sasaran</label>
-                                <input type="text" name="target_audience" value={pblData.target_audience} onChange={handlePblChange} required className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all" placeholder="e.g., Local UMKM in fashion sector" />
+                                <label className="block font-label-md text-on-surface">Sasaran / Target Audiens</label>
+                                <input type="text" name="target_audience" value={pblData.target_audience} onChange={handlePblChange} required className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all" placeholder="Contoh: UMKM lokal di sektor fesyen" />
                             </div>
 
                             <div className="space-y-2 md:col-span-2">
-                                <label className="block font-label-md text-on-surface">Reporting Requirements (Laporan)</label>
-                                <textarea name="report_requirements" value={pblData.report_requirements} onChange={handlePblChange} required rows="3" className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all resize-none" placeholder="e.g., Final report must be in PDF format, containing..." />
+                                <label className="block font-label-md text-on-surface">Persyaratan Laporan (Hasil Akhir)</label>
+                                <textarea name="report_requirements" value={pblData.report_requirements} onChange={handlePblChange} required rows="3" className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all resize-none" placeholder="Contoh: Laporan akhir harus dalam format PDF, berisi..." />
                             </div>
                         </div>
                         
                         <div className="pt-2 flex justify-end">
                             <button type="submit" disabled={isSavingPbl} className="bg-primary text-white px-6 py-2.5 rounded-lg font-label-md hover:bg-primary/90 transition-colors disabled:opacity-70 flex items-center gap-2 shadow-sm">
                                 {isSavingPbl ? <span className="material-symbols-outlined animate-spin text-[18px]">sync</span> : <span className="material-symbols-outlined text-[18px]">save</span>}
-                                Save Project Config
+                                Simpan Konfigurasi Proyek
                             </button>
                         </div>
                     </form>
@@ -604,15 +604,15 @@ const CourseForm = () => {
                     <div className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-8 shadow-sm space-y-6">
                         <div className="flex justify-between items-center border-b border-outline-variant pb-4">
                             <div>
-                                <h3 className="font-headline-md text-primary">Project Milestones</h3>
-                                <p className="text-on-surface-variant font-body-sm mt-1">Define the step-by-step stages for the project above.</p>
+                                <h3 className="font-headline-md text-primary">Milestone Proyek</h3>
+                                <p className="text-on-surface-variant font-body-sm mt-1">Tentukan tahapan demi tahapan untuk proyek di atas.</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 <button onClick={handleGenerateGreenpreneurship} type="button" className="bg-primary/10 text-primary border border-primary/20 px-4 py-2 rounded-lg font-label-sm hover:bg-primary/20 transition-colors flex items-center gap-2">
                                     <span className="material-symbols-outlined text-[18px]">auto_awesome</span> Generate 6 Tahap
                                 </button>
                                 <button onClick={openAddMilestoneModal} type="button" className="bg-secondary/10 text-secondary border border-secondary/20 px-4 py-2 rounded-lg font-label-sm hover:bg-secondary/20 transition-colors flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-[18px]">add</span> Add Milestone
+                                    <span className="material-symbols-outlined text-[18px]">add</span> Tambah Milestone
                                 </button>
                             </div>
                         </div>
@@ -620,13 +620,13 @@ const CourseForm = () => {
                         <div className="space-y-4">
                             {milestones.length === 0 ? (
                                 <div className="text-center py-10 bg-surface-container-lowest border border-dashed border-outline-variant rounded-lg text-on-surface-variant">
-                                    No milestones created yet. Click "Add Milestone" to start.
+                                    Belum ada milestone yang dibuat. Klik "Tambah Milestone" untuk memulai.
                                 </div>
                             ) : milestones.map((mile, index) => (
                                 <div key={mile.id} className="border border-outline-variant rounded-lg overflow-hidden bg-surface-container-lowest flex items-center justify-between p-4">
                                     <div className="flex items-center gap-4 flex-1">
                                         <div className="w-10 h-10 rounded bg-secondary-container text-on-secondary-container flex flex-col items-center justify-center font-bold flex-shrink-0">
-                                            <span className="text-[10px] uppercase">Phase</span>
+                                            <span className="text-[10px] uppercase">Tahap</span>
                                             <span>{index + 1}</span>
                                         </div>
                                         <div className="flex-1">
@@ -636,7 +636,7 @@ const CourseForm = () => {
                                                     {mile.duration_hours} Jam
                                                 </span>
                                                 <span className="bg-primary/10 text-primary px-2 py-0.5 rounded text-[10px] uppercase font-bold">
-                                                    Rep: {mile.report_type}
+                                                    Laporan: {mile.report_type}
                                                 </span>
                                             </div>
                                             <p className="text-sm text-on-surface-variant line-clamp-2 mt-1">{mile.instructions}</p>

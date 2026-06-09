@@ -95,7 +95,7 @@ const StudentModules = () => {
                                         {meta.isEnrolled ? (
                                             <>
                                                 <div className="flex justify-between items-end mb-2">
-                                                    <span className="font-label-sm text-label-sm text-on-surface-variant">Progress: {meta.progress}%</span>
+                                                    <span className="font-label-sm text-label-sm text-on-surface-variant">Progres: {meta.progress}%</span>
                                                     {meta.progress > 0 && <span className="w-6 h-1 rounded-full bg-primary-fixed"></span>}
                                                 </div>
                                                 <div className="w-full bg-surface-container-highest rounded-full h-1.5">

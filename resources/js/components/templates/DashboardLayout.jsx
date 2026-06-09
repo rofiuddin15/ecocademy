@@ -24,10 +24,10 @@ const DashboardLayout = () => {
 
     const instructorNavLinks = [
         { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-        { path: '/dashboard/manager', label: 'Course Management', icon: 'menu_book' },
-        { path: '/dashboard', label: 'Green Showcase', icon: 'workspace_premium', isPlaceholder: true },
-        { path: '/dashboard', label: 'UMKM Directory', icon: 'location_on', isPlaceholder: true },
-        { path: '/dashboard/forum', label: 'Feedback Center', icon: 'forum' }
+        { path: '/dashboard/manager', label: 'Manajemen Kursus', icon: 'menu_book' },
+        { path: '/dashboard', label: 'Etalase Hijau', icon: 'workspace_premium', isPlaceholder: true },
+        { path: '/dashboard', label: 'Direktori UMKM', icon: 'location_on', isPlaceholder: true },
+        { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' }
     ];
 
     const navLinks = user?.role === 'instructor' ? instructorNavLinks : studentNavLinks;
@@ -126,7 +126,7 @@ const DashboardLayout = () => {
                     {user?.role === 'instructor' && (
                         <button className="hidden md:flex bg-primary text-on-primary font-label-md text-label-md px-6 py-2.5 rounded-lg hover:opacity-90 transition-opacity items-center gap-2">
                             <span className="material-symbols-outlined text-[18px]">assessment</span>
-                            Evaluation Center
+                            Pusat Evaluasi
                         </button>
                     )}
                     <div className="hidden md:block h-8 w-px bg-outline-variant"></div>

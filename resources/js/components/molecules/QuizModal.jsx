@@ -124,7 +124,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
         
         // Basic validation
         if (quizData.questions.length === 0) {
-            alert('Please add at least one question.');
+            alert('Harap tambahkan minimal satu pertanyaan.');
             return;
         }
 
@@ -138,7 +138,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
         });
 
         if (!isValid) {
-            alert('Please fill out all question texts and option texts, and ensure every question has a correct answer.');
+            alert('Harap isi semua teks pertanyaan dan teks pilihan jawaban, serta pastikan setiap pertanyaan memiliki satu jawaban benar.');
             return;
         }
 
@@ -166,8 +166,8 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
             <div className="bg-surface w-full max-w-4xl rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
                 <div className="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest">
                     <div>
-                        <h3 className="font-headline-sm text-primary">{initialData ? 'Edit Interactive Quiz' : 'Create Interactive Quiz'}</h3>
-                        <p className="text-on-surface-variant font-label-sm">For Module: {moduleTitle}</p>
+                        <h3 className="font-headline-sm text-primary">{initialData ? 'Edit Kuis Interaktif' : 'Buat Kuis Interaktif'}</h3>
+                        <p className="text-on-surface-variant font-label-sm">Untuk Modul: {moduleTitle}</p>
                     </div>
                     <button onClick={onClose} className="text-on-surface-variant hover:text-error transition-colors p-1">
                         <span className="material-symbols-outlined">close</span>
@@ -178,9 +178,9 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                     <form id="quizForm" onSubmit={handleSubmit} className="space-y-8">
                         {/* Quiz Header Info */}
                         <div className="bg-white p-6 rounded-lg border border-outline-variant shadow-sm space-y-4">
-                            <h4 className="font-label-lg text-primary border-b border-outline-variant pb-2">Quiz Details</h4>
+                            <h4 className="font-label-lg text-primary border-b border-outline-variant pb-2">Detail Kuis</h4>
                             <div className="space-y-2">
-                                <label className="block font-label-md text-on-surface">Quiz Title</label>
+                                <label className="block font-label-md text-on-surface">Judul Kuis</label>
                                 <input 
                                     type="text" 
                                     name="title" 
@@ -188,18 +188,18 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                                     onChange={handleQuizChange} 
                                     required
                                     className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all"
-                                    placeholder="e.g., Final Evaluation: Circular Economy"
+                                    placeholder="Contoh: Evaluasi Akhir: Ekonomi Sirkular"
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="block font-label-md text-on-surface">Instructions (Optional)</label>
+                                <label className="block font-label-md text-on-surface">Instruksi (Opsional)</label>
                                 <textarea 
                                     name="instructions" 
                                     value={quizData.instructions} 
                                     onChange={handleQuizChange} 
                                     rows="2"
                                     className="w-full px-4 py-3 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-primary transition-all resize-none"
-                                    placeholder="e.g., Please select the most appropriate answer. Passing score is 70%."
+                                    placeholder="Contoh: Harap pilih jawaban yang paling tepat. Batas kelulusan adalah 70%."
                                 />
                             </div>
                         </div>
@@ -207,8 +207,8 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                         {/* Questions Loop */}
                         <div className="space-y-6">
                             <div className="flex items-center justify-between">
-                                <h4 className="font-headline-sm text-on-surface">Questions</h4>
-                                <span className="text-label-sm text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">{quizData.questions.length} Total</span>
+                                <h4 className="font-headline-sm text-on-surface">Daftar Pertanyaan</h4>
+                                <span className="text-label-sm text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">Total {quizData.questions.length}</span>
                             </div>
 
                             {quizData.questions.map((q, qIndex) => (
@@ -218,7 +218,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                                             type="button" 
                                             onClick={() => removeQuestion(qIndex)}
                                             className="absolute top-4 right-4 text-outline-variant hover:text-error transition-colors"
-                                            title="Remove Question"
+                                            title="Hapus Pertanyaan"
                                         >
                                             <span className="material-symbols-outlined">delete</span>
                                         </button>
@@ -228,14 +228,14 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                                             {qIndex + 1}
                                         </div>
                                         <div className="flex-1 space-y-2">
-                                            <label className="block font-label-md text-on-surface">Question Text</label>
+                                            <label className="block font-label-md text-on-surface">Teks Pertanyaan</label>
                                             <textarea 
                                                 value={q.question_text} 
                                                 onChange={(e) => handleQuestionChange(qIndex, e.target.value)} 
                                                 required
                                                 rows="2"
                                                 className="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg focus:outline-none focus:border-tertiary transition-all resize-none"
-                                                placeholder="Enter question here..."
+                                                placeholder="Masukkan pertanyaan di sini..."
                                             />
                                         </div>
                                     </div>
@@ -250,7 +250,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                                                     checked={opt.is_correct}
                                                     onChange={() => handleCorrectChange(qIndex, optIndex)}
                                                     className="w-4 h-4 text-tertiary focus:ring-tertiary"
-                                                    title="Mark as correct answer"
+                                                    title="Tandai sebagai jawaban benar"
                                                 />
                                                 <div className="flex-1">
                                                     <div className="flex items-center">
@@ -262,7 +262,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                                                             value={opt.option_text}
                                                             onChange={(e) => handleOptionChange(qIndex, optIndex, e.target.value)}
                                                             required
-                                                            placeholder={`Option ${optIndex + 1}`}
+                                                            placeholder={`Pilihan ${optIndex + 1}`}
                                                             className="flex-1 bg-transparent focus:outline-none text-sm w-full"
                                                         />
                                                     </div>
@@ -282,7 +282,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                                 className="w-full py-4 border-2 border-dashed border-tertiary/40 rounded-lg text-tertiary hover:bg-tertiary/5 transition-colors font-label-md flex items-center justify-center gap-2"
                             >
                                 <span className="material-symbols-outlined">add_circle</span>
-                                Add Another Question
+                                Tambah Pertanyaan Lain
                             </button>
                         </div>
 
@@ -291,11 +291,11 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                 
                 <div className="px-6 py-4 border-t border-outline-variant bg-surface-container-low flex justify-end gap-3">
                     <button onClick={onClose} className="px-6 py-2.5 rounded-lg font-label-md text-on-surface-variant hover:bg-outline-variant/20 transition-colors">
-                        Cancel
+                        Batal
                     </button>
                     <button type="submit" form="quizForm" className="bg-tertiary text-on-tertiary px-6 py-2.5 rounded-lg font-label-md hover:opacity-90 transition-opacity shadow-sm flex items-center gap-2">
                         <span className="material-symbols-outlined text-[18px]">save</span>
-                        Save Quiz
+                        Simpan Kuis
                     </button>
                 </div>
             </div>

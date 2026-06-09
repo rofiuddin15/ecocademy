@@ -75,13 +75,13 @@ const InstructorCourseDetail = () => {
                     <div>
                         <div className="flex items-center gap-3 mb-2">
                             <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${course.is_published ? 'bg-primary-fixed/30 text-primary' : 'bg-surface-container-high text-on-surface-variant'}`}>
-                                {course.is_published ? 'Published' : 'Draft'}
+                                {course.is_published ? 'Diterbitkan' : 'Draf'}
                             </span>
                             <span className="text-on-surface-variant font-label-sm">{course.category?.name}</span>
                             <span className="text-on-surface-variant font-label-sm px-2 py-0.5 bg-secondary-fixed/30 text-secondary rounded-lg">{course.level}</span>
                             <span className="text-on-surface-variant font-label-sm flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">schedule</span> {course.duration} Jam</span>
                         </div>
-                        <h1 className="font-headline-xl text-headline-xl text-primary mb-2">{course.title}</h1>
+                        <h1 className="font-headline-xl text-headline-xl text-primary mb-2 font-bold">{course.title}</h1>
                         <p className="text-on-surface-variant font-body-md line-clamp-2 max-w-2xl">{course.description}</p>
                     </div>
                 </div>
@@ -89,15 +89,15 @@ const InstructorCourseDetail = () => {
                 <div className="flex items-center gap-3 w-full md:w-auto">
                     <Link 
                         to={`/dashboard/manager/edit/${course.id}`}
-                        className="flex-1 md:flex-none bg-primary text-white px-5 py-2.5 rounded-lg font-label-md text-label-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                        className="flex-1 md:flex-none bg-primary text-white px-5 py-2.5 rounded-lg font-label-md text-label-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-sm font-bold"
                     >
                         <span className="material-symbols-outlined text-[20px]">edit</span>
-                        Edit Course
+                        Edit Kursus
                     </Link>
                     <button 
                         onClick={handleDelete}
                         className="p-2.5 text-error border border-error/20 bg-error/5 rounded-lg hover:bg-error/10 transition-colors"
-                        title="Delete Course"
+                        title="Hapus Kursus"
                     >
                         <span className="material-symbols-outlined text-[20px]">delete</span>
                     </button>
@@ -108,8 +108,8 @@ const InstructorCourseDetail = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
                     <div className="flex items-center justify-between mb-2">
-                        <h2 className="font-headline-md text-headline-md text-primary">Curriculum Modules</h2>
-                        <span className="text-on-surface-variant font-label-sm bg-surface-container px-3 py-1 rounded-full">{course.modules?.length || 0} Modules</span>
+                        <h2 className="font-headline-md text-headline-md text-primary font-bold">Modul Kurikulum</h2>
+                        <span className="text-on-surface-variant font-label-sm bg-surface-container px-3 py-1 rounded-full font-bold">{course.modules?.length || 0} Modul</span>
                     </div>
 
                     {course.modules?.length === 0 ? (
