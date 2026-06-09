@@ -29,6 +29,7 @@ class ProjectSeeder extends Seeder
         $m1 = $milestones->where('sequence', 1)->first();
         $m2 = $milestones->where('sequence', 2)->first();
 
+        $partnerTedjo = \App\Models\Partner::where('name', 'Warung Nasi Bu Tedjo')->first();
         // 1. Seed Project (Proyek Mahasiswa)
         $project = Project::create([
             'course_id' => $course->id,
@@ -36,6 +37,7 @@ class ProjectSeeder extends Seeder
             'title' => 'Inovasi Biokomposter Anaerob untuk Limbah Sayur Warung Bu Tedjo',
             'umkm_name' => 'Warung Nasi Bu Tedjo',
             'umkm_sector' => 'F&B (Makanan & Minuman)',
+            'target_partner_id' => $partnerTedjo?->id,
             'status' => 'executing',
         ]);
 
@@ -86,6 +88,7 @@ class ProjectSeeder extends Seeder
             $kwuMilestones = $courseKwu->milestones;
             $kwuM1 = $kwuMilestones->where('sequence', 1)->first();
 
+            $partnerApel = \App\Models\Partner::where('name', 'Kelompok Tani Apel Kota Batu')->first();
             // Project 1: Pending (Menunggu Persetujuan Dosen)
             Project::create([
                 'course_id' => $courseKwu->id,
@@ -95,6 +98,7 @@ class ProjectSeeder extends Seeder
                 'umkm_sector' => 'Pertanian & Kriya',
                 'budget' => 2500000.00,
                 'proposal_description' => 'Kami mengusulkan pengolahan limbah kulit apel yang tidak terpakai dari industri sari apel di Batu menjadi produk kulit sintetis nabati (vegan leather) untuk bahan baku tas.',
+                'target_partner_id' => $partnerApel?->id,
                 'status' => 'pending',
             ]);
 
@@ -111,6 +115,7 @@ class ProjectSeeder extends Seeder
                 'rejection_comment' => 'Ide sudah terlalu umum dan kurang mengeksplorasi potensi lokal spesifik Jawa Timur. Coba gali komoditas khas daerah, misalnya limbah pesisir laut atau pertanian spesifik. Silakan ajukan ulang proposalnya.',
             ]);
 
+            $partnerKerang = \App\Models\Partner::where('name', 'Koperasi Nelayan Situbondo')->first();
             // Project 3: Executing (Sudah disetujui & mengerjakan Tahap 1)
             $projectKwu3 = Project::create([
                 'course_id' => $courseKwu->id,
@@ -120,6 +125,7 @@ class ProjectSeeder extends Seeder
                 'umkm_sector' => 'Material Bangunan Hijau',
                 'budget' => 4500000.00,
                 'proposal_description' => 'Mengurangi limbah cangkang kerang di pesisir Situbondo dengan mengolahnya menjadi material campuran paving block berpori yang dapat menyerap air hujan untuk mengurangi banjir rob.',
+                'target_partner_id' => $partnerKerang?->id,
                 'status' => 'executing',
             ]);
 

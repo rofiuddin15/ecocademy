@@ -13,7 +13,16 @@ class PartnerController extends Controller
      */
     public function index()
     {
-        $partners = Partner::all();
+        $partners = Partner::withCount(['projects', 'courses'])->get();
         return response()->json($partners);
+    }
+
+    /**
+     * Display the specified partner.
+     */
+    public function show($id)
+    {
+        $partner = Partner::with(['courses', 'projects.student', 'projects.course'])->findOrFail($id);
+        return response()->json($partner);
     }
 }

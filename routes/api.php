@@ -34,6 +34,7 @@ Route::prefix('v1')->group(function () {
     Route::get('courses', [CourseController::class, 'index']);
     Route::get('courses/{course}', [CourseController::class, 'show']);
     Route::get('partners', [PartnerController::class, 'index']);
+    Route::get('partners/{partner}', [PartnerController::class, 'show']);
 
     Route::get('forum', [ForumController::class, 'index']);
     Route::get('forum/{forumThread}', [ForumController::class, 'show']);

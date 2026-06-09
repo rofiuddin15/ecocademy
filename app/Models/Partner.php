@@ -10,10 +10,15 @@ class Partner extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['name', 'description', 'logo_url'];
+    protected $fillable = ['name', 'description', 'logo_url', 'sector', 'location'];
 
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class);
+    }
+
+    public function projects(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Project::class, 'target_partner_id');
     }
 }
