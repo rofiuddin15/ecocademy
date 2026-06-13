@@ -354,7 +354,7 @@ const CourseForm = () => {
     };
 
     const handleDeleteMilestone = async (milestoneId) => {
-        if (!window.confirm('Hapus milestone ini?')) return;
+        if (!window.confirm('Hapus tahapan ini?')) return;
         try {
             await api.delete(`/milestones/${milestoneId}`);
             setMilestones(milestones.filter(m => m.id !== milestoneId));
@@ -456,8 +456,8 @@ const CourseForm = () => {
                             />
                             {formData.imagePreview && (
                                 <div className="mt-4 p-2 border border-outline-variant rounded-lg inline-block">
-                                    <p className="text-xs text-on-surface-variant mb-2">Preview (Auto-cropped to 16:9 during upload):</p>
-                                    <img src={formData.imagePreview} alt="Course Preview" className="h-32 rounded object-cover" />
+                                    <p className="text-xs text-on-surface-variant mb-2">Pratinjau (Dipotong otomatis 16:9 saat unggah):</p>
+                                    <img src={formData.imagePreview} alt="Pratinjau Gambar Kursus" className="h-32 rounded object-cover" />
                                 </div>
                             )}
                         </div>
@@ -604,7 +604,7 @@ const CourseForm = () => {
                     <div className="bg-white/80 backdrop-blur-md border border-outline-variant rounded-lg p-8 shadow-sm space-y-6">
                         <div className="flex justify-between items-center border-b border-outline-variant pb-4">
                             <div>
-                                <h3 className="font-headline-md text-primary">Milestone Proyek</h3>
+                                <h3 className="font-headline-md text-primary">Tahapan Proyek (Milestone)</h3>
                                 <p className="text-on-surface-variant font-body-sm mt-1">Tentukan tahapan demi tahapan untuk proyek di atas.</p>
                             </div>
                             <div className="flex items-center gap-2">
@@ -612,7 +612,7 @@ const CourseForm = () => {
                                     <span className="material-symbols-outlined text-[18px]">auto_awesome</span> Generate 6 Tahap
                                 </button>
                                 <button onClick={openAddMilestoneModal} type="button" className="bg-secondary/10 text-secondary border border-secondary/20 px-4 py-2 rounded-lg font-label-sm hover:bg-secondary/20 transition-colors flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-[18px]">add</span> Tambah Milestone
+                                    <span className="material-symbols-outlined text-[18px]">add</span> Tambah Tahapan
                                 </button>
                             </div>
                         </div>
@@ -620,7 +620,7 @@ const CourseForm = () => {
                         <div className="space-y-4">
                             {milestones.length === 0 ? (
                                 <div className="text-center py-10 bg-surface-container-lowest border border-dashed border-outline-variant rounded-lg text-on-surface-variant">
-                                    Belum ada milestone yang dibuat. Klik "Tambah Milestone" untuk memulai.
+                                    Belum ada tahapan yang dibuat. Klik "Tambah Tahapan" untuk memulai.
                                 </div>
                             ) : milestones.map((mile, index) => (
                                 <div key={mile.id} className="border border-outline-variant rounded-lg overflow-hidden bg-surface-container-lowest flex items-center justify-between p-4">

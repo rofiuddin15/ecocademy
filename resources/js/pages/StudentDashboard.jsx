@@ -119,7 +119,7 @@ const StudentDashboard = () => {
                             <img 
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWegNJh0Yw4pFj94l7o6JKDKx2n21rnwNtYhOaNYoBUudIevgu6Chq0knKEBC_pXCFKRfNMFV_RPT4J-VWd3A5SAwfuT4G1CQy9nwdH0kQLoDMVrYPPEQhntldeJLdF5stzxMc3qXg44qd6ugO90GIEkjF0GQH4myu8tg25d26Tu-dibUCFq7myevyi65bClBnwGMoC5EnG2Ui0Es-sp0py0c-5SrnZNNZgjI-mqszLRu-DpkWm9KXVF6nKikcmVj6kAagjOvf6A7B" 
-                                alt="Culinary packaging" 
+                                alt="Kemasan produk kuliner" 
                             />
                             <div className="absolute top-4 right-4 bg-secondary text-on-secondary px-3 py-1 rounded-full font-label-sm text-label-sm uppercase tracking-wider font-bold">
                                 Skor Keberlanjutan: {activeProject ? (activeProject.course?.score || 92) : 92}
@@ -130,7 +130,7 @@ const StudentDashboard = () => {
                             <div className="flex justify-between items-start mb-6">
                                 <div>
                                     <h3 className="font-headline-md text-headline-md text-primary mb-2">
-                                        {activeProject ? activeProject.title : 'Eco-Waste Solution for Kuliner Sehat UMKM'}
+                                        {activeProject ? activeProject.title : 'Solusi Pengelolaan Limbah untuk UMKM Kuliner Sehat'}
                                     </h3>
                                     <p className="font-body-md text-body-md text-on-surface-variant">
                                         {activeProject 

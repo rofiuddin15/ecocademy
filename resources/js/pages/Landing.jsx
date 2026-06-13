@@ -122,7 +122,7 @@ const Landing = () => {
                                 <div className="flex flex-wrap items-center gap-6 text-label-md font-medium text-white/90">
                                     <div className="flex items-center gap-1.5">
                                         <span className="material-symbols-outlined text-[20px] text-yellow-400" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                                        <span>{selectedCourse.rating} / 5.0 Rating</span>
+                                        <span>{selectedCourse.rating} / 5.0 Penilaian</span>
                                     </div>
                                     <div className="w-1.5 h-1.5 rounded-full bg-white/40"></div>
                                     <div className="flex items-center gap-1.5">
@@ -268,9 +268,9 @@ const Landing = () => {
                         </div>
                         <div className="mt-12 flex items-center gap-6">
                             <div className="flex -space-x-3">
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&h=80&q=80" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" alt="Student 1" />
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" alt="Student 2" />
-                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&h=80&q=80" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" alt="Student 3" />
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&h=80&q=80" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" alt="Mahasiswa 1" />
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" alt="Mahasiswa 2" />
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&h=80&q=80" className="w-10 h-10 rounded-full border-2 border-white object-cover shadow-sm" alt="Mahasiswa 3" />
                             </div>
                             <p className="text-label-md font-label-md text-on-surface-variant font-medium">
                                 Lebih dari <span className="text-primary font-bold text-[16px]">500+</span> Wirausaha Hijau terdaftar
@@ -280,7 +280,7 @@ const Landing = () => {
                     <div className="relative">
                         <div className="absolute -top-20 -right-20 w-96 h-96 bg-primary-fixed opacity-20 rounded-full blur-3xl"></div>
                         <div className="relative rounded-lg overflow-hidden shadow-2xl">
-                            <img className="w-full aspect-[4/3] object-cover" alt="Collaborating space" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY5bSf7pvKCNsgcN2-peq_Ze1xt-b9Oy8xKQBTg2kWxLOUqJ0k4CSrxyokV9gq6wCtqBhjqGQl0VBreovI0FLUP_fM1uAgQ5DnkoKbL6_7g9xCt9xXyyfu4FX5dIDo3bNlqxLkjrIfn-cs3YBgbPQWY8GL341Z8af-O3b0c6tHDsQRECOYRQu-LQEJmxmut0qn5EMjKcqPdZ6zLQ-1rejm5iiWEvXTuEJe5WAZvfa6O1CMMFKLqQatdY4KqeBn_zaTnSMIo_u61QP4"/>
+                            <img className="w-full aspect-[4/3] object-cover" alt="Ruang Kolaborasi Mahasiswa" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY5bSf7pvKCNsgcN2-peq_Ze1xt-b9Oy8xKQBTg2kWxLOUqJ0k4CSrxyokV9gq6wCtqBhjqGQl0VBreovI0FLUP_fM1uAgQ5DnkoKbL6_7g9xCt9xXyyfu4FX5dIDo3bNlqxLkjrIfn-cs3YBgbPQWY8GL341Z8af-O3b0c6tHDsQRECOYRQu-LQEJmxmut0qn5EMjKcqPdZ6zLQ-1rejm5iiWEvXTuEJe5WAZvfa6O1CMMFKLqQatdY4KqeBn_zaTnSMIo_u61QP4"/>
                         </div>
                         {/* Floating Stat Card */}
                         <div className="absolute -bottom-8 -left-8 glass-card p-6 rounded shadow-xl max-w-xs animate-bounce-slow">
@@ -375,19 +375,19 @@ const Landing = () => {
                                     <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
                                         <span className="material-symbols-outlined text-[16px] text-white">brush</span>
                                     </div>
-                                    <span className="text-label-sm font-bold text-on-secondary-container">Local Craft Co.</span>
+                                    <span className="text-label-sm font-bold text-on-secondary-container">Kerajinan Lokal Nusantara</span>
                                 </div>
                                 <div className="bg-white/50 backdrop-blur-sm p-4 rounded border border-white/20 shadow-sm flex items-center gap-3">
                                     <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
                                         <span className="material-symbols-outlined text-[16px] text-white">package_2</span>
                                     </div>
-                                    <span className="text-label-sm font-bold text-on-secondary-container">EcoPack Solutions</span>
+                                    <span className="text-label-sm font-bold text-on-secondary-container">Solusi Kemasan Hijau</span>
                                 </div>
                                 <div className="bg-white/50 backdrop-blur-sm p-4 rounded border border-white/20 shadow-sm translate-x-4 flex items-center gap-3">
                                     <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
                                         <span className="material-symbols-outlined text-[16px] text-white">local_shipping</span>
                                     </div>
-                                    <span className="text-label-sm font-bold text-on-secondary-container">Green Logistics</span>
+                                    <span className="text-label-sm font-bold text-on-secondary-container">Logistik Ramah Lingkungan</span>
                                 </div>
                             </div>
                         </div>

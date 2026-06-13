@@ -130,7 +130,7 @@ const Register = () => {
                                 required
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                placeholder="John Doe"
+                                placeholder="Contoh: Budi Santoso"
                                 className="w-full h-[44px] px-4 rounded-lg border border-outline/30 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all text-body-md"
                             />
                         </div>
@@ -154,8 +154,8 @@ const Register = () => {
                                 onChange={(e) => setRole(e.target.value)}
                                 className="w-full h-[44px] px-4 rounded-lg border border-outline/30 bg-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all text-body-md"
                             >
-                                <option value="student">Mahasiswa (Student)</option>
-                                <option value="instructor">Instruktur / Dosen (Instructor)</option>
+                                <option value="student">Mahasiswa</option>
+                                <option value="instructor">Instruktur / Dosen</option>
                             </select>
                         </div>
 

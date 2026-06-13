@@ -404,7 +404,7 @@ const InstructorDashboard = () => {
                                                         onClick={() => handleOpenReview(project)}
                                                         className="text-primary font-label-md text-label-md hover:underline font-bold cursor-pointer"
                                                     >
-                                                        Detail
+                                                        Lihat Detail
                                                     </button>
                                                 )}
                                             </td>
@@ -546,7 +546,7 @@ const InstructorDashboard = () => {
                                         <table className="w-full text-left border-collapse text-xs">
                                             <thead>
                                                 <tr className="bg-slate-50 border-b border-outline-variant text-on-surface-variant font-bold">
-                                                    <th className="py-2.5 px-4">Milestone</th>
+                                                    <th className="py-2.5 px-4">Tahapan (Milestone)</th>
                                                     <th className="py-2.5 px-4">Tautan Berkas</th>
                                                     <th className="py-2.5 px-4">Catatan Mahasiswa</th>
                                                     <th className="py-2.5 px-4">Evaluasi / Nilai</th>
@@ -892,7 +892,7 @@ const InstructorDashboard = () => {
                                                             }}
                                                             className="text-primary hover:underline font-bold cursor-pointer"
                                                         >
-                                                            Detail
+                                                            Lihat Detail
                                                         </button>
                                                     </td>
                                                 </tr>

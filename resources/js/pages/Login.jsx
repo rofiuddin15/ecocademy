@@ -65,7 +65,7 @@ const Login = () => {
                     {error && (
                         <div className="mb-6 p-4 bg-error-container text-on-error-container rounded-lg flex items-center gap-3 border border-error/20">
                             <span className="material-symbols-outlined text-[20px]">warning</span>
-                            <span className="text-label-sm font-medium">{typeof error === 'string' ? error : 'Email atau password salah.'}</span>
+                            <span className="text-label-sm font-medium">{typeof error === 'string' ? error : 'Email atau kata sandi salah.'}</span>
                         </div>
                     )}
 

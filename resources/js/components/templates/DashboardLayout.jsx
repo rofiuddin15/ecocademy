@@ -136,14 +136,14 @@ const DashboardLayout = () => {
                         <div className="text-right">
                             <p className="font-label-md text-label-md text-on-surface leading-tight font-bold">{user?.name || 'Pengguna'}</p>
                             <p className="font-label-sm text-label-sm text-on-surface-variant">
-                                {user?.role === 'instructor' ? 'Instruktur' : 'Eco-Warrior Level 4'}
+                                {user?.role === 'instructor' ? 'Instruktur' : 'Pejuang Hijau'}
                             </p>
                         </div>
                         {user?.avatar ? (
                             <img 
                                 className="w-10 h-10 rounded-full object-cover border-2 border-primary-fixed shadow-sm" 
                                 src={user.avatar} 
-                                alt="User Profile"
+                                alt="Foto Profil Pengguna"
                             />
                         ) : (
                             <div className="w-10 h-10 rounded-full border-2 border-primary-fixed shadow-sm bg-primary-fixed/20 text-primary-fixed flex items-center justify-center font-bold text-lg">
