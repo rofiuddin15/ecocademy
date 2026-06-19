@@ -26,6 +26,14 @@ const InstructorDashboard = () => {
     const [showPendingProposalsModal, setShowPendingProposalsModal] = useState(false);
     const [showPartnersModal, setShowPartnersModal] = useState(false);
 
+    // State untuk form penilaian tugas (feedback)
+    const [gradingSubmission, setGradingSubmission] = useState(null);
+    const [gradeInput, setGradeInput] = useState('');
+    const [greenScoreInput, setGreenScoreInput] = useState('3');
+    const [feedbackComments, setFeedbackComments] = useState('');
+    const [isSubmittingGrade, setIsSubmittingGrade] = useState(false);
+    const [gradeError, setGradeError] = useState('');
+
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
@@ -75,6 +83,49 @@ const InstructorDashboard = () => {
             setReviewError('Gagal menyimpan keputusan review.');
         } finally {
             setIsReviewing(false);
+        }
+    };
+
+    // Buka modal beri nilai
+    const handleOpenGrade = (sub) => {
+        setGradingSubmission(sub);
+        setGradeInput(sub.feedback?.grade || '');
+        setGreenScoreInput(sub.feedback?.green_impact_score || '3');
+        setFeedbackComments(sub.feedback?.comments || '');
+        setGradeError('');
+    };
+
+    // Kirim nilai
+    const handleSubmitGrade = async () => {
+        if (!gradeInput || isNaN(gradeInput) || gradeInput < 0 || gradeInput > 100) {
+            setGradeError('Nilai harus berupa angka antara 0 - 100.');
+            return;
+        }
+        setIsSubmittingGrade(true);
+        setGradeError('');
+        try {
+            await api.post('/feedbacks', {
+                submission_id: gradingSubmission.id,
+                grade: gradeInput,
+                green_impact_score: greenScoreInput,
+                comments: feedbackComments
+            });
+            
+            // Refresh data
+            const projectsRes = await api.get('/projects');
+            setProjects(projectsRes.data);
+            
+            // Perbarui state modal aktif
+            if (reviewProject) {
+                const updatedReviewProject = projectsRes.data.find(p => p.id === reviewProject.id);
+                if (updatedReviewProject) setReviewProject(updatedReviewProject);
+            }
+            
+            setGradingSubmission(null);
+        } catch (err) {
+            setGradeError('Gagal menyimpan nilai.');
+        } finally {
+            setIsSubmittingGrade(false);
         }
     };
 
@@ -566,11 +617,16 @@ const InstructorDashboard = () => {
                                                         </td>
                                                         <td className="py-2.5 px-4 font-bold">
                                                             {sub.feedback ? (
-                                                                <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-1 rounded">
-                                                                    Nilai: {sub.feedback.grade} | Dampak: {sub.feedback.green_impact_score}
-                                                                </span>
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-1 rounded">
+                                                                        Nilai: {sub.feedback.grade} | Dampak: {sub.feedback.green_impact_score}
+                                                                    </span>
+                                                                    <button onClick={() => handleOpenGrade(sub)} className="text-primary hover:underline text-xs font-bold cursor-pointer">Edit</button>
+                                                                </div>
                                                             ) : (
-                                                                <span className="text-slate-400 italic font-medium">Belum Dinilai</span>
+                                                                <button onClick={() => handleOpenGrade(sub)} className="text-white bg-primary text-[11px] px-3 py-1.5 rounded-lg hover:bg-primary/90 transition-colors font-bold cursor-pointer flex items-center gap-1">
+                                                                    <span className="material-symbols-outlined text-[14px]">edit_document</span> Beri Nilai
+                                                                </button>
                                                             )}
                                                         </td>
                                                     </tr>
@@ -1037,6 +1093,85 @@ const InstructorDashboard = () => {
                             <button onClick={() => setShowPartnersModal(false)}
                                 className="px-5 py-2.5 bg-primary text-on-primary hover:bg-primary/95 rounded-lg font-label-md text-label-md transition-colors cursor-pointer font-bold">
                                 Tutup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ============================================================
+                MODAL BERI NILAI / FEEDBACK TUGAS
+                ============================================================ */}
+            {gradingSubmission && (
+                <div className="fixed inset-0 z-[110] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+                    <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-outline-variant/30 overflow-hidden flex flex-col">
+                        <div className="px-6 py-4 border-b border-outline-variant bg-primary-fixed/10 flex justify-between items-center shrink-0">
+                            <div>
+                                <h3 className="font-headline-sm text-primary font-bold">Penilaian Tugas</h3>
+                                <p className="font-label-sm text-on-surface-variant font-medium mt-0.5">{gradingSubmission.milestone?.title || 'Milestone'}</p>
+                            </div>
+                            <button onClick={() => setGradingSubmission(null)} className="text-on-surface-variant hover:text-error p-1 rounded-lg hover:bg-error/10 transition-colors cursor-pointer">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            <div>
+                                <label className="block text-sm font-bold text-on-surface mb-1">Nilai (0 - 100)</label>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={gradeInput}
+                                    onChange={(e) => setGradeInput(e.target.value)}
+                                    className="w-full px-4 py-2 border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-body-md"
+                                    placeholder="Contoh: 85"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-on-surface mb-1 flex items-center gap-1">Skor Dampak Hijau (1 - 5) <span className="material-symbols-outlined text-[14px] text-emerald-600">eco</span></label>
+                                <p className="text-xs text-on-surface-variant mb-2">Nilai 5 jika proyek sangat berkelanjutan dan ramah lingkungan.</p>
+                                <select
+                                    value={greenScoreInput}
+                                    onChange={(e) => setGreenScoreInput(e.target.value)}
+                                    className="w-full px-4 py-2 border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-body-md bg-white"
+                                >
+                                    <option value="1">1 - Sangat Rendah</option>
+                                    <option value="2">2 - Rendah</option>
+                                    <option value="3">3 - Sedang / Standar</option>
+                                    <option value="4">4 - Tinggi</option>
+                                    <option value="5">5 - Sangat Tinggi (Excellent)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-bold text-on-surface mb-1">Komentar / Feedback</label>
+                                <textarea
+                                    value={feedbackComments}
+                                    onChange={(e) => setFeedbackComments(e.target.value)}
+                                    rows="3"
+                                    placeholder="Berikan masukan konstruktif untuk tugas mahasiswa ini..."
+                                    className="w-full px-4 py-2 border border-outline-variant rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-body-md resize-none"
+                                />
+                            </div>
+
+                            {gradeError && (
+                                <div className="p-3 bg-error-container text-on-error-container rounded-lg text-sm flex items-center gap-2 border border-error/25">
+                                    <span className="material-symbols-outlined text-[16px]">error</span>
+                                    <span className="font-semibold">{gradeError}</span>
+                                </div>
+                            )}
+                        </div>
+                        <div className="px-6 py-4 border-t border-outline-variant bg-surface-container-lowest flex justify-end gap-3 shrink-0">
+                            <button onClick={() => setGradingSubmission(null)}
+                                className="px-5 py-2.5 rounded-lg font-label-md text-on-surface-variant hover:bg-outline-variant/20 transition-colors border border-transparent cursor-pointer font-bold">
+                                Batal
+                            </button>
+                            <button
+                                onClick={handleSubmitGrade}
+                                disabled={isSubmittingGrade}
+                                className="px-5 py-2.5 bg-primary text-on-primary hover:bg-primary/95 rounded-lg font-label-md transition-all flex items-center gap-2 disabled:opacity-50 cursor-pointer font-bold hover:scale-98"
+                            >
+                                <span className="material-symbols-outlined text-[18px]">save</span>
+                                {isSubmittingGrade ? 'Menyimpan...' : 'Simpan Nilai'}
                             </button>
                         </div>
                     </div>

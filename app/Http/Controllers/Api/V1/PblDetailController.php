@@ -37,16 +37,18 @@ class PblDetailController extends Controller
         $pblDetail = $course->pblDetail;
 
         if ($pblDetail) {
-            $pblDetail->update($request->only([
-                'title', 'description', 'target_audience', 'duration', 'report_requirements'
-            ]));
+            $updateData = $request->only([
+                'title', 'description', 'target_audience', 'report_requirements'
+            ]);
+            $updateData['duration'] = $request->duration ?? 0;
+            $pblDetail->update($updateData);
         } else {
             $pblDetail = PblDetail::create([
                 'course_id' => $course->id,
                 'title' => $request->title,
                 'description' => $request->description,
                 'target_audience' => $request->target_audience,
-                'duration' => $request->duration,
+                'duration' => $request->duration ?? 0,
                 'report_requirements' => $request->report_requirements,
             ]);
         }
