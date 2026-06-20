@@ -25,6 +25,8 @@ import StudentModules from './pages/StudentModules';
 import GreenShowcase from './pages/GreenShowcase';
 import UmkmDirectory from './pages/UmkmDirectory';
 import Profile from './pages/Profile';
+import EvaluationCenter from './pages/EvaluationCenter';
+import ProjectEvaluationDetail from './pages/ProjectEvaluationDetail';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -81,6 +83,8 @@ const App = () => {
                     <Route path="/dashboard/courses/:courseId/modules/:moduleId/quiz" element={<QuizView />} />
                     <Route path="/dashboard/courses/:courseId/project" element={<ProjectView />} />
                     <Route path="/dashboard/forum" element={<ForumView />} />
+                    <Route path="/dashboard/evaluation" element={<EvaluationCenter />} />
+                    <Route path="/dashboard/evaluation/projects/:projectId" element={<ProjectEvaluationDetail />} />
                     <Route path="/dashboard/modules" element={<StudentModules />} />
                     <Route path="/dashboard/showcase" element={<GreenShowcase />} />
                     <Route path="/dashboard/directory" element={<UmkmDirectory />} />

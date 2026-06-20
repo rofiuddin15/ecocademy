@@ -16,7 +16,7 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $user = auth('api')->user();
-        $query = Project::query()->with(['course.milestones', 'student', 'submissions.milestone', 'submissions.feedback']);
+        $query = Project::query()->with(['course.milestones', 'student', 'submissions.milestone', 'submissions.feedback', 'targetPartner']);
 
         if ($user->hasRole('admin')) {
             // Admin sees all

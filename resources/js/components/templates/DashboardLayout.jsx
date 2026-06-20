@@ -126,10 +126,10 @@ const DashboardLayout = () => {
                         <span className="material-symbols-outlined">settings</span>
                     </Link>
                     {user?.role === 'instructor' && (
-                        <button className="hidden md:flex bg-primary text-on-primary font-label-md text-label-md px-6 py-2.5 rounded-lg hover:opacity-90 transition-opacity items-center gap-2">
+                        <Link to="/dashboard/evaluation" className="hidden md:flex bg-primary text-on-primary font-label-md text-label-md px-6 py-2.5 rounded-lg hover:opacity-90 transition-opacity items-center gap-2">
                             <span className="material-symbols-outlined text-[18px]">assessment</span>
                             Pusat Evaluasi
-                        </button>
+                        </Link>
                     )}
                     <div className="hidden md:block h-8 w-px bg-outline-variant"></div>
                     <Link to="/dashboard/profile" className="flex items-center gap-3 hover:opacity-85 transition-opacity">
@@ -156,7 +156,7 @@ const DashboardLayout = () => {
 
             {/* Main Area */}
             <main className="ml-64 pt-20 min-h-screen">
-                <div className="max-w-container-max mx-auto p-8 lg:p-12">
+                <div className={location.pathname.startsWith('/dashboard/evaluation') ? "max-w-full p-4 lg:p-6" : "max-w-container-max mx-auto p-8 lg:p-12"}>
                     <Outlet />
                 </div>
             </main>
