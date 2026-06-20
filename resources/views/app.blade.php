@@ -17,6 +17,10 @@
             vertical-align: middle;
         }
     </style>
+    <!-- Mapbox GL JS -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css" rel="stylesheet" />
+    
     <!-- Vite React Refresh & Entry Points -->
     @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.jsx'])

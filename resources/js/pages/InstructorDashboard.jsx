@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import api from '../utils/api';
@@ -33,6 +33,89 @@ const InstructorDashboard = () => {
     const [feedbackComments, setFeedbackComments] = useState('');
     const [isSubmittingGrade, setIsSubmittingGrade] = useState(false);
     const [gradeError, setGradeError] = useState('');
+
+    // Refs untuk Mapbox
+    const mapContainerRef = useRef(null);
+    const mapRef = useRef(null);
+
+    useEffect(() => {
+        if (showMapModal && window.mapboxgl && mapContainerRef.current) {
+            // Membaca token dari .env (di-expose oleh Vite menggunakan import.meta.env)
+            const mapboxToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M2dwbTAwY2szN250cXdxMDN2NDgifQ.rIdFFEGCn2FlSLrJgCwTRg';
+            window.mapboxgl.accessToken = mapboxToken;
+            
+            const map = new window.mapboxgl.Map({
+                container: mapContainerRef.current,
+                style: 'mapbox://styles/mapbox/emerald-v8', // Style hijau emerald yang estetik
+                center: [113.9, -8.0], // Tengah Jawa Timur & Bali
+                zoom: 7.2
+            });
+
+            // Mapbox styles sometimes fail on fallback. Let's use standard streets style if emerald is deprecated
+            map.on('error', () => {
+                map.setStyle('mapbox://styles/mapbox/streets-v11');
+            });
+
+            map.addControl(new window.mapboxgl.NavigationControl(), 'top-right');
+
+            const markers = [
+                {
+                    lng: 112.52,
+                    lat: -7.87,
+                    title: 'Batu: Kelompok Tani Apel (Vegan Leather)',
+                    description: 'Mengembangkan material kulit ramah lingkungan dari limbah buah apel lokal.'
+                },
+                {
+                    lng: 112.63,
+                    lat: -7.98,
+                    title: 'Malang: Organic Harvest (Pertanian)',
+                    description: 'Pertanian buah dan sayur organik bersertifikasi ramah lingkungan.'
+                },
+                {
+                    lng: 113.99,
+                    lat: -7.70,
+                    title: 'Situbondo: Koperasi Nelayan (Paving Block)',
+                    description: 'Daur ulang limbah plastik pesisir menjadi paving block komersial.'
+                },
+                {
+                    lng: 115.18,
+                    lat: -8.40,
+                    title: 'Bali: Kriya Kreasi (Kerajinan)',
+                    description: 'Pusat anyaman bambu & rotan dengan pewarnaan alami non-kimia.'
+                }
+            ];
+
+            markers.forEach((marker) => {
+                const el = document.createElement('div');
+                el.className = 'w-7 h-7 rounded-full bg-emerald-600 border-2 border-white flex items-center justify-center shadow-md cursor-pointer hover:scale-110 transition-transform relative';
+                el.innerHTML = '<span class="w-3 h-3 rounded-full bg-emerald-400 opacity-75 animate-ping absolute"></span><span class="material-symbols-outlined text-[14px] text-white font-bold select-none">eco</span>';
+
+                new window.mapboxgl.Marker(el)
+                    .setLngLat([marker.lng, marker.lat])
+                    .setPopup(
+                        new window.mapboxgl.Popup({ offset: 25 })
+                            .setHTML(
+                                `<div class="p-1">` +
+                                `<h4 class="font-bold text-emerald-800 text-sm mb-1">${marker.title}</h4>` +
+                                `<p class="text-xs text-slate-600 leading-relaxed font-medium">${marker.description}</p>` +
+                                `</div>`
+                            )
+                    )
+                    .addTo(map);
+            });
+
+            mapRef.current = map;
+
+            // Trigger resize to fix canvas size issues inside hidden/animated modals
+            setTimeout(() => {
+                map.resize();
+            }, 300);
+
+            return () => {
+                map.remove();
+            };
+        }
+    }, [showMapModal]);
 
     useEffect(() => {
         const fetchDashboardData = async () => {
@@ -841,47 +924,10 @@ const InstructorDashboard = () => {
                                 Berikut sebaran geografis dari proyek greenpreneurship mahasiswa dan mitra UMKM aktif. Arahkan kursor Anda ke titik hijau untuk melihat detailnya.
                             </p>
                             
-                            <div className="relative bg-slate-900 rounded-xl p-6 h-96 overflow-hidden flex items-center justify-center border border-slate-800">
-                                <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-                                
-                                <svg className="w-full h-full max-w-lg text-emerald-800/25 fill-current opacity-70" viewBox="0 0 500 300">
-                                    <path d="M 50,150 Q 80,130 120,140 T 200,160 T 300,150 T 400,170 T 480,180 Q 450,220 380,210 T 250,220 T 120,200 Z" />
-                                </svg>
-                                
-                                {/* Pulse Markers */}
-                                {/* Batu */}
-                                <div className="absolute top-[130px] left-[220px] group cursor-pointer">
-                                    <span className="absolute inline-flex h-4 w-4 rounded-full bg-emerald-400 opacity-75 animate-ping"></span>
-                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                                    <div className="absolute left-4 -top-2 bg-slate-800 text-white text-[10px] px-2 py-0.5 rounded shadow border border-slate-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10 font-bold">
-                                        Batu: Kelompok Tani Apel (Vegan Leather)
-                                    </div>
-                                </div>
-                                {/* Malang */}
-                                <div className="absolute top-[160px] left-[235px] group cursor-pointer">
-                                    <span className="absolute inline-flex h-4 w-4 rounded-full bg-emerald-400 opacity-75 animate-ping"></span>
-                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                                    <div className="absolute left-4 -top-2 bg-slate-800 text-white text-[10px] px-2 py-0.5 rounded shadow border border-slate-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10 font-bold">
-                                        Malang: Organic Harvest (Pertanian)
-                                    </div>
-                                </div>
-                                {/* Situbondo */}
-                                <div className="absolute top-[150px] left-[320px] group cursor-pointer">
-                                    <span className="absolute inline-flex h-4 w-4 rounded-full bg-emerald-400 opacity-75 animate-ping"></span>
-                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                                    <div className="absolute left-4 -top-2 bg-slate-800 text-white text-[10px] px-2 py-0.5 rounded shadow border border-slate-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10 font-bold">
-                                        Situbondo: Koperasi Nelayan (Paving Block)
-                                    </div>
-                                </div>
-                                {/* Bali */}
-                                <div className="absolute top-[175px] left-[400px] group cursor-pointer">
-                                    <span className="absolute inline-flex h-4 w-4 rounded-full bg-emerald-400 opacity-75 animate-ping"></span>
-                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                                    <div className="absolute left-4 -top-2 bg-slate-800 text-white text-[10px] px-2 py-0.5 rounded shadow border border-slate-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-10 font-bold">
-                                        Bali: Kriya Kreasi (Kerajinan)
-                                    </div>
-                                </div>
-                            </div>
+                            <div 
+                                ref={mapContainerRef} 
+                                className="w-full h-96 rounded-xl border border-outline-variant/35 overflow-hidden shadow-sm"
+                            ></div>
                         </div>
                         {/* Footer */}
                         <div className="px-6 py-4 border-t border-outline-variant bg-surface-container-lowest flex justify-end shrink-0">

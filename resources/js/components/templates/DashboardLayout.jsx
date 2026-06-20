@@ -18,7 +18,7 @@ const DashboardLayout = () => {
         { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
         { path: '/dashboard/modules', label: 'Modul', icon: 'menu_book' },
         { path: '/dashboard/showcase', label: 'Etalase Hijau', icon: 'workspace_premium' },
-        { path: '/dashboard/directory', label: 'Direktori UMKM', icon: 'location_on' },
+        { path: '/dashboard/directory', label: 'Daftar UMKM', icon: 'location_on' },
         { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' },
         { path: '/dashboard/profile', label: 'Profil Saya', icon: 'person' }
     ];
@@ -27,7 +27,7 @@ const DashboardLayout = () => {
         { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
         { path: '/dashboard/manager', label: 'Manajemen Kursus', icon: 'menu_book' },
         { path: '/dashboard/showcase', label: 'Etalase Hijau', icon: 'workspace_premium' },
-        { path: '/dashboard/directory', label: 'Direktori UMKM', icon: 'location_on' },
+        { path: '/dashboard/directory', label: 'Daftar UMKM', icon: 'location_on' },
         { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' },
         { path: '/dashboard/profile', label: 'Profil Instruktur', icon: 'person' }
     ];
