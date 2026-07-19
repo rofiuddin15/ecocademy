@@ -12,6 +12,7 @@ const CourseDetail = () => {
     const [selectedMaterial, setSelectedMaterial] = useState(null);
     const [isEnrolled, setIsEnrolled] = useState(false);
     const [showEnrollModal, setShowEnrollModal] = useState(false);
+    const [hasCompletedPretest, setHasCompletedPretest] = useState(false);
 
     useEffect(() => {
         const fetchCourseDetails = async () => {
@@ -23,8 +24,24 @@ const CourseDetail = () => {
                 const enrolledStorage = JSON.parse(localStorage.getItem('enrolled_courses') || '[]');
                 const isDefaultEnrolled = ['desain', 'design', 'ekonomi', 'circular', 'pemasaran', 'marketing'].some(k => response.data.title.toLowerCase().includes(k));
                 
+                let enrolled = false;
                 if (user?.role === 'instructor' || enrolledStorage.includes(String(id)) || isDefaultEnrolled) {
                     setIsEnrolled(true);
+                    enrolled = true;
+                }
+
+                if (enrolled && response.data.pretest) {
+                    try {
+                        const attemptsRes = await api.get(`/quizzes/${response.data.pretest.id}/attempts`);
+                        if (attemptsRes.data && attemptsRes.data.length > 0) {
+                            setHasCompletedPretest(true);
+                        }
+                    } catch (e) {
+                        console.error('Error fetching pretest attempts', e);
+                    }
+                } else if (!response.data.pretest) {
+                    // No pretest required
+                    setHasCompletedPretest(true);
                 }
             } catch (error) {
                 console.error('Error fetching course details:', error);
@@ -34,7 +51,7 @@ const CourseDetail = () => {
         };
 
         fetchCourseDetails();
-    }, [id]);
+    }, [id, user]);
 
     if (isLoading) {
         return (
@@ -134,6 +151,31 @@ const CourseDetail = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
                     <h2 className="text-headline-md font-headline-md text-primary mb-4">Modul Pembelajaran</h2>
+
+                    {course.pretest && (
+                        <div className="bg-primary/5 rounded-lg border-2 border-primary/30 overflow-hidden shadow-sm mb-6">
+                            <div className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <div className="text-label-sm text-primary font-bold mb-1">WAJIB</div>
+                                    <h3 className="text-headline-md font-headline-md text-primary">Pretest: {course.pretest.title}</h3>
+                                    <p className="text-body-md text-on-surface-variant mt-1">{course.pretest.instructions || 'Kerjakan pretest sebelum mengakses materi.'}</p>
+                                </div>
+                                {isEnrolled ? (
+                                    <Link
+                                        to={`/dashboard/courses/${course.id}/pretest`}
+                                        className="bg-primary text-on-primary hover:bg-primary/90 px-6 py-2.5 rounded-lg text-label-sm font-bold whitespace-nowrap hover:scale-95 transition-all shadow-sm"
+                                    >
+                                        Mulai Pretest
+                                    </Link>
+                                ) : (
+                                    <button disabled className="bg-outline-variant/30 text-on-surface-variant px-6 py-2.5 rounded-lg text-label-sm font-bold whitespace-nowrap opacity-75 cursor-not-allowed flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-[16px]">lock</span>
+                                        Terkunci
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    )}
                     
                     {course.modules?.length === 0 ? (
                         <p className="text-body-md text-on-surface-variant">Belum ada modul yang ditambahkan ke kelas ini.</p>
@@ -166,7 +208,7 @@ const CourseDetail = () => {
                                                     <h4 className="text-label-md font-bold text-secondary mb-1">Modul Pembelajaran Berbasis Proyek</h4>
                                                     <p className="text-body-md text-on-surface-variant">Modul ini berfokus pada eksekusi solusi nyata di lapangan bersama UMKM mitra pilihan Anda.</p>
                                                 </div>
-                                                {isEnrolled ? (
+                                                {isEnrolled && hasCompletedPretest ? (
                                                     <Link
                                                         to={`/dashboard/courses/${course.id}/project`}
                                                         className="bg-secondary text-on-secondary hover:bg-secondary/90 px-6 py-2.5 rounded-lg text-label-sm font-bold whitespace-nowrap hover:scale-95 transition-all shadow-sm"
@@ -194,8 +236,8 @@ const CourseDetail = () => {
                                                                 .map((material) => (
                                                                     <button
                                                                         key={material.id}
-                                                                        onClick={() => isEnrolled && setSelectedMaterial(material)}
-                                                                        className={`w-full flex items-center justify-between p-4 ${isEnrolled ? 'hover:bg-surface-container-low/50 cursor-pointer text-on-surface' : 'opacity-60 cursor-not-allowed text-on-surface-variant'} text-left transition-colors bg-white`}
+                                                                        onClick={() => isEnrolled && hasCompletedPretest && setSelectedMaterial(material)}
+                                                                        className={`w-full flex items-center justify-between p-4 ${isEnrolled && hasCompletedPretest ? 'hover:bg-surface-container-low/50 cursor-pointer text-on-surface' : 'opacity-60 cursor-not-allowed text-on-surface-variant'} text-left transition-colors bg-white`}
                                                                     >
                                                                         <div className="flex items-center gap-3">
                                                                             <span className="material-symbols-outlined text-primary">
@@ -219,7 +261,7 @@ const CourseDetail = () => {
                                                             <h4 className="text-label-md font-bold text-primary mb-1">Kuis Evaluasi: {module.quiz.title}</h4>
                                                             <p className="text-body-md text-on-surface-variant">Selesaikan kuis evaluasi untuk menguji pengetahuan modul Anda.</p>
                                                         </div>
-                                                        {isEnrolled ? (
+                                                        {isEnrolled && hasCompletedPretest ? (
                                                             <Link
                                                                 to={`/dashboard/courses/${course.id}/modules/${module.id}/quiz`}
                                                                 className="bg-primary text-on-primary hover:bg-primary-container px-6 py-2.5 rounded-lg text-label-sm font-bold whitespace-nowrap hover:scale-95 transition-all shadow-sm"
@@ -243,6 +285,31 @@ const CourseDetail = () => {
                                     </div>
                                 </div>
                             ))
+                    )}
+
+                    {course.posttest && (
+                        <div className="bg-tertiary/5 rounded-lg border-2 border-tertiary/30 overflow-hidden shadow-sm mt-6">
+                            <div className="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <div className="text-label-sm text-tertiary font-bold mb-1">EVALUASI AKHIR</div>
+                                    <h3 className="text-headline-md font-headline-md text-tertiary">Posttest: {course.posttest.title}</h3>
+                                    <p className="text-body-md text-on-surface-variant mt-1">{course.posttest.instructions || 'Kerjakan posttest setelah semua materi selesai.'}</p>
+                                </div>
+                                {isEnrolled && hasCompletedPretest ? (
+                                    <Link
+                                        to={`/dashboard/courses/${course.id}/posttest`}
+                                        className="bg-tertiary text-on-tertiary hover:bg-tertiary/90 px-6 py-2.5 rounded-lg text-label-sm font-bold whitespace-nowrap hover:scale-95 transition-all shadow-sm"
+                                    >
+                                        Mulai Posttest
+                                    </Link>
+                                ) : (
+                                    <button disabled className="bg-outline-variant/30 text-on-surface-variant px-6 py-2.5 rounded-lg text-label-sm font-bold whitespace-nowrap opacity-75 cursor-not-allowed flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-[16px]">lock</span>
+                                        Terkunci
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                     )}
                 </div>
 

@@ -71,6 +71,70 @@ class QuizController extends Controller
             return response()->json(['error' => 'Failed to create quiz: ' . $e->getMessage()], 500);
         }
     }
+    /**
+     * Store a pretest/posttest for a course.
+     */
+    public function storeCourseQuiz(Request $request, \App\Models\Course $course)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'instructions' => 'nullable|string',
+            'type' => 'required|in:pretest,posttest',
+            'questions' => 'required|array|min:1',
+            'questions.*.question_text' => 'required|string',
+            'questions.*.sequence' => 'nullable|integer',
+            'questions.*.options' => 'required|array|min:2',
+            'questions.*.options.*.option_text' => 'required|string',
+            'questions.*.options.*.is_correct' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            // if pretest/posttest already exists, delete it first or handle it
+            $existing = Quiz::where('course_id', $course->id)->where('type', $request->type)->first();
+            if ($existing) {
+                $existing->delete();
+            }
+
+            $quiz = Quiz::create([
+                'course_id' => $course->id,
+                'type' => $request->type,
+                'title' => $request->title,
+                'instructions' => $request->instructions,
+            ]);
+
+            foreach ($request->questions as $idx => $qData) {
+                $question = QuizQuestion::create([
+                    'quiz_id' => $quiz->id,
+                    'question_text' => $qData['question_text'],
+                    'sequence' => $qData['sequence'] ?? ($idx + 1),
+                ]);
+
+                foreach ($qData['options'] as $optData) {
+                    QuizOption::create([
+                        'question_id' => $question->id,
+                        'option_text' => $optData['option_text'],
+                        'is_correct' => $optData['is_correct'],
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'message' => ucfirst($request->type) . ' created successfully',
+                'quiz' => $quiz->load('questions.options')
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Failed to create ' . $request->type . ': ' . $e->getMessage()], 500);
+        }
+    }
 
     /**
      * Update an existing quiz with its questions and options.

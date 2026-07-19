@@ -98,4 +98,14 @@ class Course extends Model
     {
         return $this->belongsToMany(Partner::class);
     }
+
+    public function pretest(): HasOne
+    {
+        return $this->hasOne(Quiz::class)->where('type', 'pretest');
+    }
+
+    public function posttest(): HasOne
+    {
+        return $this->hasOne(Quiz::class)->where('type', 'posttest');
+    }
 }

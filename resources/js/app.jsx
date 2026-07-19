@@ -80,7 +80,9 @@ const App = () => {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/dashboard/profile" element={<Profile />} />
                     <Route path="/dashboard/courses/:id" element={<CourseDetail />} />
+                    <Route path="/dashboard/courses/:courseId/pretest" element={<QuizView type="pretest" />} />
                     <Route path="/dashboard/courses/:courseId/modules/:moduleId/quiz" element={<QuizView />} />
+                    <Route path="/dashboard/courses/:courseId/posttest" element={<QuizView type="posttest" />} />
                     <Route path="/dashboard/courses/:courseId/project" element={<ProjectView />} />
                     <Route path="/dashboard/forum" element={<ForumView />} />
                     <Route path="/dashboard/evaluation" element={<EvaluationCenter />} />

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Diagram Sistem Ecocademy</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9fafb; color: #333; }
+        h1 { text-align: center; color: #10b981; }
+        h2 { border-bottom: 2px solid #10b981; padding-bottom: 5px; margin-top: 40px; }
+        .diagram-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px; overflow-x: auto; text-align: center; }
+    </style>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+    <h1>Diagram Perancangan Sistem Ecocademy</h1>
+
+    <h2>1. Data Flow Diagram (DFD Level 0 / Context Diagram)</h2>
+    <div class="diagram-container">
+        <pre class="mermaid">
+        flowchart TD
+            Siswa([Siswa/Mahasiswa])
+            Instruktur([Instruktur/Dosen])
+            UMKM([UMKM Mitra])
+
+            Sistem((Sistem Ecocademy))
+
+            Siswa -- Data Profil, Jawaban Kuis, Laporan Proyek --> Sistem
+            Sistem -- Materi Kursus, Nilai, Feedback, Sertifikat --> Siswa
+
+            Instruktur -- Data Kursus, Modul, Soal Kuis, Nilai --> Sistem
+            Sistem -- Laporan Siswa, Statistik Kelas --> Instruktur
+
+            UMKM -- Profil Usaha, Ide Proyek --> Sistem
+            Sistem -- Hasil Proyek Siswa --> UMKM
+        </pre>
+    </div>
+
+    <h2>2. Use Case Diagram</h2>
+    <div class="diagram-container">
+        <pre class="mermaid">
+        flowchart LR
+            actorSiswa([Siswa])
+            actorInstruktur([Instruktur])
+
+            subgraph Sistem_Ecocademy
+                UC1(Daftar & Login)
+                UC2(Manajemen Profil)
+                UC3(Buat & Kelola Kursus)
+                UC4(Akses Materi & Video)
+                UC5(Kerjakan Kuis)
+                UC6(Kelola Penilaian)
+                UC7(Unggah Proyek PjBL)
+                UC8(Beri Nilai & Feedback PjBL)
+                UC9(Diskusi Forum)
+            end
+
+            actorSiswa --> UC1
+            actorSiswa --> UC2
+            actorSiswa --> UC4
+            actorSiswa --> UC5
+            actorSiswa --> UC7
+            actorSiswa --> UC9
+
+            actorInstruktur --> UC1
+            actorInstruktur --> UC2
+            actorInstruktur --> UC3
+            actorInstruktur --> UC6
+            actorInstruktur --> UC8
+            actorInstruktur --> UC9
+        </pre>
+    </div>
+
+    <h2>3. Business Process Flowchart (Alur Proyek PjBL)</h2>
+    <div class="diagram-container">
+        <pre class="mermaid">
+        flowchart TD
+            Start([Mulai]) --> A[Instruktur merancang Kursus PjBL & Milestone]
+            A --> B[Siswa mendaftar ke Kursus]
+            B --> C[Siswa mempelajari Modul & Materi]
+            C --> D{Kuis Lulus?}
+            D -- Tidak --> C
+            D -- Ya --> E[Siswa memilih UMKM Mitra]
+            E --> F[Siswa mengeksekusi proyek di lapangan]
+            F --> G[Siswa mengunggah Laporan/Bukti Proyek]
+            G --> H[Instruktur meninjau laporan di Evaluation Center]
+            H --> I{Apakah Sesuai Kriteria?}
+            I -- Perbaikan --> G
+            I -- Sesuai --> J[Instruktur memberi Nilai & Green Impact Score]
+            J --> K[Siswa lulus & Proyek masuk Green Showcase]
+            K --> End([Selesai])
+        </pre>
+    </div>
+
+</body>
+</html>

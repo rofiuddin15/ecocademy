@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 
-const QuizView = () => {
+const QuizView = ({ type = 'module' }) => {
     const { courseId, moduleId } = useParams();
     const navigate = useNavigate();
 
@@ -30,10 +30,19 @@ const QuizView = () => {
             const courseResponse = await api.get(`/courses/${courseId}`);
             setCourse(courseResponse.data);
 
-            const activeModule = courseResponse.data.modules?.find(m => m.id === moduleId);
-            if (activeModule && activeModule.quiz) {
+            let targetQuiz = null;
+            if (type === 'pretest') {
+                targetQuiz = courseResponse.data.pretest;
+            } else if (type === 'posttest') {
+                targetQuiz = courseResponse.data.posttest;
+            } else {
+                const activeModule = courseResponse.data.modules?.find(m => m.id === moduleId);
+                targetQuiz = activeModule?.quiz;
+            }
+
+            if (targetQuiz) {
                 // Shuffle questions and options
-                const randomizedQuiz = { ...activeModule.quiz };
+                const randomizedQuiz = { ...targetQuiz };
                 if (randomizedQuiz.questions) {
                     randomizedQuiz.questions = shuffleArray(randomizedQuiz.questions).map(q => ({
                         ...q,
@@ -43,7 +52,7 @@ const QuizView = () => {
                 setQuiz(randomizedQuiz);
                 
                 // Fetch attempts log
-                const attemptsResponse = await api.get(`/quizzes/${activeModule.quiz.id}/attempts`);
+                const attemptsResponse = await api.get(`/quizzes/${targetQuiz.id}/attempts`);
                 setAttempts(attemptsResponse.data);
             }
         } catch (error) {
@@ -56,7 +65,7 @@ const QuizView = () => {
 
     useEffect(() => {
         fetchQuizAndAttempts();
-    }, [courseId, moduleId]);
+    }, [courseId, moduleId, type]);
 
     const handleOptionChange = (questionId, optionId) => {
         setAnswers({

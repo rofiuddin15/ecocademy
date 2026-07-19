@@ -16,6 +16,7 @@ Selamat datang di sistem Ecocademy! Buku panduan ini akan membantu Anda memahami
 3. [Panduan Instruktur/Dosen](#panduan-instrukturdosen)
    - [Dashboard Instruktur](#1-dashboard-instruktur)
    - [Manajemen Kursus](#2-manajemen-kursus)
+   - [Pusat Evaluasi (Evaluation Center)](#3-pusat-evaluasi)
 
 ---
 
@@ -72,19 +73,33 @@ Tempat memamerkan proyek atau inovasi hijau komunitas Ecocademy.
 - **Notifikasi:** Pemberitahuan tugas atau kuis.
 
 ## 2. Pembelajaran & Modul
-### Mencari dan Mengikuti Kursus
-1. Buka menu **Katalog Kursus**.
-2. Gunakan pencarian atau filter kategori.
-3. Klik judul kursus lalu klik **Ikuti Kursus**.
 
-### Mengakses Materi
-1. Buka kursus dari Dashboard Anda.
-2. Klik pada modul pertama.
-3. Baca materi, tonton video, dan tandai selesai dengan tombol **Selesai & Lanjut**.
+### A. Modul Kursus Saya (Student Modules)
+1. Buka menu **Modul Kursus** di Dashboard.
+2. Anda akan melihat daftar kursus yang dibagi menjadi dua tab: **Sedang Berjalan** (In Progress) dan **Selesai** (Completed).
+3. Setiap kartu kursus akan menampilkan:
+   - Gambar sampul (thumbnail)
+   - Judul kursus
+   - Bar progress (persentase penyelesaian)
+4. Klik tombol **Lanjutkan Belajar** untuk masuk ke halaman detail kursus, atau **Ikuti Kursus** jika Anda belum terdaftar.
+
+### B. Detail Kursus (Course Detail)
+Setelah masuk ke halaman detail kursus, Anda akan melihat informasi lengkap mengenai kursus tersebut:
+1. **Informasi Utama:** Kategori, Poin Hijau (Sustainability Score), Judul, Deskripsi, dan Instruktur.
+2. **Aksi Pembelajaran:** 
+   - Jika Anda **belum terdaftar**, klik tombol **Daftar Kursus Gratis**. Sebuah pop-up konfirmasi akan muncul; klik **Ya, Daftar Sekarang**.
+   - Jika Anda **sudah terdaftar**, Anda dapat melihat tombol akses ke **Ruang Kerja Proyek PjBL**.
+3. **Modul Pembelajaran:** Daftar bab/modul yang tersedia. Klik pada modul untuk melihat isi materinya.
+4. **Materi Bacaan & Video:** 
+   - Klik pada materi (Video, PDF, atau Bacaan teks).
+   - Materi akan terbuka dalam jendela _pop-up_ (Modal Reader).
+   - Setelah selesai menonton atau membaca, klik **Selesai Membaca** di bagian bawah.
+5. **Kuis Evaluasi:** Jika tersedia, klik tombol **Kerjakan Kuis** di dalam modul.
+6. **Tahapan Milestone PjBL:** Di sisi kanan (atau di bagian bawah pada layar kecil), Anda dapat memantau tahapan target proyek (Milestone) yang harus diselesaikan untuk lulus dari kursus tersebut.
 
 ## 3. Kuis & Proyek
 ### Mengerjakan Kuis
-1. Buka halaman kuis di dalam modul.
+1. Buka halaman kuis di dalam modul (Quiz View).
 2. Pilih jawaban yang benar dari opsi yang tersedia.
 3. Klik **Kirim Jawaban**. Nilai akan langsung muncul.
 
@@ -114,8 +129,12 @@ Proyek adalah tugas praktik yang harus Anda selesaikan untuk membuktikan pemaham
 
 ## 2. Manajemen Kursus
 
-### A. Membuat Kursus Baru
-1. Buka Dashboard Instruktur, lalu klik tombol **Buat Kursus Baru** (atau buka menu Course Form).
+### A. Course Manager (Pengelola Kursus)
+1. Buka menu **Course Manager** untuk melihat seluruh daftar kursus yang Anda ampu.
+2. Anda dapat mengedit, menghapus, atau melihat detail masing-masing kursus dari halaman ini.
+
+### B. Membuat Kursus Baru (Course Form)
+1. Klik tombol **Buat Kursus Baru** pada Course Manager.
 2. Anda akan melihat formulir pembuatan kursus. Lengkapi informasi berikut:
    - **Judul Kursus:** Berikan nama yang menarik dan jelas.
    - **Deskripsi:** Jelaskan apa yang akan dipelajari siswa di kursus ini, prasyarat (jika ada), dan tujuan pembelajaran.
@@ -124,14 +143,14 @@ Proyek adalah tugas praktik yang harus Anda selesaikan untuk membuktikan pemaham
    - **Thumbnail/Sampul Kursus:** Unggah gambar beresolusi tinggi agar kursus terlihat profesional.
 3. Setelah semua kolom wajib terisi, klik tombol **Simpan Kursus**. Kursus baru akan muncul di daftar kursus Anda.
 
-### B. Membuat dan Mengelola Modul
-Setelah kursus dibuat, Anda perlu menambahkan modul sebagai kerangka pembelajaran.
+### C. Instructor Course Detail & Modul
+Setelah kursus dibuat, Anda perlu menambahkan modul sebagai kerangka pembelajaran melalui halaman **Instructor Course Detail**.
 1. Buka menu **Kursus Saya** di Dashboard Instruktur, lalu klik kursus yang baru saja Anda buat.
 2. Klik tombol **Tambah Modul**.
 3. Masukkan **Judul Modul** (contoh: "Modul 1: Pengenalan Daur Ulang").
 4. Klik **Simpan Modul**. Ulangi langkah ini untuk membuat semua bab/modul yang diperlukan.
 
-### C. Menambahkan Materi ke Dalam Modul
+### D. Menambahkan Materi ke Dalam Modul
 Setiap modul dapat berisi beberapa jenis materi (teks, video, dokumen).
 1. Pada halaman detail kursus, pilih modul yang ingin ditambahkan materi.
 2. Klik tombol **Tambah Materi** di dalam kotak modul tersebut.
@@ -142,7 +161,7 @@ Setiap modul dapat berisi beberapa jenis materi (teks, video, dokumen).
    - **Dokumen (PDF):** Unggah file PDF untuk bahan bacaan tambahan.
 5. Klik **Simpan Materi**.
 
-### D. Membuat Tugas Proyek (Sangat Penting)
+### E. Membuat Tugas Proyek (Sangat Penting)
 Untuk menguji pemahaman siswa secara praktis, Anda dapat memberikan tugas proyek.
 1. Buka halaman detail kursus, pilih modul tempat Anda ingin menyisipkan proyek, atau buat modul khusus bernama "Tugas Akhir".
 2. Klik tombol **Tambah Tugas Proyek**.
@@ -158,19 +177,26 @@ Untuk menguji pemahaman siswa secara praktis, Anda dapat memberikan tugas proyek
    - **Batas Waktu (Deadline):** Tetapkan jumlah hari maksimal pengerjaan (opsional).
 4. Klik tombol **Simpan Tugas Proyek**.
 
-### E. Membuat Kuis (Opsional)
+### F. Membuat Kuis (Opsional)
 1. Di dalam modul, klik **Tambah Kuis**.
 2. Masukkan pertanyaan, opsi jawaban A, B, C, D.
 3. Tandai mana jawaban yang benar.
 4. Klik **Simpan Pertanyaan**. Tambahkan pertanyaan lain sesuai kebutuhan.
 
-### F. Memantau dan Menilai Tugas Proyek (PjBL)
+## 3. Pusat Evaluasi (Evaluation Center)
+Pusat Evaluasi adalah menu terpusat untuk memantau dan menilai seluruh tugas yang dikirim oleh siswa.
+
+### A. Mengakses Evaluation Center
+1. Buka **Dashboard Instruktur** dan pilih menu **Evaluation Center**.
+2. Anda akan melihat daftar semua tugas yang dikumpulkan, baik yang menunggu penilaian maupun yang sudah dinilai.
+
+### B. Memantau dan Menilai Tugas Proyek (Project Evaluation Detail)
 Sebagai instruktur, Anda wajib membimbing dan menilai setiap tahapan laporan siswa agar mereka tidak salah arah:
-1. Buka **Dashboard Instruktur**.
-2. Pada tabel **Pemantauan Proyek**, klik tombol **Tinjau** atau **Lihat Detail** pada proyek siswa.
-3. Di dalam modal detail, gulir ke bagian **Riwayat Pengiriman Tugas (Submissions)**.
-4. Klik tombol **Beri Nilai** (ikon pensil) pada tugas yang baru dikumpulkan.
-5. Masukkan **Nilai (0-100)**, **Skor Dampak Hijau (1-5)**, dan **Komentar/Tanggapan** perbaikan untuk siswa.
+1. Pada tabel **Evaluation Center**, klik tombol **Tinjau** atau **Lihat Detail** pada proyek siswa. Anda akan masuk ke halaman **Project Evaluation Detail**.
+2. Di halaman ini, Anda bisa melihat file yang diunggah siswa beserta deskripsi yang mereka sertakan.
+3. Berikan **Nilai (0-100)** untuk skor akademik/tugas.
+4. Berikan **Skor Dampak Hijau (1-5)** untuk menilai seberapa ramah lingkungan proyek yang dikerjakan (jika relevan).
+5. Tuliskan **Komentar/Tanggapan** perbaikan untuk siswa pada kolom yang tersedia.
 6. Klik **Simpan Nilai**. Nilai dan komentar formatif Anda akan otomatis terlihat oleh siswa di dashboard mereka.
 
 ---

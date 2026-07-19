@@ -45,6 +45,10 @@ const CourseForm = () => {
     // Milestones Data
     const [milestones, setMilestones] = useState([]);
 
+    // Course Quizzes
+    const [pretest, setPretest] = useState(null);
+    const [posttest, setPosttest] = useState(null);
+
     // Modal States
     const [isModuleModalOpen, setIsModuleModalOpen] = useState(false);
     const [isMaterialModalOpen, setIsMaterialModalOpen] = useState(false);
@@ -52,6 +56,7 @@ const CourseForm = () => {
     const [activeModuleForModal, setActiveModuleForModal] = useState(null);
     const [editingMaterial, setEditingMaterial] = useState(null);
     const [editingQuiz, setEditingQuiz] = useState(null);
+    const [editingQuizType, setEditingQuizType] = useState('quiz'); // 'quiz', 'pretest', 'posttest'
     const [isMilestoneModalOpen, setIsMilestoneModalOpen] = useState(false);
     const [editingMilestone, setEditingMilestone] = useState(null);
 
@@ -90,6 +95,8 @@ const CourseForm = () => {
             });
             setModules(c.modules || []);
             setMilestones(c.milestones || []);
+            setPretest(c.pretest || null);
+            setPosttest(c.posttest || null);
             if (c.pbl_detail) {
                 setPblData({
                     title: c.pbl_detail.title || '',
@@ -145,14 +152,10 @@ const CourseForm = () => {
 
             if (isEditing) {
                 submitData.append('_method', 'PUT');
-                await api.post(`/courses/${id}`, submitData, {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                });
+                await api.post(`/courses/${id}`, submitData);
                 alert('Informasi kursus berhasil diperbarui.');
             } else {
-                const res = await api.post('/courses', submitData, {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                });
+                const res = await api.post('/courses', submitData);
                 navigate(`/dashboard/manager/edit/${res.data.id}`);
             }
         } catch (error) {
@@ -244,38 +247,60 @@ const CourseForm = () => {
     };
             
     const openQuizModal = (module) => {
+        setEditingQuizType('quiz');
         setEditingQuiz(null);
         setActiveModuleForModal(module);
         setIsQuizModalOpen(true);
     };
 
     const openEditQuizModal = (module, quiz) => {
+        setEditingQuizType('quiz');
         setEditingQuiz(quiz);
         setActiveModuleForModal(module);
         setIsQuizModalOpen(true);
     };
 
+    const openCourseQuizModal = (type, quiz = null) => {
+        setEditingQuizType(type);
+        setEditingQuiz(quiz);
+        setActiveModuleForModal(null);
+        setIsQuizModalOpen(true);
+    };
+
     const handleSaveQuiz = async (quizData) => {
         try {
-            const moduleId = activeModuleForModal.id;
             let res;
-            if (editingQuiz) {
-                res = await api.put(`/quizzes/${editingQuiz.id}`, quizData);
+            if (editingQuizType === 'quiz') {
+                const moduleId = activeModuleForModal.id;
+                if (editingQuiz) {
+                    res = await api.put(`/quizzes/${editingQuiz.id}`, quizData);
+                } else {
+                    res = await api.post(`/modules/${moduleId}/quizzes`, quizData);
+                }
+                setModules(modules.map(mod => {
+                    if (mod.id === moduleId) {
+                        return { ...mod, quiz: res.data.quiz || res.data };
+                    }
+                    return mod;
+                }));
             } else {
-                res = await api.post(`/modules/${moduleId}/quizzes`, quizData);
+                quizData.type = editingQuizType;
+                if (editingQuiz) {
+                    res = await api.put(`/quizzes/${editingQuiz.id}`, quizData);
+                } else {
+                    res = await api.post(`/courses/${id}/quizzes`, quizData);
+                }
+                const newQuiz = res.data.quiz || res.data;
+                if (editingQuizType === 'pretest') setPretest(newQuiz);
+                if (editingQuizType === 'posttest') setPosttest(newQuiz);
             }
             
-            setModules(modules.map(mod => {
-                if (mod.id === moduleId) {
-                    return { ...mod, quiz: res.data.quiz || res.data };
-                }
-                return mod;
-            }));
             setIsQuizModalOpen(false);
             setEditingQuiz(null);
+            setEditingQuizType('quiz');
         } catch (error) {
             console.error(error);
-            alert('Gagal menyimpan kuis');
+            alert(`Gagal menyimpan ${editingQuizType}`);
         }
     };
 
@@ -498,6 +523,31 @@ const CourseForm = () => {
                     </div>
 
                     <div className="space-y-4">
+                        {/* PRETEST BLOCK */}
+                        <div className="border-2 border-dashed border-primary/30 rounded-lg bg-primary/5 p-4 mb-6">
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-sm">A</div>
+                                    <div>
+                                        <h4 className="font-label-lg text-primary font-bold">Pretest (Tes Awal)</h4>
+                                        <p className="text-xs text-on-surface-variant">Ujian wajib sebelum mahasiswa dapat mengakses materi modul.</p>
+                                    </div>
+                                </div>
+                                {pretest ? (
+                                    <div className="flex items-center gap-4">
+                                        <span className="text-sm font-bold text-primary">{pretest.title}</span>
+                                        <button onClick={() => openCourseQuizModal('pretest', pretest)} className="text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors">
+                                            <span className="material-symbols-outlined text-[18px]">edit</span>
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button onClick={() => openCourseQuizModal('pretest')} className="bg-primary/10 text-primary px-3 py-1.5 rounded text-sm font-bold hover:bg-primary/20 transition-colors">
+                                        + Tambah Pretest
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
                         {modules.length === 0 ? (
                             <div className="text-center py-10 bg-surface-container-lowest border border-dashed border-outline-variant rounded-lg text-on-surface-variant">
                                 Belum ada modul yang dibuat. Klik "Tambah Modul" untuk memulai.
@@ -559,6 +609,31 @@ const CourseForm = () => {
                             </div>
                         ))}
                     </div>
+                        
+                        {/* POSTTEST BLOCK */}
+                        <div className="border-2 border-dashed border-tertiary/30 rounded-lg bg-tertiary/5 p-4 mt-6">
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-tertiary/20 text-tertiary flex items-center justify-center font-bold text-sm">Z</div>
+                                    <div>
+                                        <h4 className="font-label-lg text-tertiary font-bold">Posttest (Tes Akhir)</h4>
+                                        <p className="text-xs text-on-surface-variant">Ujian akhir untuk mengukur pemahaman setelah semua materi selesai.</p>
+                                    </div>
+                                </div>
+                                {posttest ? (
+                                    <div className="flex items-center gap-4">
+                                        <span className="text-sm font-bold text-tertiary">{posttest.title}</span>
+                                        <button onClick={() => openCourseQuizModal('posttest', posttest)} className="text-tertiary hover:bg-tertiary/10 p-2 rounded-lg transition-colors">
+                                            <span className="material-symbols-outlined text-[18px]">edit</span>
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button onClick={() => openCourseQuizModal('posttest')} className="bg-tertiary/10 text-tertiary px-3 py-1.5 rounded text-sm font-bold hover:bg-tertiary/20 transition-colors">
+                                        + Tambah Posttest
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                 </div>
             )}
 
@@ -674,10 +749,11 @@ const CourseForm = () => {
             
             <QuizModal 
                 isOpen={isQuizModalOpen} 
-                onClose={() => { setIsQuizModalOpen(false); setEditingQuiz(null); }} 
+                onClose={() => { setIsQuizModalOpen(false); setEditingQuiz(null); setEditingQuizType('quiz'); }} 
                 onSave={handleSaveQuiz} 
-                moduleTitle={activeModuleForModal?.title} 
+                moduleTitle={activeModuleForModal?.title || (editingQuizType === 'pretest' ? 'Pretest' : 'Posttest')} 
                 initialData={editingQuiz}
+                type={editingQuizType}
             />
             
             <MilestoneModal 

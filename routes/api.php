@@ -66,6 +66,7 @@ Route::prefix('v1')->group(function () {
 
         // Quizzes
         Route::post('modules/{module}/quizzes', [QuizController::class, 'store']);
+        Route::post('courses/{course}/quizzes', [QuizController::class, 'storeCourseQuiz']);
         Route::put('quizzes/{quiz}', [QuizController::class, 'update']);
         Route::delete('quizzes/{quiz}', [QuizController::class, 'destroy']);
         Route::post('quizzes/{quiz}/submit', [QuizController::class, 'submit']);

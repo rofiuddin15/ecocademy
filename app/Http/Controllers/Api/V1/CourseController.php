@@ -67,13 +67,14 @@ class CourseController extends Controller
         ]);
 
         if ($validator->fails()) {
+            \Illuminate\Support\Facades\Log::error('Course store validation failed: ', $validator->errors()->toArray());
             return response()->json($validator->errors(), 400);
         }
 
         $imagePath = null;
         if ($request->hasFile('image')) {
             $manager = \Intervention\Image\ImageManager::gd();
-            $image = $manager->read($request->file('image'));
+            $image = $manager->read($request->file('image')->getPathname());
             $image->cover(1280, 720);
             $encoded = $image->toWebp(85);
             $filename = 'courses/' . uniqid() . '.webp';
@@ -121,7 +122,7 @@ class CourseController extends Controller
         }
 
         // Load modules (with materials & quiz), milestones, skills, partners, and pblDetail
-        return response()->json($course->load(['category', 'instructor', 'modules.materials', 'modules.quiz.questions.options', 'milestones', 'skills', 'partners', 'pblDetail']));
+        return response()->json($course->load(['category', 'instructor', 'modules.materials', 'modules.quiz.questions.options', 'milestones', 'skills', 'partners', 'pblDetail', 'pretest.questions.options', 'posttest.questions.options']));
     }
 
     /**
@@ -167,7 +168,7 @@ class CourseController extends Controller
             }
 
             $manager = \Intervention\Image\ImageManager::gd();
-            $image = $manager->read($request->file('image'));
+            $image = $manager->read($request->file('image')->getPathname());
             $image->cover(1280, 720);
             $encoded = $image->toWebp(85);
             $filename = 'courses/' . uniqid() . '.webp';

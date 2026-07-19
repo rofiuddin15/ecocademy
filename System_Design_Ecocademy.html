@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dokumen Perancangan Sistem Ecocademy</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #ffffff; color: #333; line-height: 1.6; max-width: 900px; margin: auto; padding: 20px; }
+        h1, h2, h3 { color: #10b981; }
+        h1 { text-align: center; border-bottom: 2px solid #10b981; padding-bottom: 10px; }
+        .diagram-container { background: #f9fafb; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 20px 0; overflow-x: auto; text-align: center; }
+        ul { margin-bottom: 20px; }
+    </style>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+    <h1>Dokumen Perancangan Sistem Ecocademy</h1>
+
+    <h2>1. Deskripsi Sistem</h2>
+    <p>Ecocademy adalah platform edukasi berbasis <em>Project-Based Learning</em> (PjBL) yang berfokus pada keberlanjutan lingkungan (Sustainability). Sistem ini menghubungkan siswa, instruktur, dan UMKM. Siswa tidak hanya belajar materi teoritis melalui modul dan kuis, tetapi juga diwajibkan untuk menyelesaikan proyek akhir yang memberikan dampak nyata (Green Impact) bagi UMKM mitra.</p>
+
+    <h2>2. Alur Sistem (Flow System)</h2>
+    <h3>A. Alur Siswa (Student Flow)</h3>
+    <ol>
+        <li><strong>Pendaftaran & Login:</strong> Siswa mendaftar akun baru dan masuk ke sistem.</li>
+        <li><strong>Dashboard & Eksplorasi:</strong> Siswa melihat ringkasan pencapaian dan mencari kursus di Katalog Kursus.</li>
+        <li><strong>Pembelajaran Modul:</strong> Siswa memilih kursus, mendaftar, membaca materi (PDF/Teks) atau menonton video, dan mengerjakan kuis di akhir modul.</li>
+        <li><strong>Pelaksanaan Proyek (PjBL):</strong> Siswa melihat <em>Milestones</em> proyek akhir, memilih UMKM mitra, melaksanakan proyek, dan mengunggah laporan (Submission).</li>
+        <li><strong>Penilaian & Lulus:</strong> Siswa menunggu nilai dan <em>feedback</em> dari instruktur, kemudian dinyatakan lulus jika memenuhi syarat.</li>
+    </ol>
+
+    <h3>B. Alur Instruktur (Instructor Flow)</h3>
+    <ol>
+        <li><strong>Login Instruktur:</strong> Instruktur masuk ke Dashboard Instruktur.</li>
+        <li><strong>Manajemen Kursus:</strong> Instruktur membuat kursus baru, mengatur deskripsi, dan kategori.</li>
+        <li><strong>Penyusunan Silabus:</strong> Instruktur membuat modul-modul pembelajaran, materi, kuis, dan mendefinisikan <em>Milestones</em> tugas proyek.</li>
+        <li><strong>Pusat Evaluasi (Evaluation Center):</strong> Instruktur menerima notifikasi, mengevaluasi berkas submission, memberi nilai dan <em>Green Impact Score</em>, serta menulis <em>feedback</em>.</li>
+    </ol>
+
+    <hr>
+
+    <h2>3. Diagram Sistem</h2>
+    
+    <h3>A. Data Flow Diagram (DFD Level 0 / Context Diagram)</h3>
+    <div class="diagram-container">
+        <pre class="mermaid">
+        flowchart TD
+            Siswa([Siswa/Mahasiswa])
+            Instruktur([Instruktur/Dosen])
+            UMKM([UMKM Mitra])
+
+            Sistem((Sistem Ecocademy))
+
+            Siswa -- Data Profil, Jawaban Kuis, Laporan Proyek --> Sistem
+            Sistem -- Materi Kursus, Nilai, Feedback, Sertifikat --> Siswa
+
+            Instruktur -- Data Kursus, Modul, Soal Kuis, Nilai --> Sistem
+            Sistem -- Laporan Siswa, Statistik Kelas --> Instruktur
+
+            UMKM -- Profil Usaha, Ide Proyek --> Sistem
+            Sistem -- Hasil Proyek Siswa --> UMKM
+        </pre>
+    </div>
+
+    <style>
+        #usecase-container svg { max-height: 515px !important; width: auto !important; margin: 0 auto; display: block; }
+    </style>
+    <h3>B. Use Case Diagram</h3>
+    <div id="usecase-container" class="diagram-container" style="margin: 20px auto;">
+        <pre class="mermaid">
+        flowchart LR
+            actorSiswa([Siswa])
+            actorInstruktur([Instruktur])
+
+            subgraph Sistem_Ecocademy
+                UC1(Daftar & Login)
+                UC2(Manajemen Profil)
+                UC3(Buat & Kelola Kursus)
+                UC4(Akses Materi & Video)
+                UC5(Kerjakan Kuis)
+                UC6(Kelola Penilaian)
+                UC7(Unggah Proyek PjBL)
+                UC8(Beri Nilai & Feedback PjBL)
+                UC9(Diskusi Forum)
+            end
+
+            actorSiswa --> UC1
+            actorSiswa --> UC2
+            actorSiswa --> UC4
+            actorSiswa --> UC5
+            actorSiswa --> UC7
+            actorSiswa --> UC9
+
+            actorInstruktur --> UC1
+            actorInstruktur --> UC2
+            actorInstruktur --> UC3
+            actorInstruktur --> UC6
+            actorInstruktur --> UC8
+            actorInstruktur --> UC9
+        </pre>
+    </div>
+
+    <h3>C. Business Process Flowchart (Alur Proyek PjBL)</h3>
+    
+    <h4>Bagian 1: Persiapan & Pembelajaran</h4>
+    <div class="diagram-container">
+        <pre class="mermaid">
+        flowchart TD
+            Start([Mulai]) --> A[Instruktur merancang Kursus PjBL & Milestone]
+            A --> B[Siswa mendaftar ke Kursus]
+            B --> C[Siswa mempelajari Modul & Materi]
+            C --> D{Kuis Lulus?}
+            D -- Tidak --> C
+            D -- Ya --> End1([Lanjut ke Tahap Proyek])
+        </pre>
+    </div>
+
+    <h4>Bagian 2: Eksekusi & Penilaian Proyek</h4>
+    <div class="diagram-container">
+        <pre class="mermaid">
+        flowchart TD
+            Start2([Dari Tahap Pembelajaran]) --> E[Siswa memilih UMKM Mitra]
+            E --> F[Siswa mengeksekusi proyek di lapangan]
+            F --> G[Siswa mengunggah Laporan/Bukti Proyek]
+            G --> H[Instruktur meninjau laporan di Evaluation Center]
+            H --> I{Apakah Sesuai Kriteria?}
+            I -- Perbaikan --> G
+            I -- Sesuai --> J[Instruktur memberi Nilai & Green Impact Score]
+            J --> K[Siswa lulus & Proyek masuk Green Showcase]
+            K --> End([Selesai])
+        </pre>
+    </div>
+
+    <hr>
+
+    <h2>4. Daftar Modul Sistem</h2>
+    <ul>
+        <li><strong>Manajemen Autentikasi & Profil:</strong> Mengelola pendaftaran, login, pengaturan password, dan profil.</li>
+        <li><strong>Katalog & Pembelajaran (LMS):</strong> Menampilkan kursus, pendaftaran, dan viewer materi.</li>
+        <li><strong>Manajemen Kursus (Instructor Dashboard):</strong> Fasilitas instruktur membuat kursus, modul, dan kuis.</li>
+        <li><strong>Project-Based Learning (PjBL) Workspace:</strong> Ruang kerja siswa melihat instruksi milestone, dan unggah tugas.</li>
+        <li><strong>Pusat Evaluasi (Evaluation Center):</strong> Modul instruktur meninjau tugas proyek dan memberi nilai.</li>
+        <li><strong>Forum Diskusi:</strong> Ruang komunitas tanya jawab anggota.</li>
+        <li><strong>Direktori UMKM & Green Showcase:</strong> Database UMKM dan etalase proyek terbaik siswa.</li>
+        <li><strong>Manajemen Master Data (Admin):</strong> Mengelola data referensi utama sistem, seperti Master Kategori Kursus, Master Pengguna (Siswa/Instruktur/Admin), dan Master Sektor UMKM.</li>
+    </ul>
+
+    <hr>
+
+    <h2>5. Struktur Data (Kerangka Basisdata)</h2>
+    <style>
+        .db-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
+        .db-table th, .db-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .db-table th { background-color: #10b981; color: white; }
+    </style>
+
+    <h4>Tabel: <code>users</code></h4>
+    <p>Menyimpan data otentikasi dan profil pengguna.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>name, email, password</td><td>Identitas pengguna (email bersifat unik)</td></tr>
+        <tr><td>role, bio, avatar</td><td>Peran (student/instructor), deskripsi, foto</td></tr>
+    </table>
+
+    <h4>Tabel: <code>courses, modules, materials</code></h4>
+    <p>Menyimpan data modul e-learning (LMS).</p>
+    <table class="db-table">
+        <tr><th>Tabel</th><th>Kolom Utama</th><th>Keterangan</th></tr>
+        <tr><td>courses</td><td>id, title, category_id, instructor_id</td><td>Data kursus</td></tr>
+        <tr><td>modules</td><td>id, course_id, title, sequence</td><td>Daftar bab/modul</td></tr>
+        <tr><td>materials</td><td>id, module_id, content_type, content_url</td><td>Materi dalam modul (video, pdf)</td></tr>
+    </table>
+
+    <h4>Tabel: <code>quizzes, quiz_questions, quiz_options</code></h4>
+    <p>Menyimpan data evaluasi pilihan ganda.</p>
+    <table class="db-table">
+        <tr><th>Tabel</th><th>Kolom Utama</th><th>Keterangan</th></tr>
+        <tr><td>quizzes</td><td>id, module_id, title</td><td>Identitas kuis pada modul</td></tr>
+        <tr><td>quiz_questions</td><td>id, quiz_id, question_text</td><td>Soal-soal kuis</td></tr>
+        <tr><td>quiz_options</td><td>id, question_id, option_text, is_correct</td><td>Pilihan jawaban (benar/salah)</td></tr>
+    </table>
+
+    <h4>Tabel: <code>projects, milestones, submissions, feedbacks</code></h4>
+    <p>Menyimpan data alur <em>Project-Based Learning</em> (PjBL).</p>
+    <table class="db-table">
+        <tr><th>Tabel</th><th>Kolom Utama</th><th>Keterangan</th></tr>
+        <tr><td>projects</td><td>id, student_id, umkm_name, status</td><td>Data proyek siswa bersama UMKM</td></tr>
+        <tr><td>milestones</td><td>id, course_id, title, sequence</td><td>Target tahapan proyek yang ditetapkan instruktur</td></tr>
+        <tr><td>submissions</td><td>id, project_id, milestone_id, file_url</td><td>Laporan tugas yang dikirim siswa</td></tr>
+        <tr><td>feedbacks</td><td>id, submission_id, grade, green_impact_score</td><td>Nilai akademik dan dampak hijau dari instruktur</td></tr>
+    </table>
+
+    <h4>Tabel: <code>forum_threads, forum_comments</code></h4>
+    <p>Menyimpan data diskusi komunitas.</p>
+    <table class="db-table">
+        <tr><th>Tabel</th><th>Kolom Utama</th><th>Keterangan</th></tr>
+        <tr><td>forum_threads</td><td>id, user_id, title, body</td><td>Topik pertanyaan/diskusi</td></tr>
+        <tr><td>forum_comments</td><td>id, thread_id, user_id, body</td><td>Tanggapan/komentar diskusi</td></tr>
+    </table>
+
+    <h4>Tabel: <code>categories, partners</code> (Master Data)</h4>
+    <p>Menyimpan data referensi utama sistem.</p>
+    <table class="db-table">
+        <tr><th>Tabel</th><th>Kolom Utama</th><th>Keterangan</th></tr>
+        <tr><td>categories</td><td>id, name, slug, description</td><td>Data master kategori kursus</td></tr>
+        <tr><td>partners</td><td>id, name, sector, location</td><td>Data master profil UMKM mitra PjBL</td></tr>
+    </table>
+
+    <hr>
+
+    <h2>6. Daftar Teknologi yang Digunakan</h2>
+    <ul>
+        <li><strong>Frontend:</strong> React.js, React Router, Vite.</li>
+        <li><strong>Backend:</strong> Framework Laravel (PHP).</li>
+        <li><strong>Basis Data:</strong> Relational Database (MySQL / PostgreSQL).</li>
+        <li><strong>Peralatan Tambahan:</strong> Node.js & NPM (build tools).</li>
+    </ul>
+
+</body>
+</html>

@@ -11,7 +11,12 @@ class Quiz extends Model
 {
     use HasUuids;
 
-    protected $fillable = ['module_id', 'title', 'instructions'];
+    protected $fillable = ['module_id', 'title', 'instructions', 'type', 'course_id'];
+
+    public function course(): BelongsTo
+    {
+        return $this->belongsTo(Course::class);
+    }
 
     public function module(): BelongsTo
     {

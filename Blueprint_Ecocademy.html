@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>BLUEPRINT PENGEMBANGAN APLIKASI "ECOCADEMY"</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #ffffff; color: #333; line-height: 1.6; max-width: 900px; margin: auto; padding: 20px; }
+        h1, h2, h3, h4 { color: #10b981; }
+        h1 { text-align: center; border-bottom: 2px solid #10b981; padding-bottom: 10px; }
+        .diagram-container { background: #f9fafb; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin: 20px auto; overflow-x: auto; text-align: center; }
+        #usecase-container svg { max-height: 515px !important; width: auto !important; margin: 0 auto; display: block; }
+        .db-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
+        .db-table th, .db-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .db-table th { background-color: #10b981; color: white; }
+    </style>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</head>
+<body>
+
+    <h1>BLUEPRINT PENGEMBANGAN APLIKASI "ECOCADEMY"</h1>
+    <h3 style="text-align: center; color: #666;">(GREENPRENEURSHIP LMS BASED ON PJBL)</h3>
+
+    <p>Dokumen ini berisi spesifikasi teknis dan fungsional awal untuk pengembangan platform Learning Management System (LMS) yang dirancang khusus untuk mengajarkan keterampilan Greenpreneurship kepada mahasiswa melalui pendekatan pembelajaran berbasis proyek (Project-Based Learning / PjBL) demi mendukung UMKM lokal.</p>
+
+    <h2>1. Deskripsi Aplikasi</h2>
+    <p>Ecocademy adalah platform Learning Management System (LMS) berbasis web/mobile yang dirancang untuk memfasilitasi pembelajaran kewirausahaan hijau (greenpreneurship) yang berfokus pada studi kasus dan aksi nyata bersama UMKM.</p>
+    <p>Dengan mengadopsi sintaks Project-Based Learning (PjBL), aplikasi ini tidak hanya menyajikan materi teoretis, melainkan menantang mahasiswa untuk memecahkan masalah nyata yang dihadapi oleh UMKM (seperti pengelolaan limbah, efisiensi energi, atau rantai pasok ramah lingkungan) dan mengimplementasikan solusinya dalam bentuk proyek terstruktur.</p>
+    
+    <h4>Target Pengguna:</h4>
+    <ul>
+        <li><strong>Mahasiswa (Pelajar):</strong> Mengakses materi secara gratis, membentuk tim, mengerjakan proyek hijau, mengirimkan progres, dan menerima umpan balik (feedback).</li>
+        <li><strong>Dosen / Profesional (Instruktur):</strong> Membuat materi kursus, merancang tantangan proyek, memantau perkembangan mahasiswa, serta memberikan umpan balik dan penilaian.</li>
+        <li><strong>Administrator:</strong> Mengelola pengguna, memantau kualitas konten, mengelola kemitraan UMKM, serta melihat analisis performa platform secara keseluruhan.</li>
+    </ul>
+
+    <h2>2. Daftar Fitur Komprehensif</h2>
+    
+    <h4>A. Fitur Mahasiswa (Learners)</h4>
+    <ul>
+        <li><strong>Registrasi & Manajemen Profil:</strong> Pendaftaran mandiri (gratis), pengaturan minat jenis UMKM (misal: kuliner, kriya, fesyen), serta pelacakan pencapaian portofolio.</li>
+        <li><strong>Dashboard Pembelajaran Interaktif:</strong> Menampilkan kursus yang sedang diikuti, status progres proyek, tenggat waktu, dan feedback terbaru dari instruktur.</li>
+        <li><strong>Modul Pembelajaran PjBL:</strong>
+            <ul>
+                <li><strong>Materi Interaktif:</strong> Akses video, artikel, dan studi kasus UMKM hijau yang disusun oleh dosen/ahli.</li>
+                <li><strong>Milestone Tracker:</strong> Panduan langkah demi langkah pengerjaan proyek (Formulasi Masalah &rarr; Perencanaan Proyek &rarr; Eksekusi & Monitoring &rarr; Evaluasi Dampak).</li>
+            </ul>
+        </li>
+        <li><strong>Ruang Kolaborasi Tim:</strong> Fitur untuk membentuk kelompok belajar/proyek di dalam kelas yang sama.</li>
+        <li><strong>Modul Pengumpulan & Portofolio Proyek:</strong> Tempat mengunggah artefak proyek (proposal, foto aksi lapangan, laporan keuangan hijau, video implementasi).</li>
+        <li><strong>Sistem Feedback & Refleksi:</strong> Mahasiswa dapat menulis refleksi diri di akhir proyek dan membaca feedback komprehensif dari dosen/profesional.</li>
+    </ul>
+
+    <h4>B. Fitur Dosen & Profesional (Instructors)</h4>
+    <ul>
+        <li><strong>Course Creator Suite:</strong> Alat untuk menyusun kurikulum, mengunggah video materi, kuis, bahan bacaan, serta merancang lembar kerja proyek (Project Brief).</li>
+        <li><strong>Project Monitoring Panel:</strong> Dasbor khusus untuk memantau kemajuan proyek mahasiswa secara real-time berdasarkan milestone yang dicapai.</li>
+        <li><strong>Evaluation & Feedback Center:</strong> Rubrik penilaian berbasis aspek bisnis dan lingkungan (green metrics), serta kolom komentar interaktif untuk memberikan review bertahap pada draf proyek mahasiswa.</li>
+        <li><strong>UMKM Directory Integrator:</strong> Fitur untuk mendaftarkan dan memetakan profil UMKM mitra yang akan menjadi objek proyek mahasiswa.</li>
+    </ul>
+
+    <h4>C. Fitur Publik & Umum</h4>
+    <ul>
+        <li><strong>Green Showcase (Showroom Inovasi):</strong> Halaman publik yang menampilkan proyek-proyek hijau terbaik hasil karya mahasiswa sebagai bentuk apresiasi dan portofolio terbuka.</li>
+        <li><strong>Forum Diskusi Komunitas:</strong> Tempat berdiskusi mengenai tren greenpreneurship dan berbagi solusi masalah operasional UMKM secara kolaboratif.</li>
+        <li><strong>Manajemen Master Data (Admin):</strong> Mengelola data referensi utama sistem (Kategori, Pengguna, Sektor UMKM).</li>
+    </ul>
+
+    <hr>
+
+    <h2>3. Diagram Sistem Terpadu (Blueprint)</h2>
+
+    <h3>A. Data Flow Diagram (DFD Level 0 / Context Diagram)</h3>
+    <div class="diagram-container">
+        <pre class="mermaid">
+        flowchart TD
+            Siswa([Siswa/Mahasiswa])
+            Instruktur([Instruktur/Dosen])
+            UMKM([UMKM Mitra])
+
+            Sistem((Sistem Ecocademy))
+
+            Siswa -- Data Profil, Jawaban Kuis, Laporan Proyek --> Sistem
+            Sistem -- Materi Kursus, Nilai, Feedback, Sertifikat --> Siswa
+
+            Instruktur -- Data Kursus, Modul, Soal Kuis, Nilai --> Sistem
+            Sistem -- Laporan Siswa, Statistik Kelas --> Instruktur
+
+            UMKM -- Profil Usaha, Ide Proyek --> Sistem
+            Sistem -- Hasil Proyek Siswa --> UMKM
+        </pre>
+    </div>
+
+    <h3>B. Use Case Diagram</h3>
+    <div id="usecase-container" class="diagram-container">
+        <pre class="mermaid">
+        flowchart LR
+            actorSiswa([Siswa])
+            actorInstruktur([Instruktur])
+
+            subgraph Sistem_Ecocademy
+                UC1(Daftar & Login)
+                UC2(Manajemen Profil)
+                UC3(Buat & Kelola Kursus)
+                UC4(Akses Materi & Video)
+                UC5(Kerjakan Kuis)
+                UC6(Kelola Penilaian)
+                UC7(Unggah Proyek PjBL)
+                UC8(Beri Nilai & Feedback PjBL)
+                UC9(Diskusi Forum)
+            end
+
+            actorSiswa --> UC1
+            actorSiswa --> UC2
+            actorSiswa --> UC4
+            actorSiswa --> UC5
+            actorSiswa --> UC7
+            actorSiswa --> UC9
+
+            actorInstruktur --> UC1
+            actorInstruktur --> UC2
+            actorInstruktur --> UC3
+            actorInstruktur --> UC6
+            actorInstruktur --> UC8
+            actorInstruktur --> UC9
+        </pre>
+    </div>
+
+    <h3>C. Business Process Flowchart (Alur PjBL)</h3>
+    
+    <h4>Bagian 1: Persiapan & Pembelajaran</h4>
+    <div class="diagram-container">
+        <pre class="mermaid">
+        flowchart TD
+            Start([Mulai]) --> A[Instruktur merancang Kursus PjBL & Milestone]
+            A --> B[Siswa mendaftar ke Kursus]
+            B --> C[Siswa mempelajari Modul & Materi]
+            C --> D{Kuis Lulus?}
+            D -- Tidak --> C
+            D -- Ya --> End1([Lanjut ke Tahap Proyek])
+        </pre>
+    </div>
+
+    <h4>Bagian 2: Eksekusi & Penilaian Proyek</h4>
+    <div class="diagram-container">
+        <pre class="mermaid">
+        flowchart TD
+            Start2([Dari Tahap Pembelajaran]) --> E[Siswa memilih UMKM Mitra]
+            E --> F[Siswa mengeksekusi proyek di lapangan]
+            F --> G[Siswa mengunggah Laporan/Bukti Proyek]
+            G --> H[Instruktur meninjau laporan di Evaluation Center]
+            H --> I{Apakah Sesuai Kriteria?}
+            I -- Perbaikan --> G
+            I -- Sesuai --> J[Instruktur memberi Nilai & Green Impact Score]
+            J --> K[Siswa lulus & Proyek masuk Green Showcase]
+            K --> End([Selesai])
+        </pre>
+    </div>
+
+    <hr>
+
+    <h2>4. Model Data (Kerangka Basisdata)</h2>
+    
+    <h4>Tabel: <code>users</code></h4>
+    <p>Menyimpan informasi dasar pengguna aplikasi.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>name</td><td>VARCHAR(100)</td><td>Nama lengkap pengguna</td></tr>
+        <tr><td>email</td><td>VARCHAR(100)</td><td>Alamat email (Unik)</td></tr>
+        <tr><td>password</td><td>VARCHAR(255)</td><td>Hash password pengguna</td></tr>
+        <tr><td>role</td><td>ENUM</td><td>student, instructor, admin</td></tr>
+        <tr><td>bio</td><td>TEXT</td><td>Profil singkat/keahlian</td></tr>
+        <tr><td>avatar</td><td>VARCHAR(255)</td><td>URL foto profil</td></tr>
+        <tr><td>created_at</td><td>TIMESTAMP</td><td>Waktu pendaftaran</td></tr>
+    </table>
+
+    <h4>Tabel: <code>categories</code></h4>
+    <p>Menyimpan data referensi kategori kursus.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>name</td><td>VARCHAR(100)</td><td>Nama kategori</td></tr>
+        <tr><td>slug</td><td>VARCHAR(100)</td><td>Versi URL-friendly</td></tr>
+        <tr><td>description</td><td>TEXT</td><td>Penjelasan ruang lingkup kategori</td></tr>
+        <tr><td>created_at</td><td>TIMESTAMP</td><td>Waktu pembuatan</td></tr>
+    </table>
+
+    <h4>Tabel: <code>partners</code></h4>
+    <p>Menyimpan data master UMKM mitra PjBL.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>name</td><td>VARCHAR(100)</td><td>Nama UMKM</td></tr>
+        <tr><td>sector</td><td>VARCHAR(50)</td><td>Sektor UMKM</td></tr>
+        <tr><td>location</td><td>VARCHAR(255)</td><td>Lokasi UMKM</td></tr>
+        <tr><td>created_at</td><td>TIMESTAMP</td><td>Waktu pembuatan</td></tr>
+    </table>
+
+    <h4>Tabel: <code>courses</code></h4>
+    <p>Menyimpan data kursus/kelas greenpreneurship.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>title</td><td>VARCHAR(150)</td><td>Judul kursus</td></tr>
+        <tr><td>description</td><td>TEXT</td><td>Deskripsi lengkap silabus</td></tr>
+        <tr><td>category_id</td><td>VARCHAR(36)</td><td>Foreign Key ke categories</td></tr>
+        <tr><td>instructor_id</td><td>VARCHAR(36)</td><td>Foreign Key ke users</td></tr>
+        <tr><td>is_published</td><td>BOOLEAN</td><td>Status publikasi</td></tr>
+        <tr><td>created_at</td><td>TIMESTAMP</td><td>Waktu pembuatan</td></tr>
+    </table>
+
+    <h4>Tabel: <code>modules</code></h4>
+    <p>Menyimpan modul/bab dalam suatu kursus.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>course_id</td><td>VARCHAR(36)</td><td>Foreign Key ke courses</td></tr>
+        <tr><td>title</td><td>VARCHAR(150)</td><td>Judul bab/modul</td></tr>
+        <tr><td>sequence</td><td>INT</td><td>Urutan modul</td></tr>
+    </table>
+
+    <h4>Tabel: <code>materials</code></h4>
+    <p>Menyimpan materi pembelajaran di dalam modul.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>module_id</td><td>VARCHAR(36)</td><td>Foreign Key ke modules</td></tr>
+        <tr><td>content_type</td><td>ENUM</td><td>video, article, pdf</td></tr>
+        <tr><td>content_url</td><td>VARCHAR(255)</td><td>Tautan URL materi</td></tr>
+        <tr><td>body_text</td><td>TEXT</td><td>Isi teks (opsional)</td></tr>
+    </table>
+
+    <h4>Tabel: <code>quizzes</code></h4>
+    <p>Menyimpan data utama kuis dalam modul.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>module_id</td><td>VARCHAR(36)</td><td>Foreign Key ke modules</td></tr>
+        <tr><td>title</td><td>VARCHAR(150)</td><td>Judul kuis</td></tr>
+        <tr><td>instructions</td><td>TEXT</td><td>Instruksi pengerjaan</td></tr>
+    </table>
+
+    <h4>Tabel: <code>quiz_questions</code></h4>
+    <p>Menyimpan pertanyaan kuis.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>quiz_id</td><td>VARCHAR(36)</td><td>Foreign Key ke quizzes</td></tr>
+        <tr><td>question_text</td><td>TEXT</td><td>Teks pertanyaan</td></tr>
+        <tr><td>sequence</td><td>INT</td><td>Urutan pertanyaan</td></tr>
+    </table>
+
+    <h4>Tabel: <code>quiz_options</code></h4>
+    <p>Menyimpan pilihan jawaban untuk pertanyaan kuis.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>question_id</td><td>VARCHAR(36)</td><td>Foreign Key ke quiz_questions</td></tr>
+        <tr><td>option_text</td><td>TEXT</td><td>Teks pilihan jawaban</td></tr>
+        <tr><td>is_correct</td><td>BOOLEAN</td><td>Tandai jawaban benar/salah</td></tr>
+    </table>
+
+    <h4>Tabel: <code>projects</code></h4>
+    <p>Menyimpan entitas proyek PjBL mahasiswa.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>course_id</td><td>VARCHAR(36)</td><td>Foreign Key ke courses</td></tr>
+        <tr><td>student_id</td><td>VARCHAR(36)</td><td>Owner proyek (Foreign Key ke users)</td></tr>
+        <tr><td>title</td><td>VARCHAR(150)</td><td>Judul inovasi proyek</td></tr>
+        <tr><td>umkm_name</td><td>VARCHAR(100)</td><td>Nama UMKM sasaran</td></tr>
+        <tr><td>status</td><td>ENUM</td><td>planning, executing, completed</td></tr>
+        <tr><td>created_at</td><td>TIMESTAMP</td><td>Waktu mulai</td></tr>
+    </table>
+
+    <h4>Tabel: <code>milestones</code></h4>
+    <p>Menyimpan tahapan penyelesaian proyek.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>course_id</td><td>VARCHAR(36)</td><td>Foreign Key ke courses</td></tr>
+        <tr><td>title</td><td>VARCHAR(100)</td><td>Judul tahapan</td></tr>
+        <tr><td>instructions</td><td>TEXT</td><td>Panduan detail</td></tr>
+        <tr><td>due_date</td><td>DATETIME</td><td>Batas akhir</td></tr>
+    </table>
+
+    <h4>Tabel: <code>submissions</code></h4>
+    <p>Menyimpan tugas proyek yang dikirimkan mahasiswa.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>project_id</td><td>VARCHAR(36)</td><td>Foreign Key ke projects</td></tr>
+        <tr><td>milestone_id</td><td>VARCHAR(36)</td><td>Foreign Key ke milestones</td></tr>
+        <tr><td>submitted_by</td><td>VARCHAR(36)</td><td>Foreign Key ke users</td></tr>
+        <tr><td>file_url</td><td>VARCHAR(255)</td><td>Tautan file laporan</td></tr>
+        <tr><td>student_notes</td><td>TEXT</td><td>Catatan dari mahasiswa</td></tr>
+    </table>
+
+    <h4>Tabel: <code>feedbacks</code></h4>
+    <p>Menyimpan evaluasi dari instruktur terhadap proyek.</p>
+    <table class="db-table">
+        <tr><th>Nama Kolom</th><th>Tipe Data</th><th>Keterangan</th></tr>
+        <tr><td>id</td><td>VARCHAR(36)</td><td>Primary Key (UUID)</td></tr>
+        <tr><td>submission_id</td><td>VARCHAR(36)</td><td>Foreign Key ke submissions</td></tr>
+        <tr><td>evaluator_id</td><td>VARCHAR(36)</td><td>Foreign Key ke users (instruktur)</td></tr>
+        <tr><td>grade</td><td>DECIMAL(5,2)</td><td>Nilai proyek (0-100)</td></tr>
+        <tr><td>green_impact_score</td><td>INT</td><td>Skor dampak lingkungan (1-5)</td></tr>
+        <tr><td>comments</td><td>TEXT</td><td>Umpan balik / saran</td></tr>
+    </table>
+
+    <hr>
+
+    <h2>5. Daftar Teknologi yang Digunakan</h2>
+    <ul>
+        <li><strong>Frontend:</strong> React.js, React Router, Vite, Tailwind CSS / Vanilla CSS.</li>
+        <li><strong>Backend:</strong> Framework Laravel (PHP).</li>
+        <li><strong>Basis Data:</strong> Relational Database (MySQL / PostgreSQL).</li>
+        <li><strong>Peralatan Tambahan:</strong> Node.js & NPM (build tools).</li>
+    </ul>
+
+    <hr>
+
+    <h2>6. Poin Kunci Keberhasilan Aplikasi (Key Success Factors)</h2>
+    <ul>
+        <li><strong>Gamifikasi & Rekomendasi UMKM:</strong> Memberikan rekomendasi jenis UMKM ramah lingkungan terdekat berdasarkan preferensi lokasi mahasiswa saat mendaftar.</li>
+        <li><strong>Standardisasi Rubrik Hijau:</strong> Membekali instruktur dengan format rubrik evaluasi yang berstandar internasional (misalnya mengacu pada prinsip Circular Economy atau Triple Bottom Line).</li>
+        <li><strong>Pilar Portofolio:</strong> Proyek yang dikerjakan mahasiswa otomatis terkompilasi menjadi portofolio karier digital siap kerja yang dapat dibagikan langsung ke platform profesional seperti LinkedIn.</li>
+    </ul>
+
+</body>
+</html>

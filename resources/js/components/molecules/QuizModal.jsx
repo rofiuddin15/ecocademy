@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
+const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData, type = 'quiz' }) => {
     const [quizData, setQuizData] = useState({
         title: '',
         instructions: '',
@@ -166,7 +166,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
             <div className="bg-surface w-full max-w-4xl rounded-lg shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
                 <div className="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-lowest">
                     <div>
-                        <h3 className="font-headline-sm text-primary">{initialData ? 'Edit Kuis Interaktif' : 'Buat Kuis Interaktif'}</h3>
+                        <h3 className="font-headline-sm text-primary capitalize">{initialData ? `Edit ${type === 'quiz' ? 'Kuis Interaktif' : type}` : `Buat ${type === 'quiz' ? 'Kuis Interaktif' : type}`}</h3>
                         <p className="text-on-surface-variant font-label-sm">Untuk Modul: {moduleTitle}</p>
                     </div>
                     <button onClick={onClose} className="text-on-surface-variant hover:text-error transition-colors p-1">
@@ -178,7 +178,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                     <form id="quizForm" onSubmit={handleSubmit} className="space-y-8">
                         {/* Quiz Header Info */}
                         <div className="bg-white p-6 rounded-lg border border-outline-variant shadow-sm space-y-4">
-                            <h4 className="font-label-lg text-primary border-b border-outline-variant pb-2">Detail Kuis</h4>
+                            <h4 className="font-label-lg text-primary border-b border-outline-variant pb-2 capitalize">Detail {type === 'quiz' ? 'Kuis' : type}</h4>
                             <div className="space-y-2">
                                 <label className="block font-label-md text-on-surface">Judul Kuis</label>
                                 <input 
@@ -295,7 +295,7 @@ const QuizModal = ({ isOpen, onClose, onSave, moduleTitle, initialData }) => {
                     </button>
                     <button type="submit" form="quizForm" className="bg-tertiary text-on-tertiary px-6 py-2.5 rounded-lg font-label-md hover:opacity-90 transition-opacity shadow-sm flex items-center gap-2">
                         <span className="material-symbols-outlined text-[18px]">save</span>
-                        Simpan Kuis
+                        <span className="capitalize">Simpan {type === 'quiz' ? 'Kuis' : type}</span>
                     </button>
                 </div>
             </div>
