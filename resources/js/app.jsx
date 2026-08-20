@@ -27,6 +27,8 @@ import UmkmDirectory from './pages/UmkmDirectory';
 import Profile from './pages/Profile';
 import EvaluationCenter from './pages/EvaluationCenter';
 import ProjectEvaluationDetail from './pages/ProjectEvaluationDetail';
+import ActivityLogPage from './pages/ActivityLogPage';
+import CourseMonitoringPage from './pages/CourseMonitoringPage';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -96,6 +98,10 @@ const App = () => {
                     <Route path="/dashboard/manager/create" element={<CourseForm />} />
                     <Route path="/dashboard/manager/edit/:id" element={<CourseForm />} />
                     <Route path="/dashboard/manager/view/:id" element={<InstructorCourseDetail />} />
+                    <Route path="/dashboard/manager/view/:id/monitoring" element={<CourseMonitoringPage />} />
+
+                    {/* Activity Log */}
+                    <Route path="/dashboard/activity-log" element={<ActivityLogPage />} />
                 </Route>
 
                 {/* Fallback */}

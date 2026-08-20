@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -79,6 +80,14 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized / Email or Password wrong'], 401);
         }
 
+        // Catat log aktivitas login
+        ActivityLog::record(
+            userId:   auth('api')->user()->id,
+            action:   'login',
+            metadata: ['email' => $request->email],
+            ipAddress: $request->ip(),
+        );
+
         return $this->respondWithToken($token);
     }
 
@@ -99,6 +108,17 @@ class AuthController extends Controller
      */
     public function logout()
     {
+        $user = auth('api')->user();
+
+        // Catat log aktivitas logout sebelum invalidate token
+        if ($user) {
+            ActivityLog::record(
+                userId:   $user->id,
+                action:   'logout',
+                ipAddress: request()->ip(),
+            );
+        }
+
         auth('api')->logout();
 
         return response()->json(['message' => 'Successfully logged out']);

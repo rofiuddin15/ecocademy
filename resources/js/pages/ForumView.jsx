@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import api from '../utils/api';
+import api, { logActivity } from '../utils/api';
 
 const ForumView = () => {
     const { user } = useSelector((state) => state.auth);
@@ -45,6 +45,9 @@ const ForumView = () => {
             const response = await api.get(`/forum/${id}`);
             setActiveThread(response.data);
             setIsCreatingThread(false);
+
+            // Catat log: membuka thread forum
+            logActivity('view_forum', 'ForumThread', id, response.data.title);
         } catch (error) {
             console.error('Error loading thread details:', error);
             setErrorMsg('Gagal memuat rincian diskusi.');
@@ -55,6 +58,8 @@ const ForumView = () => {
 
     useEffect(() => {
         fetchThreads();
+        // Catat log: membuka halaman forum
+        logActivity('view_forum', null, null, 'Forum Komunitas Greenpreneur');
     }, []);
 
     const handleCreateThread = async (e) => {
@@ -67,6 +72,8 @@ const ForumView = () => {
                 title: newTitle,
                 body: newBody,
             });
+            // Catat log: membuat thread baru
+            logActivity('post_forum', 'ForumThread', response.data.id, newTitle);
             setNewTitle('');
             setNewBody('');
             setIsCreatingThread(false);
@@ -91,6 +98,10 @@ const ForumView = () => {
         try {
             await api.post(`/forum/${activeThread.id}/comments`, {
                 body: commentBody,
+            });
+            // Catat log: mengirim komentar
+            logActivity('post_forum', 'ForumThread', activeThread.id, activeThread.title, {
+                action: 'comment',
             });
             setCommentBody('');
             // Reload thread details

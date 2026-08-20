@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import api from '../utils/api';
+import api, { logActivity, enrollCourse, checkEnrollmentStatus } from '../utils/api';
 
 const CourseDetail = () => {
     const { id } = useParams();
@@ -20,15 +20,40 @@ const CourseDetail = () => {
                 const response = await api.get(`/courses/${id}`);
                 setCourse(response.data);
                 
-                // Enrollment check
-                const enrolledStorage = JSON.parse(localStorage.getItem('enrolled_courses') || '[]');
-                const isDefaultEnrolled = ['desain', 'design', 'ekonomi', 'circular', 'pemasaran', 'marketing'].some(k => response.data.title.toLowerCase().includes(k));
-                
+                // ── Enrollment check: cek dari DB terlebih dulu ──────────────
                 let enrolled = false;
-                if (user?.role === 'instructor' || enrolledStorage.includes(String(id)) || isDefaultEnrolled) {
+
+                if (user?.role === 'instructor') {
+                    // Instruktur selalu bisa akses
                     setIsEnrolled(true);
                     enrolled = true;
+                } else if (user) {
+                    // Cek enrollment status dari server
+                    const enrollStatus = await checkEnrollmentStatus(id);
+                    if (enrollStatus.is_enrolled) {
+                        setIsEnrolled(true);
+                        enrolled = true;
+                        // Sync ke localStorage agar komponen lain masih bisa pakai
+                        const enrolledStorage = JSON.parse(localStorage.getItem('enrolled_courses') || '[]');
+                        if (!enrolledStorage.includes(String(id))) {
+                            enrolledStorage.push(String(id));
+                            localStorage.setItem('enrolled_courses', JSON.stringify(enrolledStorage));
+                        }
+                    } else {
+                        // Fallback: cek localStorage (untuk data lama sebelum fitur ini)
+                        const enrolledStorage = JSON.parse(localStorage.getItem('enrolled_courses') || '[]');
+                        const isDefaultEnrolled = ['desain', 'design', 'ekonomi', 'circular', 'pemasaran', 'marketing'].some(k => response.data.title.toLowerCase().includes(k));
+                        if (enrolledStorage.includes(String(id)) || isDefaultEnrolled) {
+                            setIsEnrolled(true);
+                            enrolled = true;
+                            // Sync ke DB
+                            enrollCourse(id);
+                        }
+                    }
                 }
+
+                // Catat log view_course
+                logActivity('view_course', 'Course', id, response.data.title, { course_id: id });
 
                 if (enrolled && response.data.pretest) {
                     try {
@@ -236,7 +261,16 @@ const CourseDetail = () => {
                                                                 .map((material) => (
                                                                     <button
                                                                         key={material.id}
-                                                                        onClick={() => isEnrolled && hasCompletedPretest && setSelectedMaterial(material)}
+                                                                        onClick={() => {
+                                                                            if (isEnrolled && hasCompletedPretest) {
+                                                                                setSelectedMaterial(material);
+                                                                                logActivity('view_material', 'Material', material.id, material.title, {
+                                                                                    course_id: id,
+                                                                                    module_id: module.id,
+                                                                                    content_type: material.content_type,
+                                                                                });
+                                                                            }
+                                                                        }}
                                                                         className={`w-full flex items-center justify-between p-4 ${isEnrolled && hasCompletedPretest ? 'hover:bg-surface-container-low/50 cursor-pointer text-on-surface' : 'opacity-60 cursor-not-allowed text-on-surface-variant'} text-left transition-colors bg-white`}
                                                                     >
                                                                         <div className="flex items-center gap-3">
@@ -440,7 +474,10 @@ const CourseDetail = () => {
                         <p className="text-body-md text-on-surface-variant mb-8">Apakah Anda yakin ingin mendaftar ke kursus <strong>{course.title}</strong>? Anda akan diwajibkan menyelesaikan seluruh tahapan modul dan proyek akhir untuk mendapatkan sertifikat.</p>
                         <div className="flex justify-end gap-3">
                             <button onClick={() => setShowEnrollModal(false)} className="px-5 py-2.5 font-bold text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors cursor-pointer">Batal</button>
-                            <button onClick={() => {
+                            <button onClick={async () => {
+                                // Enroll ke database
+                                const result = await enrollCourse(id);
+                                // Tetap simpan ke localStorage sebagai fallback
                                 const enrolledStorage = JSON.parse(localStorage.getItem('enrolled_courses') || '[]');
                                 if (!enrolledStorage.includes(String(id))) {
                                     enrolledStorage.push(String(id));

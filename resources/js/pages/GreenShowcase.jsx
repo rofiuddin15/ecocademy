@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import api from '../utils/api';
+import api, { logActivity } from '../utils/api';
 
 const GreenShowcase = () => {
     const [projects, setProjects] = useState([]);
@@ -82,6 +82,8 @@ const GreenShowcase = () => {
         };
 
         fetchProjects();
+        // Catat log: membuka Etalase Hijau
+        logActivity('view_showcase', null, null, 'Etalase Hijau Ecocademy');
     }, []);
 
     const categories = ['Semua', 'F&B', 'Agrikultur', 'Kriya', 'Lainnya'];

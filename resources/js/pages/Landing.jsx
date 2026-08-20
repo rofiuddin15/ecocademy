@@ -252,7 +252,7 @@ const Landing = () => {
                     <div className="relative z-10">
                         <span className="inline-block py-1 px-4 rounded-full bg-primary-fixed text-on-primary-fixed text-label-sm font-label-sm mb-6">Pelopor Pendidikan Berkelanjutan</span>
                         <h1 className="text-headline-xl md:text-[56px] lg:text-[64px] font-headline-xl text-primary mb-6 leading-none tracking-tight">
-                            Memberdayakan Wirausaha <span className="text-secondary">Hijau Masa Depan</span>
+                            Projec-Base Greenpreneurship Adaptive Digital Hub <span className="text-secondary">Untuk Literasi Wirausaha</span>
                         </h1>
                         <p className="text-body-lg font-body-lg text-on-surface-variant mb-10 max-w-xl">
                             Mengubah ide keberlanjutan menjadi dampak nyata melalui Pembelajaran Berbasis Proyek (PjBL) bersama mitra UMKM lokal. Bergabunglah dengan komunitas inovator yang mendefinisikan ulang masa depan ekonomi.

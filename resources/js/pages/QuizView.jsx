@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import api from '../utils/api';
+import api, { logActivity } from '../utils/api';
 
 const QuizView = ({ type = 'module' }) => {
     const { courseId, moduleId } = useParams();
@@ -50,7 +50,16 @@ const QuizView = ({ type = 'module' }) => {
                     }));
                 }
                 setQuiz(randomizedQuiz);
-                
+
+                // Catat log: membuka kuis
+                const quizTypeLabel = type === 'pretest' ? 'Pretest' : type === 'posttest' ? 'Posttest' : 'Kuis Modul';
+                logActivity('submit_quiz', 'Quiz', targetQuiz.id, targetQuiz.title, {
+                    course_id: courseId,
+                    quiz_type: type,
+                    quiz_label: quizTypeLabel,
+                    action: 'open',
+                });
+
                 // Fetch attempts log
                 const attemptsResponse = await api.get(`/quizzes/${targetQuiz.id}/attempts`);
                 setAttempts(attemptsResponse.data);
@@ -93,7 +102,18 @@ const QuizView = ({ type = 'module' }) => {
                 answers
             });
             setResult(response.data);
-            
+
+            // Catat log: submit kuis dengan skor
+            logActivity('submit_quiz', 'Quiz', quiz.id, quiz.title, {
+                course_id: courseId,
+                module_id: moduleId || null,
+                quiz_type: type,
+                score:        response.data.score,
+                is_passed:    response.data.is_passed,
+                correct_count: response.data.correct_count,
+                total_questions: quiz.questions?.length,
+            });
+
             // Re-fetch attempts log
             const attemptsResponse = await api.get(`/quizzes/${quiz.id}/attempts`);
             setAttempts(attemptsResponse.data);

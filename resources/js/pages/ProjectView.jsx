@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import api from '../utils/api';
+import api, { logActivity } from '../utils/api';
 
 // Helper untuk menampilkan teks multi-baris sebagai list
 const MultilineText = ({ text, className = '' }) => {
@@ -78,7 +78,15 @@ const ProjectView = () => {
 
             if (activeProject) {
                 const detailResponse = await api.get(`/projects/${activeProject.id}`);
-                setProject(detailResponse.data);
+                const projectDetail = detailResponse.data;
+                setProject(projectDetail);
+
+                // Catat log: membuka halaman proyek
+                logActivity('view_project', 'Course', courseId, projectDetail.title || 'Proyek', {
+                    course_id: courseId,
+                    project_id: projectDetail.id,
+                    project_status: projectDetail.status,
+                });
             } else {
                 setProject(null);
             }
@@ -110,6 +118,14 @@ const ProjectView = () => {
             });
             const detailResponse = await api.get(`/projects/${response.data.id}`);
             setProject(detailResponse.data);
+
+            // Catat log: mendaftarkan proyek baru
+            logActivity('submit_project', 'Course', courseId, title, {
+                course_id: courseId,
+                project_id: response.data.id,
+                umkm_name: umkmName,
+                umkm_sector: umkmSector,
+            });
         } catch (error) {
             console.error('Error initializing project:', error);
             setErrorMsg(error.response?.data?.error || 'Gagal mendaftarkan proyek baru.');
@@ -159,6 +175,17 @@ const ProjectView = () => {
                 file_url:       submissionUrl,
                 student_notes:  notes,
             });
+
+            // Catat log: submit milestone
+            const milestone = course?.milestones?.find(m => m.id === submittingMilestoneId);
+            logActivity('submit_milestone', 'Project', project.id, milestone?.title || 'Milestone', {
+                course_id: courseId,
+                project_id: project.id,
+                milestone_id: submittingMilestoneId,
+                milestone_title: milestone?.title,
+                milestone_sequence: milestone?.sequence,
+            });
+
             setSubmittingMilestoneId(null);
             const detailResponse = await api.get(`/projects/${project.id}`);
             setProject(detailResponse.data);

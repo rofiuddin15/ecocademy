@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../utils/api';
+import api, { logActivity } from '../utils/api';
 
 const StudentModules = () => {
     const [courses, setCourses] = useState([]);
@@ -101,7 +101,11 @@ const StudentModules = () => {
                                                 <div className="w-full bg-surface-container-highest rounded-full h-1.5">
                                                     <div className="h-1.5 rounded-full bg-primary" style={{ width: `${meta.progress}%` }}></div>
                                                 </div>
-                                                <Link to={`/dashboard/courses/${course.id}`} className="mt-4 w-full block text-center bg-primary/10 text-primary px-4 py-2 rounded-lg font-label-sm font-bold hover:bg-primary/20 transition-colors">
+                                                <Link
+                                                    to={`/dashboard/courses/${course.id}`}
+                                                    onClick={() => logActivity('view_course', 'Course', course.id, course.title, { source: 'modules_page' })}
+                                                    className="mt-4 w-full block text-center bg-primary/10 text-primary px-4 py-2 rounded-lg font-label-sm font-bold hover:bg-primary/20 transition-colors"
+                                                >
                                                     Lanjutkan Belajar
                                                 </Link>
                                             </>

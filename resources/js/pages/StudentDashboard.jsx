@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import api from '../utils/api';
+import api, { logActivity } from '../utils/api';
 
 const StudentDashboard = () => {
     const { user } = useSelector((state) => state.auth);
-    const [courses, setCourses] = useState([]);
-    const [projects, setProjects] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [courses, setCourses]       = useState([]);
+    const [projects, setProjects]     = useState([]);
+    const [recentLogs, setRecentLogs] = useState([]);
+    const [isLoading, setIsLoading]   = useState(true);
 
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                const [coursesRes, projectsRes] = await Promise.all([
+                const [coursesRes, projectsRes, logsRes] = await Promise.all([
                     api.get('/courses'),
-                    api.get('/projects')
+                    api.get('/projects'),
+                    api.get('/activity-logs', { params: { action: 'all', page: 1 } }).catch(() => ({ data: { data: [] } })),
                 ]);
                 setCourses(coursesRes.data);
                 setProjects(projectsRes.data);
+                setRecentLogs((logsRes.data?.data || []).slice(0, 5));
             } catch (error) {
                 console.error('Error fetching student dashboard data:', error);
             } finally {
@@ -436,6 +439,66 @@ const StudentDashboard = () => {
                     )}
                 </div>
             </div>
+
+            {/* ── Aktivitas Terbaru ──────────────────────────────────────────── */}
+            <section>
+                <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-headline-sm text-headline-sm text-primary font-bold flex items-center gap-2">
+                        <span className="material-symbols-outlined text-[20px]">history</span>
+                        Aktivitas Terakhir
+                    </h3>
+                    <Link
+                        to="/dashboard/activity-log"
+                        className="text-label-sm text-primary font-semibold hover:underline flex items-center gap-1"
+                    >
+                        Lihat semua
+                        <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+                    </Link>
+                </div>
+                <div className="bg-white border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm">
+                    {recentLogs.length === 0 ? (
+                        <div className="py-8 text-center">
+                            <span className="material-symbols-outlined text-[36px] text-on-surface-variant/30">history_toggle_off</span>
+                            <p className="text-body-sm text-on-surface-variant mt-2">Belum ada aktivitas tercatat.</p>
+                        </div>
+                    ) : (
+                        <div className="divide-y divide-outline-variant/20">
+                            {recentLogs.map((log) => {
+                                const ACTION_COLORS = {
+                                    login: 'bg-blue-100 text-blue-600',
+                                    view_course: 'bg-emerald-100 text-emerald-600',
+                                    view_material: 'bg-violet-100 text-violet-600',
+                                    submit_quiz: 'bg-amber-100 text-amber-600',
+                                    enroll_course: 'bg-teal-100 text-teal-600',
+                                    submit_project: 'bg-orange-100 text-orange-600',
+                                };
+                                const colorClass = ACTION_COLORS[log.action] || 'bg-gray-100 text-gray-600';
+                                const timeLabel = (() => {
+                                    const diff = Math.floor((Date.now() - new Date(log.created_at)) / 1000);
+                                    if (diff < 60) return 'Baru saja';
+                                    if (diff < 3600) return `${Math.floor(diff/60)} mnt lalu`;
+                                    if (diff < 86400) return `${Math.floor(diff/3600)} jam lalu`;
+                                    return `${Math.floor(diff/86400)} hari lalu`;
+                                })();
+                                return (
+                                    <div key={log.id} className="flex items-center gap-3 px-4 py-3 hover:bg-surface-container/30 transition-colors">
+                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${colorClass}`}>
+                                            <span className="material-symbols-outlined text-[14px]">{log.action_icon}</span>
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className="text-label-sm font-medium text-on-surface truncate">{log.action_label}</p>
+                                            {log.subject_name && (
+                                                <p className="text-label-xs text-on-surface-variant truncate">{log.subject_name}</p>
+                                            )}
+                                        </div>
+                                        <span className="text-label-xs text-on-surface-variant flex-shrink-0">{timeLabel}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+            </section>
         </div>
     );
 };

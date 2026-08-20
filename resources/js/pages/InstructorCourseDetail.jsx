@@ -88,6 +88,13 @@ const InstructorCourseDetail = () => {
                 
                 <div className="flex items-center gap-3 w-full md:w-auto">
                     <Link 
+                        to={`/dashboard/manager/view/${course.id}/monitoring`}
+                        className="flex-1 md:flex-none bg-emerald-600 text-white px-5 py-2.5 rounded-lg font-label-md text-label-md hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2 shadow-sm font-bold"
+                    >
+                        <span className="material-symbols-outlined text-[20px]">monitoring</span>
+                        Monitor Kursus
+                    </Link>
+                    <Link 
                         to={`/dashboard/manager/edit/${course.id}`}
                         className="flex-1 md:flex-none bg-primary text-white px-5 py-2.5 rounded-lg font-label-md text-label-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-sm font-bold"
                     >
@@ -102,6 +109,7 @@ const InstructorCourseDetail = () => {
                         <span className="material-symbols-outlined text-[20px]">delete</span>
                     </button>
                 </div>
+
             </div>
 
             {/* Curriculum Content */}

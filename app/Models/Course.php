@@ -108,4 +108,20 @@ class Course extends Model
     {
         return $this->hasOne(Quiz::class)->where('type', 'posttest');
     }
+
+    /**
+     * Get all enrollments for this course.
+     */
+    public function enrollments(): HasMany
+    {
+        return $this->hasMany(CourseEnrollment::class);
+    }
+
+    /**
+     * Get enrollments completed (completed_at is not null).
+     */
+    public function completedEnrollments(): HasMany
+    {
+        return $this->hasMany(CourseEnrollment::class)->whereNotNull('completed_at');
+    }
 }

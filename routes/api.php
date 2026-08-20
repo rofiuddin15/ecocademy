@@ -14,6 +14,9 @@ use App\Http\Controllers\Api\V1\PblDetailController;
 use App\Http\Controllers\Api\V1\ForumController;
 use App\Http\Controllers\Api\V1\QuizController;
 use App\Http\Controllers\Api\V1\PartnerController;
+use App\Http\Controllers\Api\V1\ActivityLogController;
+use App\Http\Controllers\Api\V1\EnrollmentController;
+use App\Http\Controllers\Api\V1\CourseMonitoringController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -104,5 +107,18 @@ Route::prefix('v1')->group(function () {
         Route::post('categories', [CategoryController::class, 'store']);
         Route::put('categories/{category}', [CategoryController::class, 'update']);
         Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
+
+        // ── Activity Logs ──────────────────────────────────────────────────────
+        Route::get('activity-logs', [ActivityLogController::class, 'index']);
+        Route::post('activity-logs', [ActivityLogController::class, 'store']);
+
+        // ── Enrollments ────────────────────────────────────────────────────────
+        Route::get('enrollments/my', [EnrollmentController::class, 'myEnrollments']);
+        Route::post('courses/{course}/enroll', [EnrollmentController::class, 'enroll']);
+        Route::post('courses/{course}/complete', [EnrollmentController::class, 'complete']);
+        Route::get('courses/{course}/enrollment-status', [EnrollmentController::class, 'status']);
+
+        // ── Course Monitoring (Instructor/Admin) ───────────────────────────────
+        Route::get('courses/{course}/monitoring', [CourseMonitoringController::class, 'show']);
     });
 });

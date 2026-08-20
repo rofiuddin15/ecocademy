@@ -20,6 +20,7 @@ const DashboardLayout = () => {
         { path: '/dashboard/showcase', label: 'Etalase Hijau', icon: 'workspace_premium' },
         { path: '/dashboard/directory', label: 'Daftar UMKM', icon: 'location_on' },
         { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' },
+        { path: '/dashboard/activity-log', label: 'Riwayat Aktivitas', icon: 'history' },
         { path: '/dashboard/profile', label: 'Profil Saya', icon: 'person' }
     ];
 
@@ -29,6 +30,7 @@ const DashboardLayout = () => {
         { path: '/dashboard/showcase', label: 'Etalase Hijau', icon: 'workspace_premium' },
         { path: '/dashboard/directory', label: 'Daftar UMKM', icon: 'location_on' },
         { path: '/dashboard/forum', label: 'Pusat Umpan Balik', icon: 'forum' },
+        { path: '/dashboard/activity-log', label: 'Riwayat Aktivitas', icon: 'history' },
         { path: '/dashboard/profile', label: 'Profil Instruktur', icon: 'person' }
     ];
 
